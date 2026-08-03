@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SERVICES } from '../data/services'
+import type { Service } from '../data/services'
+
+const lang: 'fr' | 'en' = 'fr'
 
 export default function ServicesShowcase() {
   const container = useRef<HTMLDivElement>(null)
@@ -9,9 +12,22 @@ export default function ServicesShowcase() {
   const bgRef = useRef<HTMLDivElement>(null)
   const activeRef = useRef(0)
   const [active, setActive] = useState(0)
-  const lang: 'fr' | 'en' = 'fr'
+  const [isDesktop, setIsDesktop] = useState<boolean>(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
+  )
 
+  // Track viewport size to switch between pinned (desktop) and stacked (mobile) modes
   useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const onChange = () => setIsDesktop(mq.matches)
+    onChange()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  // Pin & progress only on desktop
+  useEffect(() => {
+    if (!isDesktop) return
     const ctx = gsap.context(() => {
       const total = SERVICES.length
       const trigger = ScrollTrigger.create({
@@ -32,25 +48,68 @@ export default function ServicesShowcase() {
           }
         },
       })
-
       return () => {
         trigger.kill()
       }
     }, container)
-
     return () => ctx.revert()
-  }, [])
+  }, [isDesktop])
 
+  // Background morph only on desktop
   useEffect(() => {
+    if (!isDesktop || !bgRef.current) return
     const s = SERVICES[active]
-    if (!bgRef.current) return
     gsap.to(bgRef.current, {
       background: `radial-gradient(ellipse at 30% 40%, ${s.bg.via} 0%, ${s.bg.from} 45%, ${s.bg.to} 100%)`,
       duration: 1.2,
       ease: 'power2.inOut',
     })
-  }, [active])
+  }, [active, isDesktop])
 
+  // === MOBILE / TABLET: stacked cards, no pin ===
+  if (!isDesktop) {
+    return (
+      <section
+        id="services"
+        ref={container}
+        className="relative w-full bg-[#050505] text-white overflow-hidden border-t border-white/5 py-20 md:py-24 px-6 md:px-12"
+      >
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px',
+          }}
+        />
+
+        <div className="relative max-w-3xl mx-auto mb-14 md:mb-20">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="h-px w-12 bg-teknic-red" />
+            <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-teknic-red">
+              02 · Services
+            </span>
+          </div>
+          <h2 className="font-display uppercase leading-[0.85] text-5xl sm:text-6xl md:text-7xl mb-4">
+            Nos <span className="text-teknic-red">disciplines</span>
+          </h2>
+          <p className="font-sans font-light text-white/60 text-sm md:text-base leading-relaxed">
+            Quatre expertises sous un même toit. Chaque projet est pris en charge
+            de bout en bout par nos équipes.
+          </p>
+        </div>
+
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-6xl mx-auto">
+          {SERVICES.map((s) => (
+            <MobileServiceCard key={s.id} s={s} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  // === DESKTOP: pinned crossfade layout ===
   return (
     <section id="services" ref={container} className="relative w-full">
       <div ref={pinTarget} className="relative h-screen w-full overflow-hidden">
@@ -111,7 +170,7 @@ export default function ServicesShowcase() {
                 pointerEvents: isActive ? 'auto' : 'none',
               }}
             >
-              <div className="h-full w-full grid grid-cols-1 lg:grid-cols-[1.1fr_1.4fr_1fr] gap-6 px-6 md:px-12 py-32">
+              <div className="h-full w-full grid grid-cols-[1.1fr_1.4fr_1fr] gap-6 px-6 md:px-12 py-32">
                 {/* LEFT */}
                 <div
                   className="relative flex flex-col justify-center"
@@ -142,7 +201,7 @@ export default function ServicesShowcase() {
                   </p>
 
                   <a
-                    href="#contact"
+                    href="#soumission"
                     className="inline-flex items-center gap-3 self-start px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
                     style={{ borderColor: `${s.accent}55` }}
                   >
@@ -254,5 +313,91 @@ export default function ServicesShowcase() {
         </div>
       </div>
     </section>
+  )
+}
+
+function MobileServiceCard({ s }: { s: Service }) {
+  return (
+    <article
+      className="group relative rounded-lg overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 transition-all duration-500"
+      style={{
+        background: `linear-gradient(160deg, ${s.bg.from}80 0%, ${s.bg.to}90 100%)`,
+      }}
+    >
+      {/* Corner ticks */}
+      <span className="absolute top-3 left-3 z-20 w-3 h-3 border-t border-l border-white/30" />
+      <span className="absolute top-3 right-3 z-20 w-3 h-3 border-t border-r border-white/30" />
+      <span className="absolute bottom-3 left-3 z-20 w-3 h-3 border-b border-l border-white/30" />
+      <span className="absolute bottom-3 right-3 z-20 w-3 h-3 border-b border-r border-white/30" />
+
+      {/* Image */}
+      <div className="relative w-full aspect-[4/3] overflow-hidden">
+        <img
+          src={s.image}
+          alt={s.name[lang]}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to top, ${s.bg.to}EE 0%, transparent 45%)`,
+          }}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative p-5 md:p-6">
+        <div className="flex items-baseline gap-3 mb-3">
+          <span
+            className="font-mono text-xs tracking-[0.3em]"
+            style={{ color: s.accent }}
+          >
+            {s.number}
+          </span>
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/40">
+            / 04
+          </span>
+        </div>
+
+        <h3 className="font-display uppercase text-3xl md:text-4xl leading-none mb-3">
+          {s.name[lang]}
+        </h3>
+
+        <p className="font-serif italic text-white/80 text-base leading-snug mb-4">
+          {s.headline[lang]}
+        </p>
+
+        <p className="font-sans font-light text-white/60 text-sm leading-relaxed mb-5">
+          {s.description[lang]}
+        </p>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4 mb-6">
+          {s.specs.map((spec, i) => (
+            <div
+              key={i}
+              className="border-l pl-3"
+              style={{ borderColor: `${s.accent}40` }}
+            >
+              <div className="font-mono text-[9px] tracking-widest uppercase text-white/40 mb-1">
+                {spec.label[lang]}
+              </div>
+              <div className="font-display text-base text-white">
+                {spec.value}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <a
+          href="#soumission"
+          className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white transition-all duration-300"
+          style={{ borderColor: `${s.accent}70` }}
+        >
+          En savoir plus
+          <span className="w-4 h-px bg-current" />
+        </a>
+      </div>
+    </article>
   )
 }
