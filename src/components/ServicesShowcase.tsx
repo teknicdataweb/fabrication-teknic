@@ -101,8 +101,8 @@ export default function ServicesShowcase() {
         </div>
 
         <div className="relative grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-6xl mx-auto">
-          {SERVICES.map((s) => (
-            <MobileServiceCard key={s.id} s={s} />
+          {SERVICES.map((s, i) => (
+            <MobileServiceCard key={s.id} s={s} index={i} />
           ))}
         </div>
       </section>
@@ -316,12 +316,52 @@ export default function ServicesShowcase() {
   )
 }
 
-function MobileServiceCard({ s }: { s: Service }) {
+function MobileServiceCard({ s, index }: { s: Service; index: number }) {
+  const ref = useRef<HTMLElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  // Parallax on scroll — image drifts as card moves through viewport
+  useEffect(() => {
+    const el = ref.current
+    const img = imgRef.current
+    if (!el || !img) return
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const r = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      // Only run when card is near viewport for performance
+      if (r.bottom < -100 || r.top > vh + 100) return
+      const t = (r.top + r.height / 2 - vh / 2) / vh
+      const clamped = Math.max(-1, Math.min(1, t))
+      const shift = clamped * -20
+      img.style.transform = `translate3d(0, ${shift}px, 0) scale(1.1)`
+    }
+    const onScroll = () => {
+      if (raf) return
+      raf = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  // Portrait images (soudure, mecanique) need centering to keep face visible
+  const objectPosition =
+    s.id === 'soudure' || s.id === 'mecanique' ? 'center 20%' : 'center'
+
   return (
     <article
-      className="group relative rounded-lg overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 transition-all duration-500"
+      ref={ref}
+      className="group relative rounded-lg overflow-hidden border border-white/10 animate-[fadeUp_800ms_ease-out_both]"
       style={{
         background: `linear-gradient(160deg, ${s.bg.from}80 0%, ${s.bg.to}90 100%)`,
+        animationDelay: `${index * 100}ms`,
       }}
     >
       {/* Corner ticks */}
@@ -330,36 +370,59 @@ function MobileServiceCard({ s }: { s: Service }) {
       <span className="absolute bottom-3 left-3 z-20 w-3 h-3 border-b border-l border-white/30" />
       <span className="absolute bottom-3 right-3 z-20 w-3 h-3 border-b border-r border-white/30" />
 
-      {/* Image */}
-      <div className="relative w-full aspect-[4/3] overflow-hidden">
+      {/* Progress badge */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5">
+        {SERVICES.map((_, i) => (
+          <span
+            key={i}
+            className="h-1 rounded-full transition-all duration-500"
+            style={{
+              width: i === index ? 16 : 5,
+              backgroundColor: i === index ? s.accent : 'rgba(255,255,255,0.25)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Image — portrait 4:5 aspect works for both portrait and landscape sources */}
+      <div className="relative w-full aspect-[4/5] overflow-hidden">
         <img
+          ref={imgRef}
           src={s.image}
           alt={s.name[lang]}
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover will-change-transform"
+          style={{
+            objectPosition,
+            transform: 'scale(1.08)',
+            transition: 'transform 0.1s linear',
+          }}
         />
+        {/* Dark gradient at bottom for text readability */}
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(to top, ${s.bg.to}EE 0%, transparent 45%)`,
+            background: `linear-gradient(to top, ${s.bg.to}FA 0%, ${s.bg.to}80 25%, transparent 55%)`,
           }}
         />
+        {/* Number overlay bottom left */}
+        <div className="absolute bottom-4 left-5 z-10">
+          <div className="flex items-baseline gap-2">
+            <span
+              className="font-mono text-[11px] tracking-[0.3em]"
+              style={{ color: s.accent }}
+            >
+              {s.number}
+            </span>
+            <span className="font-mono text-[10px] tracking-[0.3em] text-white/40">
+              / 04
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Content */}
       <div className="relative p-5 md:p-6">
-        <div className="flex items-baseline gap-3 mb-3">
-          <span
-            className="font-mono text-xs tracking-[0.3em]"
-            style={{ color: s.accent }}
-          >
-            {s.number}
-          </span>
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/40">
-            / 04
-          </span>
-        </div>
-
         <h3 className="font-display uppercase text-3xl md:text-4xl leading-none mb-3">
           {s.name[lang]}
         </h3>
@@ -391,7 +454,7 @@ function MobileServiceCard({ s }: { s: Service }) {
 
         <a
           href="#soumission"
-          className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white transition-all duration-300"
+          className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white active:scale-95 transition-transform duration-200"
           style={{ borderColor: `${s.accent}70` }}
         >
           En savoir plus
