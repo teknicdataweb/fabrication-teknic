@@ -67,7 +67,7 @@ export default function Hero() {
           ref={eyebrow}
           className="font-sans text-xs md:text-sm tracking-[0.4em] text-white/60 mb-8 uppercase"
         >
-          Depuis 1996 · Nicolet, Québec
+          Depuis 2014 · Nicolet, Québec
         </p>
 
         <h1 className="font-display flex flex-col leading-[0.9] tracking-tight uppercase">
