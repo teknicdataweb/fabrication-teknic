@@ -53,3 +53,6 @@ desktop.ini
 galery tek/
 public/video-inspect.html
 public/ref-animation.mp4
+
+# Control remoto
+prompts-queue.json

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Remoto - Claude</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #050505 0%, #1a1a1a 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-top: 16px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #60a5fa, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    header p {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 24px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .status.offline {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .status.offline .status-dot {
+      background: #ef4444;
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .input-section {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    #prompt-input {
+      flex: 1;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      min-height: 48px;
+      resize: vertical;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    #prompt-input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(96, 165, 250, 0.5);
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+
+    .send-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #60a5fa, #06b6d4);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      min-width: 100px;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(96, 165, 250, 0.3);
+    }
+
+    .send-btn:active {
+      transform: translateY(0);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .prompts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prompt-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+      transition: all 0.2s;
+    }
+
+    .prompt-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .prompt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .prompt-text {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #e0e0e0;
+      word-wrap: break-word;
+    }
+
+    .prompt-time {
+      font-size: 12px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .prompt-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .badge-pending {
+      background: rgba(251, 146, 60, 0.2);
+      color: #fb923c;
+      border: 1px solid rgba(251, 146, 60, 0.3);
+    }
+
+    .badge-executed {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .execute-btn {
+      padding: 6px 12px;
+      background: rgba(96, 165, 250, 0.15);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      border-radius: 6px;
+      color: #60a5fa;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .execute-btn:hover:not(:disabled) {
+      background: rgba(96, 165, 250, 0.25);
+      border-color: rgba(96, 165, 250, 0.5);
+    }
+
+    .execute-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: #666;
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 24px;
+      }
+
+      .input-section {
+        flex-direction: column;
+      }
+
+      .send-btn {
+        width: 100%;
+      }
+
+      .prompt-header {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🤖 Control Remoto Claude</h1>
+      <p>Envía prompts desde aquí para ejecutar en tu computadora</p>
+    </header>
+
+    <div class="status" id="status">
+      <div class="status-dot"></div>
+      <span>Conectando...</span>
+    </div>
+
+    <div class="input-section">
+      <textarea id="prompt-input" placeholder="Escribe tu prompt aquí... Ej: 'Revisa el archivo README.md y sugiere mejoras'"></textarea>
+      <button class="send-btn" id="send-btn">Enviar</button>
+    </div>
+
+    <div id="prompts-container">
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <p>Sin prompts aún. ¡Escribe el primero!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const socket = io()
+    const statusEl = document.getElementById('status')
+    const promptInput = document.getElementById('prompt-input')
+    const sendBtn = document.getElementById('send-btn')
+    const container = document.getElementById('prompts-container')
+    let prompts = []
+
+    socket.on('connect', () => {
+      updateStatus(true)
+      console.log('✅ Conectado al servidor')
+    })
+
+    socket.on('disconnect', () => {
+      updateStatus(false)
+      console.log('❌ Desconectado del servidor')
+    })
+
+    socket.on('load-prompts', (data) => {
+      prompts = data
+      renderPrompts()
+    })
+
+    socket.on('new-prompt', (prompt) => {
+      prompts.unshift(prompt)
+      renderPrompts()
+    })
+
+    socket.on('prompt-executed', (id) => {
+      const prompt = prompts.find(p => p.id === id)
+      if (prompt) {
+        prompt.status = 'ejecutado'
+        renderPrompts()
+      }
+    })
+
+    sendBtn.addEventListener('click', () => {
+      const text = promptInput.value.trim()
+      if (!text) return
+
+      socket.emit('send-prompt', text)
+      promptInput.value = ''
+      promptInput.focus()
+    })
+
+    promptInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        sendBtn.click()
+      }
+    })
+
+    function updateStatus(connected) {
+      if (connected) {
+        statusEl.classList.remove('offline')
+        statusEl.innerHTML = '<div class="status-dot"></div><span>Conectado</span>'
+      } else {
+        statusEl.classList.add('offline')
+        statusEl.innerHTML = '<div class="status-dot"></div><span>Sin conexión</span>'
+      }
+    }
+
+    function renderPrompts() {
+      if (prompts.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <p>Sin prompts aún. ¡Escribe el primero!</p>
+          </div>
+        `
+        return
+      }
+
+      container.innerHTML = `
+        <div class="prompts-list">
+          ${prompts.map(prompt => `
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <div>
+                  <div class="prompt-text">${escapeHtml(prompt.text)}</div>
+                  <span class="prompt-badge ${prompt.status === 'ejecutado' ? 'badge-executed' : 'badge-pending'}">
+                    ${prompt.status === 'ejecutado' ? '✅ Ejecutado' : '⏳ Pendiente'}
+                  </span>
+                </div>
+                <span class="prompt-time">${prompt.timestamp}</span>
+              </div>
+              ${prompt.status === 'pendiente' ? `
+                <button class="execute-btn" onclick="executePrompt(${prompt.id})">
+                  Marcar como ejecutado
+                </button>
+              ` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div')
+      div.textContent = text
+      return div.innerHTML
+    }
+
+    window.executePrompt = (id) => {
+      socket.emit('execute-prompt', id)
+    }
+  </script>
+</body>
+</html>

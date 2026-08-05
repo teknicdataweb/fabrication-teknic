@@ -6,22 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "remote": "node server.js",
+    "dev:all": "concurrently \"npm run dev\" \"npm run remote\""
   },
   "dependencies": {
+    "express": "^4.18.2",
     "framer-motion": "^10.18.0",
     "gsap": "^3.12.5",
     "lenis": "^1.1.20",
     "lucide-react": "^0.454.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-intersection-observer": "^9.13.1"
+    "react-intersection-observer": "^9.13.1",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^8.2.2",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3",
