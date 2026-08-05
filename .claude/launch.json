@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5173
+    },
+    {
+      "name": "teknic-remote",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "remote"],
+      "port": 3000
     }
   ]
 }

@@ -20,6 +20,11 @@ const io = new Server(server, {
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 
+// Serve remote-control.html as root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'remote-control.html'))
+})
+
 const PROMPTS_FILE = path.join(__dirname, 'prompts-queue.json')
 
 // Initialize prompts file

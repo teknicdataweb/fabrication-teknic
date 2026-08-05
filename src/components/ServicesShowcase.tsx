@@ -252,10 +252,14 @@ export default function ServicesShowcase() {
                   )}
                 </div>
 
-                {/* CENTER — Massive image */}
+                {/* CENTER — Massive image / video */}
                 <div className="relative flex items-center justify-center">
                   <div
-                    className="relative w-full h-[70vh] lg:h-[85vh] max-w-[520px]"
+                    className={
+                      s.video
+                        ? 'relative h-[70vh] lg:h-[85vh] aspect-[9/16] max-w-full mx-auto'
+                        : 'relative w-full h-[70vh] lg:h-[85vh] max-w-[520px]'
+                    }
                     style={{
                       transform: isActive
                         ? 'translateY(0) scale(1)'
@@ -278,7 +282,8 @@ export default function ServicesShowcase() {
                           muted
                           loop
                           playsInline
-                          className="w-full h-full object-cover"
+                          preload="metadata"
+                          className="absolute inset-0 w-full h-full object-contain"
                         />
                       ) : s.image ? (
                         <img
@@ -475,9 +480,11 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
         ))}
       </div>
 
-      {/* Image — portrait 4:5 aspect works for both portrait and landscape sources */}
+      {/* Media — 9:16 for videos (native vertical), 4:5 for photos */}
       <div
-        className="relative w-full aspect-[4/5] overflow-hidden"
+        className={`relative w-full overflow-hidden ${
+          s.video ? 'aspect-[9/16]' : 'aspect-[4/5]'
+        }`}
         style={{
           background: `linear-gradient(160deg, ${s.bg.from} 0%, ${s.bg.to} 100%)`,
         }}
@@ -489,8 +496,8 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover will-change-transform"
-            style={{ transform: 'scale(1.1)' }}
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-contain"
           />
         ) : s.image ? (
           <img

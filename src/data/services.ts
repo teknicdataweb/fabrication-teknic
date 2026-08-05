@@ -132,7 +132,7 @@ export const SERVICES: Service[] = [
         'Full 3D design and printing service for companies, engineers and creators. Prototypes, scale models and industrial-grade technical parts — end-to-end service.',
     },
     image: '',
-    // TODO: cuando el usuario pase el MP4, ponerlo aquí: video: '/service-3d.mp4'
+    video: '/service-3d.mp4',
     bg: { from: '#083344', via: '#0E7490', to: '#022530' },
     accent: '#06B6D4',
     specs: [
