@@ -84,6 +84,7 @@ export const SERVICES: Service[] = [
         'Complete equipment to weld aluminum, stainless steel, steel, cast steel, ductile iron and brass with impeccable finish.',
     },
     image: '/service-soudure.jpg',
+    video: '/service-soudure.mp4',
     bg: { from: '#1E3A8A', via: '#1E40AF', to: '#0C1B4A' },
     accent: '#60A5FA',
     specs: [
