@@ -276,15 +276,7 @@ export default function ServicesShowcase() {
                       }}
                     >
                       {s.video ? (
-                        <video
-                          src={s.video}
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          className="absolute inset-0 w-full h-full object-contain"
-                        />
+                        <ServiceVideo src={s.video} objectFit="contain" />
                       ) : s.image ? (
                         <img
                           src={s.image}
@@ -374,6 +366,64 @@ export default function ServicesShowcase() {
         </div>
       </div>
     </section>
+  )
+}
+
+function ServiceVideo({
+  src,
+  objectFit = 'contain',
+}: {
+  src: string
+  objectFit?: 'contain' | 'cover'
+}) {
+  const ref = useRef<HTMLVideoElement>(null)
+  // Derive poster path: /service-3d.mp4 -> /service-3d-poster.jpg
+  const poster = src.replace(/\.[^.]+$/, '-poster.jpg')
+
+  // Pause when off-screen to save battery / CPU
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let raf = 0
+    const check = () => {
+      raf = 0
+      const r = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const inView = r.bottom > -100 && r.top < vh + 100
+      if (inView && el.paused) {
+        el.play().catch(() => {})
+      } else if (!inView && !el.paused) {
+        el.pause()
+      }
+    }
+    const onScroll = () => {
+      if (raf) return
+      raf = requestAnimationFrame(check)
+    }
+    check()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      poster={poster}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className={`absolute inset-0 w-full h-full ${
+        objectFit === 'cover' ? 'object-cover' : 'object-contain'
+      }`}
+    />
   )
 }
 
@@ -490,15 +540,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
         }}
       >
         {s.video ? (
-          <video
-            src={s.video}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-contain"
-          />
+          <ServiceVideo src={s.video} objectFit="contain" />
         ) : s.image ? (
           <img
             ref={imgRef}
