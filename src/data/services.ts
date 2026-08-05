@@ -60,6 +60,7 @@ export const SERVICES: Service[] = [
         'Custom metal fabrication, structures, components and complex assemblies built in our 12,500 sq ft equipped shop.',
     },
     image: '/service-fabrication.jpg',
+    video: '/service-fabrication.mp4',
     bg: { from: '#451A03', via: '#78350F', to: '#1C0B02' },
     accent: '#F59E0B',
     specs: [
