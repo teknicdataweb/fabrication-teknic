@@ -110,6 +110,7 @@ export const SERVICES: Service[] = [
         'Repair of mechanical components, industrial maintenance, sandblasting and painting — all under one roof, delivered by expert hands.',
     },
     image: '/service-mecanique.jpg',
+    video: '/service-mecanique.mp4',
     bg: { from: '#450A0A', via: '#7F1D1D', to: '#1A0303' },
     accent: '#C8102E',
     specs: [
