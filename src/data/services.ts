@@ -5,6 +5,8 @@ export type Service = {
   headline: { fr: string; en: string }
   description: { fr: string; en: string }
   image: string
+  // Optional looping video — if provided, replaces the static image
+  video?: string
   bg: {
     from: string
     via: string
@@ -12,6 +14,10 @@ export type Service = {
   }
   accent: string
   specs: { label: { fr: string; en: string }; value: string }[]
+  // Optional — for partner brands that live on their own domain
+  external?: boolean
+  externalUrl?: string
+  partnerLabel?: { fr: string; en: string }
 }
 
 export const SERVICES: Service[] = [
@@ -110,5 +116,36 @@ export const SERVICES: Service[] = [
       { label: { fr: 'Sablage', en: 'Sandblast' }, value: '✓' },
       { label: { fr: 'Peinture', en: 'Painting' }, value: 'Industrielle' },
     ],
+  },
+  {
+    id: '3d',
+    number: '05',
+    name: { fr: 'IMPRESSION 3D', en: '3D PRINTING' },
+    headline: {
+      fr: 'Concevoir autrement, fabriquer intelligemment',
+      en: 'Design differently, build intelligently',
+    },
+    description: {
+      fr:
+        "Conception et impression 3D pour entreprises, ingénieurs et créateurs. Prototypes, modèles réduits de machines et pièces techniques de calibre industriel — service complet de bout en bout.",
+      en:
+        'Full 3D design and printing service for companies, engineers and creators. Prototypes, scale models and industrial-grade technical parts — end-to-end service.',
+    },
+    image: '',
+    // TODO: cuando el usuario pase el MP4, ponerlo aquí: video: '/service-3d.mp4'
+    bg: { from: '#083344', via: '#0E7490', to: '#022530' },
+    accent: '#06B6D4',
+    specs: [
+      { label: { fr: 'Conception', en: 'Design' }, value: 'CAO' },
+      { label: { fr: 'Prototypage', en: 'Prototyping' }, value: 'Rapide' },
+      { label: { fr: 'Format', en: 'Format' }, value: 'Intermédiaire' },
+      { label: { fr: 'Pièces', en: 'Parts' }, value: 'Industrielles' },
+    ],
+    external: true,
+    externalUrl: 'https://dginnovation3d.ca/',
+    partnerLabel: {
+      fr: 'Service partenaire · DG Innovation 3D',
+      en: 'Partner service · DG Innovation 3D',
+    },
   },
 ]

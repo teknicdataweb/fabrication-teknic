@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ExternalLink } from 'lucide-react'
 import { SERVICES } from '../data/services'
 import type { Service } from '../data/services'
 
@@ -180,6 +181,28 @@ export default function ServicesShowcase() {
                       'transform 800ms cubic-bezier(0.22,1,0.36,1) 100ms',
                   }}
                 >
+                  {/* Partner badge (only for external services) */}
+                  {s.external && s.partnerLabel && (
+                    <div
+                      className="inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full mb-6 border"
+                      style={{
+                        borderColor: `${s.accent}60`,
+                        backgroundColor: `${s.accent}15`,
+                      }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{ backgroundColor: s.accent }}
+                      />
+                      <span
+                        className="font-mono text-[10px] tracking-[0.25em] uppercase"
+                        style={{ color: s.accent }}
+                      >
+                        {s.partnerLabel[lang]}
+                      </span>
+                    </div>
+                  )}
+
                   <div className="flex items-baseline gap-3 mb-8">
                     <span
                       className="font-mono text-sm tracking-[0.3em]"
@@ -200,14 +223,33 @@ export default function ServicesShowcase() {
                     {s.headline[lang]}
                   </p>
 
-                  <a
-                    href="#soumission"
-                    className="inline-flex items-center gap-3 self-start px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
-                    style={{ borderColor: `${s.accent}55` }}
-                  >
-                    En savoir plus
-                    <span className="w-6 h-px bg-current" />
-                  </a>
+                  {s.external && s.externalUrl ? (
+                    <a
+                      href={s.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/cta inline-flex items-center gap-3 self-start px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
+                      style={{
+                        borderColor: s.accent,
+                        backgroundColor: `${s.accent}20`,
+                      }}
+                    >
+                      Visiter le site
+                      <ExternalLink
+                        className="w-3.5 h-3.5 transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
+                        strokeWidth={2}
+                      />
+                    </a>
+                  ) : (
+                    <a
+                      href="#soumission"
+                      className="inline-flex items-center gap-3 self-start px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
+                      style={{ borderColor: `${s.accent}55` }}
+                    >
+                      En savoir plus
+                      <span className="w-6 h-px bg-current" />
+                    </a>
+                  )}
                 </div>
 
                 {/* CENTER — Massive image */}
@@ -226,14 +268,28 @@ export default function ServicesShowcase() {
                       className="absolute inset-0 rounded-2xl overflow-hidden"
                       style={{
                         boxShadow: `0 40px 120px -20px ${s.accent}40, 0 0 0 1px ${s.accent}20`,
+                        background: `linear-gradient(160deg, ${s.bg.from} 0%, ${s.bg.to} 100%)`,
                       }}
                     >
-                      <img
-                        src={s.image}
-                        alt={s.name[lang]}
-                        className="w-full h-full object-cover"
-                        loading="eager"
-                      />
+                      {s.video ? (
+                        <video
+                          src={s.video}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      ) : s.image ? (
+                        <img
+                          src={s.image}
+                          alt={s.name[lang]}
+                          className="w-full h-full object-cover"
+                          loading="eager"
+                        />
+                      ) : (
+                        <MediaPlaceholder accent={s.accent} label={s.name[lang]} />
+                      )}
                       <div
                         className="absolute inset-0"
                         style={{
@@ -316,6 +372,41 @@ export default function ServicesShowcase() {
   )
 }
 
+function MediaPlaceholder({ accent, label }: { accent: string; label: string }) {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+      {/* Concentric rings */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="absolute rounded-full border animate-pulse"
+            style={{
+              width: `${20 + i * 18}%`,
+              height: `${20 + i * 18}%`,
+              borderColor: `${accent}${(50 - i * 10).toString(16).padStart(2, '0')}`,
+              animationDelay: `${i * 400}ms`,
+              animationDuration: '3s',
+            }}
+          />
+        ))}
+      </div>
+      {/* Label */}
+      <div className="relative z-10 text-center px-6">
+        <div
+          className="font-mono text-[10px] tracking-[0.4em] uppercase mb-2"
+          style={{ color: accent }}
+        >
+          Media · à venir
+        </div>
+        <div className="font-display text-2xl md:text-3xl uppercase text-white/70 tracking-tight">
+          {label}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function MobileServiceCard({ s, index }: { s: Service; index: number }) {
   const ref = useRef<HTMLElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
@@ -385,19 +476,38 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
       </div>
 
       {/* Image — portrait 4:5 aspect works for both portrait and landscape sources */}
-      <div className="relative w-full aspect-[4/5] overflow-hidden">
-        <img
-          ref={imgRef}
-          src={s.image}
-          alt={s.name[lang]}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover will-change-transform"
-          style={{
-            objectPosition,
-            transform: 'scale(1.08)',
-            transition: 'transform 0.1s linear',
-          }}
-        />
+      <div
+        className="relative w-full aspect-[4/5] overflow-hidden"
+        style={{
+          background: `linear-gradient(160deg, ${s.bg.from} 0%, ${s.bg.to} 100%)`,
+        }}
+      >
+        {s.video ? (
+          <video
+            src={s.video}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover will-change-transform"
+            style={{ transform: 'scale(1.1)' }}
+          />
+        ) : s.image ? (
+          <img
+            ref={imgRef}
+            src={s.image}
+            alt={s.name[lang]}
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover will-change-transform"
+            style={{
+              objectPosition,
+              transform: 'scale(1.08)',
+              transition: 'transform 0.1s linear',
+            }}
+          />
+        ) : (
+          <MediaPlaceholder accent={s.accent} label={s.name[lang]} />
+        )}
         {/* Dark gradient at bottom for text readability */}
         <div
           className="absolute inset-0"
@@ -415,10 +525,32 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
               {s.number}
             </span>
             <span className="font-mono text-[10px] tracking-[0.3em] text-white/40">
-              / 04
+              / 0{SERVICES.length}
             </span>
           </div>
         </div>
+
+        {/* Partner badge (top-left on image) */}
+        {s.external && s.partnerLabel && (
+          <div
+            className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border backdrop-blur-sm"
+            style={{
+              borderColor: `${s.accent}60`,
+              backgroundColor: `${s.accent}20`,
+            }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ backgroundColor: s.accent }}
+            />
+            <span
+              className="font-mono text-[9px] tracking-[0.25em] uppercase"
+              style={{ color: s.accent }}
+            >
+              {s.partnerLabel[lang].split('·')[0].trim()}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -452,14 +584,30 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
           ))}
         </div>
 
-        <a
-          href="#soumission"
-          className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white active:scale-95 transition-transform duration-200"
-          style={{ borderColor: `${s.accent}70` }}
-        >
-          En savoir plus
-          <span className="w-4 h-px bg-current" />
-        </a>
+        {s.external && s.externalUrl ? (
+          <a
+            href={s.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white active:scale-95 transition-transform duration-200"
+            style={{
+              borderColor: s.accent,
+              backgroundColor: `${s.accent}20`,
+            }}
+          >
+            Visiter le site
+            <ExternalLink className="w-3 h-3" strokeWidth={2} />
+          </a>
+        ) : (
+          <a
+            href="#soumission"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white active:scale-95 transition-transform duration-200"
+            style={{ borderColor: `${s.accent}70` }}
+          >
+            En savoir plus
+            <span className="w-4 h-px bg-current" />
+          </a>
+        )}
       </div>
     </article>
   )
