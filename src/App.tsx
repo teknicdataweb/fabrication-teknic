@@ -12,6 +12,7 @@ import Contact from './components/Contact'
 import LocationReviews from './components/LocationReviews'
 import Footer from './components/Footer'
 import CustomCursor from './components/CustomCursor'
+import CertificatePopup from './components/CertificatePopup'
 
 gsap.registerPlugin(ScrollTrigger)
 ;(window as any).gsap = gsap
@@ -25,6 +26,7 @@ export default function App() {
   return (
     <div className="relative bg-black text-white">
       <CustomCursor />
+      <CertificatePopup />
       <Navbar />
       <main>
         <Hero />
