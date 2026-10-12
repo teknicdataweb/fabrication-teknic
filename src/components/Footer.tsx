@@ -1,3 +1,8 @@
+import { setConsent } from '../lib/consent'
+
+const linkClass =
+  'font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase hover:text-teknic-red transition-colors'
+
 export default function Footer() {
   return (
     <footer className="relative w-full bg-[#050505] text-white border-t border-white/5">
@@ -12,13 +17,27 @@ export default function Footer() {
             © {new Date().getFullYear()} · Tous droits réservés
           </span>
         </div>
-        <div className="flex items-center gap-6">
+        <nav aria-label="Informations légales" className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <a href="/legal/confidentialite.html" className={linkClass}>
+            Confidentialité
+          </a>
+          <a href="/legal/conditions.html" className={linkClass}>
+            Conditions
+          </a>
+          <a href="/legal/cookies.html" className={linkClass}>
+            Cookies
+          </a>
+          <button type="button" onClick={() => setConsent(null)} className={linkClass}>
+            Gérer les témoins
+          </button>
           <a
             href="#accueil"
-            className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase hover:text-teknic-red transition-colors"
+            className={linkClass}
           >
             Retour en haut
           </a>
+        </nav>
+        <div className="flex items-center gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
             Nicolet · Québec
           </span>

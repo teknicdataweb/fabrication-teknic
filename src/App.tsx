@@ -12,6 +12,7 @@ import Contact from './components/Contact'
 import LocationReviews from './components/LocationReviews'
 import Footer from './components/Footer'
 import CustomCursor from './components/CustomCursor'
+import CookieBanner from './components/CookieBanner'
 
 gsap.registerPlugin(ScrollTrigger)
 ;(window as any).gsap = gsap
@@ -37,6 +38,7 @@ export default function App() {
         <LocationReviews />
         <Footer />
       </main>
+      <CookieBanner />
     </div>
   )
 }

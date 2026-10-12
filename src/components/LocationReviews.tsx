@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react'
 import { Star, MapPin, ExternalLink } from 'lucide-react'
+import { getConsent, onConsentChange, setConsent } from '../lib/consent'
 
 // Ajuste estos valores selon los datos reales de Google Business:
 const REVIEWS = {
@@ -16,6 +18,10 @@ const MAP_LINK =
   'https://www.google.com/maps/place/50+Route+Marie-Victorin,+Nicolet,+QC+J3T+1A1'
 
 export default function LocationReviews() {
+  // La carte Google pose des témoins tiers: elle ne se charge qu'après acceptation
+  const [mapAllowed, setMapAllowed] = useState(() => getConsent() === 'accepted')
+  useEffect(() => onConsentChange(() => setMapAllowed(getConsent() === 'accepted')), [])
+
   return (
     <section
       id="location"
@@ -58,17 +64,32 @@ export default function LocationReviews() {
 
             {/* Map iframe with dark-mode CSS filter */}
             <div className="relative w-full h-[380px] md:h-[460px] overflow-hidden">
-              <iframe
-                src={MAP_EMBED_SRC}
-                title="Fabrication TEK-NIC · Nicolet"
-                className="absolute inset-0 w-full h-full border-0"
-                style={{
-                  filter:
-                    'invert(0.92) hue-rotate(180deg) contrast(0.85) saturate(0.7) brightness(0.95)',
-                }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              {mapAllowed ? (
+                <iframe
+                  src={MAP_EMBED_SRC}
+                  title="Fabrication TEK-NIC · Nicolet"
+                  className="absolute inset-0 w-full h-full border-0"
+                  style={{
+                    filter:
+                      'invert(0.92) hue-rotate(180deg) contrast(0.85) saturate(0.7) brightness(0.95)',
+                  }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#0b0b0b] px-6 text-center">
+                  <p className="font-sans text-sm text-white/60 max-w-xs leading-relaxed">
+                    La carte est fournie par Google, qui utilise des témoins. Acceptez-les pour l'afficher.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setConsent('accepted')}
+                    className="px-5 py-2.5 border border-white/30 rounded-full font-mono text-[11px] tracking-[0.2em] uppercase text-white hover:bg-white/10"
+                  >
+                    Afficher la carte
+                  </button>
+                </div>
+              )}
 
               {/* Subtle red vignette overlay */}
               <div

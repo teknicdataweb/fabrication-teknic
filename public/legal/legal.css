@@ -1,0 +1,45 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #050505;
+  color: #e5e5e5;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  line-height: 1.7;
+}
+.legal {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+.legal h1 {
+  font-size: 2rem;
+  color: #fff;
+  margin: 12px 0 4px;
+}
+.legal h2 {
+  font-size: 1.15rem;
+  color: #fff;
+  margin: 32px 0 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.legal p, .legal li { color: #c7c7c7; }
+.legal ul { padding-left: 20px; }
+.legal a { color: #ff4d5e; }
+.legal .back { font-size: 0.9rem; text-decoration: none; }
+.legal .updated { color: #888; font-size: 0.85rem; margin-bottom: 24px; }
+.legal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 12px 0;
+}
+.legal th, .legal td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  vertical-align: top;
+}
+.legal th { color: #fff; }
+.legal code { color: #fff; background: rgba(255, 255, 255, 0.06); padding: 1px 4px; border-radius: 3px; }
