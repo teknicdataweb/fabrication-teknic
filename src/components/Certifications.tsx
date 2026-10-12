@@ -52,15 +52,17 @@ export default function Certifications() {
               key={c.src}
               type="button"
               onClick={() => setActive(c)}
-              className="group text-left border border-white/10 hover:border-white/30 rounded-lg p-3 bg-white/[0.02] transition-colors"
+              className="group flex flex-col text-left border border-white/10 hover:border-white/30 rounded-lg p-4 bg-white/[0.02] transition-colors"
             >
-              <img
-                src={c.src}
-                alt={c.alt}
-                loading="lazy"
-                className="block w-full h-auto rounded-sm shadow-lg shadow-black/50"
-              />
-              <div className="mt-4 px-1 flex items-center justify-between gap-4">
+              <div className="h-[340px] md:h-[400px] flex items-center justify-center">
+                <img
+                  src={c.src}
+                  alt={c.alt}
+                  loading="lazy"
+                  className="h-full w-auto max-w-full object-contain rounded-sm shadow-lg shadow-black/50"
+                />
+              </div>
+              <div className="mt-auto pt-4 px-1 flex items-center justify-between gap-4">
                 <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/60">{c.caption}</span>
                 <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-teknic-red transition-transform group-hover:translate-x-1">
                   Agrandir →
