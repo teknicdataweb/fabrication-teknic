@@ -203,6 +203,15 @@ export default function ServicesShowcase() {
                     </div>
                   )}
 
+                  {s.badge && (
+                    <img
+                      src={s.badge.src}
+                      alt={s.badge.alt}
+                      loading="lazy"
+                      className="w-20 h-auto self-start mb-6 drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)]"
+                    />
+                  )}
+
                   <div className="flex items-baseline gap-3 mb-8">
                     <span
                       className="font-mono text-sm tracking-[0.3em]"
