@@ -10,7 +10,7 @@ const SERVICE_OPTIONS = [
   { value: 'autre', label: 'Autre' },
 ]
 
-type Status = 'idle' | 'sending' | 'sent'
+type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 export default function Soumission() {
   const [status, setStatus] = useState<Status>('idle')
@@ -27,16 +27,23 @@ export default function Soumission() {
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }))
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setStatus('sending')
-    setTimeout(() => {
+    try {
+      // Netlify recibe el envío en "/" y avisa por correo al equipo
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ 'form-name': 'soumission', ...form }).toString(),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setStatus('sent')
-      setTimeout(() => {
-        setStatus('idle')
-        setForm({ name: '', email: '', phone: '', service: '', message: '' })
-      }, 3000)
-    }, 1200)
+      setForm({ name: '', email: '', phone: '', service: '', message: '' })
+      setTimeout(() => setStatus('idle'), 3000)
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -174,21 +181,28 @@ export default function Soumission() {
           </Field>
 
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <p className="font-sans font-light text-[11px] text-white/40 leading-relaxed max-w-xs">
-              En envoyant, vous acceptez d'être contacté par notre équipe.
-            </p>
+            <div className="max-w-xs">
+              <p className="font-sans font-light text-[11px] text-white/40 leading-relaxed">
+                En envoyant, vous acceptez d'être contacté par notre équipe.
+              </p>
+              {status === 'error' && (
+                <p role="alert" className="font-sans text-[11px] text-teknic-red leading-relaxed mt-2">
+                  Une erreur est survenue. Réessayez ou écrivez-nous à info@fabricationteknic.com.
+                </p>
+              )}
+            </div>
 
             <button
               type="submit"
-              disabled={status !== 'idle'}
+              disabled={status === 'sending' || status === 'sent'}
               className="group relative inline-flex items-center gap-3 self-start px-7 py-3.5 rounded-full border border-teknic-red bg-teknic-red text-white font-sans text-xs tracking-[0.3em] uppercase overflow-hidden transition-all duration-500 hover:scale-105 disabled:opacity-80 disabled:cursor-wait"
             >
               {/* Shine sweep */}
               <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-              {status === 'idle' && (
+              {(status === 'idle' || status === 'error') && (
                 <>
-                  <span className="relative z-10">Envoyer la demande</span>
+                  <span className="relative z-10">{status === 'error' ? 'Réessayer' : 'Envoyer la demande'}</span>
                   <Send className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={2} />
                 </>
               )}

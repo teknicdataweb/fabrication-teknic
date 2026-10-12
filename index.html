@@ -86,6 +86,23 @@
   </head>
   <body class="bg-black text-white antialiased">
     <div id="root"></div>
+
+    <!-- Netlify Forms: copie estática para que Netlify registre el formulario "soumission" -->
+    <form name="soumission" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <select name="service">
+        <option value=""></option>
+        <option value="usinage-cnc"></option>
+        <option value="tournage"></option>
+        <option value="soudage"></option>
+        <option value="maintenance"></option>
+        <option value="autre"></option>
+      </select>
+      <textarea name="message"></textarea>
+      <input name="bot-field" />
+    </form>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
