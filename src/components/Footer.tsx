@@ -43,6 +43,25 @@ export default function Footer() {
           </span>
         </div>
       </div>
+      <div className="border-t border-white/5">
+        <a
+          href="https://www.dgreatai.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Powered by DGreat.AI — dgreatai.com"
+          className="group flex items-center justify-center gap-4 py-5"
+        >
+          <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/40 transition-colors group-hover:text-white/70">
+            Powered by
+          </span>
+          <img
+            src="/brand/dgreat-logo.png"
+            alt="DGreat.AI"
+            loading="lazy"
+            className="h-6 w-auto opacity-80 transition-opacity group-hover:opacity-100"
+          />
+        </a>
+      </div>
     </footer>
   )
 }
