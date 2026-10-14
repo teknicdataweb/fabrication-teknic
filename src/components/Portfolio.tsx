@@ -10,8 +10,13 @@ const ASPECT = {
   square: 'aspect-square',
 }
 
+// Cantidad de fotos visibles antes de desplegar la galería completa (2 filas en escritorio)
+const PREVIEW_COUNT = 8
+
 export default function Portfolio() {
   const [openIdx, setOpenIdx] = useState<number | null>(null)
+  const [showAll, setShowAll] = useState(false)
+  const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0, PREVIEW_COUNT)
 
   const close = useCallback(() => setOpenIdx(null), [])
   const prev = useCallback(
@@ -91,7 +96,7 @@ export default function Portfolio() {
 
         {/* Grid — masonry-like via CSS columns for varied aspect ratios */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
-          {PROJECTS.map((p, i) => (
+          {visibleProjects.map((p, i) => (
             <button
               key={p.id}
               onClick={() => setOpenIdx(i)}
@@ -150,6 +155,21 @@ export default function Portfolio() {
             </button>
           ))}
         </div>
+
+        {/* Déploiement de la galerie complète */}
+        {PROJECTS.length > PREVIEW_COUNT && (
+          <div className="mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              aria-expanded={showAll}
+              className="inline-flex items-center gap-3 px-6 py-3 border border-white/20 rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-white/10 transition-colors duration-300"
+            >
+              {showAll ? 'Afficher moins' : `Voir toutes les réalisations (${PROJECTS.length})`}
+              <span className="font-mono text-base leading-none">{showAll ? '−' : '+'}</span>
+            </button>
+          </div>
+        )}
 
         {/* Bottom signature */}
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
