@@ -6,7 +6,6 @@ import Hero from './components/Hero'
 import ServicesShowcase from './components/ServicesShowcase'
 import Equipements from './components/Equipements'
 import Portfolio from './components/Portfolio'
-import Certifications from './components/Certifications'
 import Soumission from './components/Soumission'
 import Contact from './components/Contact'
 import LocationReviews from './components/LocationReviews'
@@ -32,7 +31,6 @@ export default function App() {
         <ServicesShowcase />
         <Equipements />
         <Portfolio />
-        <Certifications />
         <Soumission />
         <Contact />
         <LocationReviews />
