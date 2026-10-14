@@ -41,7 +41,7 @@ export default function Equipements() {
             </span>
           </div>
           <h2 className="font-display uppercase leading-[0.85] text-5xl md:text-7xl lg:text-8xl mb-6">
-            Notre <span className="text-teknic-red">arsenal</span>
+            Notre <span className="text-teknic-red">capacité</span>
           </h2>
           <p className="max-w-2xl font-sans font-light text-white/60 text-base md:text-lg leading-relaxed">
             Un parc machine complet pour couvrir chaque étape — de l'ébauche brute
