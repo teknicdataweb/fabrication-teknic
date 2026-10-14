@@ -19,7 +19,7 @@ export type Service = {
   externalUrl?: string
   partnerLabel?: { fr: string; en: string }
   // Optional — small certification logo shown next to the service
-  badge?: { src: string; alt: string; label: { fr: string; en: string } }
+  badge?: { src: string; alt: string }
 }
 
 export const SERVICES: Service[] = [
@@ -89,9 +89,8 @@ export const SERVICES: Service[] = [
     image: '/service-soudure.jpg',
     video: '/service-soudure.mp4',
     badge: {
-      src: '/certificados/logo-cwb.png',
-      alt: 'Logo CWB — soudure certifiée CSA W47.1',
-      label: { fr: 'Certifié CWB · CSA W47.1', en: 'CWB certified · CSA W47.1' },
+      src: '/brand/cwb-certified.png',
+      alt: 'Logo CWB — Certifié CSA W47.1',
     },
     bg: { from: '#1E3A8A', via: '#1E40AF', to: '#0C1B4A' },
     accent: '#60A5FA',

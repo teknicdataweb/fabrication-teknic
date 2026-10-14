@@ -31,6 +31,15 @@ export default function Footer() {
             Gérer les témoins
           </button>
           <a
+            href="https://www.cwbgroup.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Vérifier la certification CWB (CSA W47.1) sur cwbgroup.org"
+            className="inline-flex items-center bg-white rounded p-1 hover:opacity-90 transition-opacity"
+          >
+            <img src="/brand/cwb-certified.png" alt="CWB Certifié CSA W47.1" loading="lazy" className="block h-8 w-auto" />
+          </a>
+          <a
             href="#accueil"
             className={linkClass}
           >

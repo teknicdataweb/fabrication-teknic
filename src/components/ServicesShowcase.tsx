@@ -204,16 +204,13 @@ export default function ServicesShowcase() {
                   )}
 
                   {s.badge && (
-                    <div className="inline-flex items-center gap-3 self-start bg-white rounded-lg pl-2 pr-4 py-2 mb-6 shadow-xl shadow-black/40">
+                    <div className="self-start mb-6 bg-white rounded-md p-2 shadow-xl shadow-black/40">
                       <img
                         src={s.badge.src}
                         alt={s.badge.alt}
                         loading="lazy"
-                        className="h-12 w-auto"
+                        className="block h-24 w-auto"
                       />
-                      <span className="font-sans font-semibold text-xs tracking-wide text-neutral-900 leading-tight">
-                        {s.badge.label[lang]}
-                      </span>
                     </div>
                   )}
 
@@ -618,6 +615,12 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
 
       {/* Content */}
       <div className="relative p-5 md:p-6">
+        {s.badge && (
+          <div className="inline-block mb-4 bg-white rounded-md p-1.5 shadow-lg shadow-black/40">
+            <img src={s.badge.src} alt={s.badge.alt} loading="lazy" className="block h-20 w-auto" />
+          </div>
+        )}
+
         <h3 className="font-display uppercase text-3xl md:text-4xl leading-none mb-3">
           {s.name[lang]}
         </h3>
