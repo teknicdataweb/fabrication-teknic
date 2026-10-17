@@ -5,7 +5,7 @@ import { JOBS } from '../data/jobs'
 
 /** Invitación a trabajar con la empresa: abre el correo con un mensaje prearmado */
 export default function JoinUs() {
-  const { t } = useLang()
+  const { t, lp } = useLang()
 
   return (
     <section
@@ -41,7 +41,7 @@ export default function JoinUs() {
         </div>
 
         <Link
-          to="/carrieres"
+          to={lp('/carrieres')}
           className="group relative inline-flex items-center gap-3 self-start md:self-center shrink-0 px-8 py-4 rounded-full border border-teknic-red bg-teknic-red text-white font-sans text-xs tracking-[0.3em] uppercase overflow-hidden transition-transform duration-500 hover:scale-105"
         >
           <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none bg-gradient-to-r from-transparent via-white/20 to-transparent" />

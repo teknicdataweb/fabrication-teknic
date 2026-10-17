@@ -9,7 +9,7 @@ import { useLang } from '../lib/i18n'
 import { goToService } from '../lib/goToService'
 
 export default function ServicesShowcase() {
-  const { lang, t } = useLang()
+  const { lang, t, lp } = useLang()
   const container = useRef<HTMLDivElement>(null)
   const pinTarget = useRef<HTMLDivElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
@@ -285,7 +285,7 @@ export default function ServicesShowcase() {
 
                   <div className="flex flex-wrap items-center gap-3 self-start">
                     <Link
-                      to={`/services/${s.id}`}
+                      to={lp(`/services/${s.id}`)}
                       className="inline-flex items-center gap-3 self-start px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
                       style={{ borderColor: `${s.accent}55` }}
                     >
@@ -530,7 +530,7 @@ function MediaPlaceholder({ accent, label }: { accent: string; label: string }) 
 }
 
 function MobileServiceCard({ s, index }: { s: Service; index: number }) {
-  const { lang, t } = useLang()
+  const { lang, t, lp } = useLang()
   const ref = useRef<HTMLElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
 
@@ -711,7 +711,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
 
         <div className="flex flex-wrap items-center gap-3">
           <Link
-            to={`/services/${s.id}`}
+            to={lp(`/services/${s.id}`)}
             className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white active:scale-95 transition-transform duration-200"
             style={{ borderColor: `${s.accent}70` }}
           >

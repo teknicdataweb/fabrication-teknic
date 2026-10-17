@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer'
 import { Flame, Wrench, ConciergeBell, Scissors, SprayCan, Factory, type LucideIcon } from 'lucide-react'
 import { HIGHLIGHTS, LATHES, CAPABILITIES, BLOCK_INTROS } from '../data/equipements'
 import { useLang } from '../lib/i18n'
+import { Link } from 'react-router-dom'
 
 const ICONS = {
   flame: Flame,
@@ -20,7 +21,7 @@ const LATHE_PREVIEW = 4
 
 export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
-  const { lang, t } = useLang()
+  const { lang, t, lp } = useLang()
   const [showAllLathes, setShowAllLathes] = useState(false)
 
   // Scroll: la trayectoria de cada tarjeta se dibuja mientras se baja, y se borra al subir
@@ -287,13 +288,13 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
           <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             Nicolet, {t('Québec', 'Quebec')} · 50 Route Marie-Victorin
           </div>
-          <a
-            href="/contact"
+          <Link
+            to={lp('/contact')}
             className="inline-flex items-center gap-3 self-start px-5 py-2.5 border border-white/20 rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
           >
             {t('Demander une soumission', 'Request a quote')}
             <span className="w-5 h-px bg-current" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

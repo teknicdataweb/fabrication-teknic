@@ -6,7 +6,7 @@ import { useLang } from '../lib/i18n'
 
 /** Página 404: las direcciones que no existen muestran esto y no se indexan */
 export default function NotFoundPage() {
-  const { t } = useLang()
+  const { t, lp } = useLang()
 
   usePageMeta(
     t('Page introuvable | Fabrication TEK-NIC', 'Page not found | Fabrication TEK-NIC'),
@@ -45,14 +45,14 @@ export default function NotFoundPage() {
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
-            to="/"
+            to={lp('/')}
             className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-teknic-red bg-teknic-red text-white font-sans text-[11px] tracking-[0.3em] uppercase hover:scale-105 transition-transform duration-300"
           >
             {t("Retour à l'accueil", 'Back to home')}
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
-            to="/services"
+            to={lp('/services')}
             className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/30 text-white font-sans text-[11px] tracking-[0.3em] uppercase hover:bg-white/10 transition-colors duration-300"
           >
             {t('Nos services', 'Our services')}

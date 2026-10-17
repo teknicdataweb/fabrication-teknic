@@ -15,7 +15,7 @@ const titleCase = (name: string) =>
 /** Página propia de un servicio: /services/:id */
 export default function ServiceDetailPage() {
   const { id } = useParams()
-  const { lang, t } = useLang()
+  const { lang, t, lp } = useLang()
   const s = SERVICES.find((x) => x.id === id)
 
   usePageMeta(
@@ -29,7 +29,7 @@ export default function ServiceDetailPage() {
             '@type': 'Service',
             name: s.name[lang],
             description: s.description[lang],
-            url: canonicalUrl(`/services/${s.id}`),
+            url: canonicalUrl(`/services/${s.id}`, lang),
             areaServed: ['Québec', 'Canada'],
             provider: { '@type': 'LocalBusiness', name: 'Fabrication TEK-NIC', url: SITE },
           },
@@ -37,12 +37,12 @@ export default function ServiceDetailPage() {
             { name: t('Accueil', 'Home'), path: '/' },
             { name: 'Services', path: '/services' },
             { name: s.name[lang], path: `/services/${s.id}` },
-          ]),
+          ], lang),
         ]
       : undefined
   )
 
-  if (!s) return <Navigate to="/services" replace />
+  if (!s) return <Navigate to={lp('/services')} replace />
 
   const poster = s.video ? s.video.replace(/\.mp4$/, '-poster.jpg') : undefined
 
@@ -57,7 +57,7 @@ export default function ServiceDetailPage() {
 
       <div className="relative max-w-[1400px] mx-auto">
         <Link
-          to="/services"
+          to={lp('/services')}
           className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.3em] uppercase text-white/60 hover:text-white transition-colors mb-10"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -132,7 +132,7 @@ export default function ServiceDetailPage() {
               </a>
             ) : (
               <Link
-                to="/contact"
+                to={lp('/contact')}
                 className="inline-flex items-center gap-3 px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
                 style={{ borderColor: `${s.accent}55` }}
               >
@@ -213,13 +213,13 @@ export default function ServiceDetailPage() {
               </p>
             ))}
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-[11px] tracking-[0.25em] uppercase">
-              <Link to="/equipements" className="text-white/70 hover:text-teknic-red transition-colors">
+              <Link to={lp('/equipements')} className="text-white/70 hover:text-teknic-red transition-colors">
                 {t('Voir nos équipements →', 'See our equipment →')}
               </Link>
-              <Link to="/portfolio" className="text-white/70 hover:text-teknic-red transition-colors">
+              <Link to={lp('/portfolio')} className="text-white/70 hover:text-teknic-red transition-colors">
                 {t('Voir nos réalisations →', 'See our work →')}
               </Link>
-              <Link to="/services" className="text-white/70 hover:text-teknic-red transition-colors">
+              <Link to={lp('/services')} className="text-white/70 hover:text-teknic-red transition-colors">
                 {t('Tous les services →', 'All services →')}
               </Link>
             </div>

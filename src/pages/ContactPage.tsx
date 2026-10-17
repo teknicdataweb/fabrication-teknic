@@ -1,11 +1,12 @@
 import Soumission from '../components/Soumission'
 import Contact from '../components/Contact'
+import Faq, { faqLd } from '../components/Faq'
 import LocationReviews from '../components/LocationReviews'
 import { usePageMeta, breadcrumbLd } from '../lib/pageMeta'
 import { useLang } from '../lib/i18n'
 
 export default function ContactPage() {
-  const { t } = useLang()
+  const { lang, t } = useLang()
   usePageMeta(
     t('Soumission gratuite et contact | Fabrication TEK-NIC', 'Free Quote & Contact | Fabrication TEK-NIC'),
     t(
@@ -13,15 +14,19 @@ export default function ContactPage() {
       'Request a free quote from Fabrication TEK-NIC, a machining and fabrication shop in Nicolet, Quebec. Reply within 24 to 48 hours.'
     ),
     '/contact',
-    breadcrumbLd([
-      { name: t('Accueil', 'Home'), path: '/' },
-      { name: 'Contact', path: '/contact' },
-    ])
+    [
+      breadcrumbLd([
+        { name: t('Accueil', 'Home'), path: '/' },
+        { name: 'Contact', path: '/contact' },
+      ], lang),
+      faqLd(lang),
+    ]
   )
   return (
     <>
       <Contact asH1 />
       <Soumission />
+      <Faq />
       <LocationReviews />
     </>
   )

@@ -3,7 +3,7 @@ import { useLang } from '../lib/i18n'
 
 /** Invitación breve en la portada: lleva a la página Contact (datos + formulario) */
 export default function ContactCta() {
-  const { t } = useLang()
+  const { t, lp } = useLang()
   return (
     <section className="relative w-full bg-[#050505] text-white overflow-hidden border-t border-white/5">
       <div
@@ -28,7 +28,7 @@ export default function ContactCta() {
           </p>
         </div>
         <Link
-          to="/contact"
+          to={lp('/contact')}
           className="group inline-flex items-center gap-3 self-start md:self-auto shrink-0 px-8 py-4 rounded-full border border-teknic-red bg-teknic-red text-white font-sans text-xs tracking-[0.3em] uppercase hover:scale-105 transition-transform duration-500"
         >
           {t('Nous contacter', 'Contact us')}

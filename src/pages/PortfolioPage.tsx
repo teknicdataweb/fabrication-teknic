@@ -3,7 +3,7 @@ import { usePageMeta, breadcrumbLd } from '../lib/pageMeta'
 import { useLang } from '../lib/i18n'
 
 export default function PortfolioPage() {
-  const { t } = useLang()
+  const { lang, t } = useLang()
   usePageMeta(
     t('Réalisations : pièces usinées et soudées | TEK-NIC', 'Our Work: Machined & Welded Parts | TEK-NIC'),
     t(
@@ -14,7 +14,7 @@ export default function PortfolioPage() {
     breadcrumbLd([
       { name: t('Accueil', 'Home'), path: '/' },
       { name: 'Portfolio', path: '/portfolio' },
-    ])
+    ], lang)
   )
   return <Portfolio asH1 />
 }

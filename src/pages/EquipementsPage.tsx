@@ -3,7 +3,7 @@ import { usePageMeta, breadcrumbLd } from '../lib/pageMeta'
 import { useLang } from '../lib/i18n'
 
 export default function EquipementsPage() {
-  const { t } = useLang()
+  const { lang, t } = useLang()
   usePageMeta(
     t('Équipements CNC, tours et soudage | TEK-NIC', 'CNC Machines, Lathes & Welding Equipment | TEK-NIC'),
     t(
@@ -14,7 +14,7 @@ export default function EquipementsPage() {
     breadcrumbLd([
       { name: t('Accueil', 'Home'), path: '/' },
       { name: t('Équipements', 'Equipment'), path: '/equipements' },
-    ])
+    ], lang)
   )
   return <Equipements asH1 />
 }

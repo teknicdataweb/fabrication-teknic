@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 import { PROJECTS } from '../data/portfolio'
 import { useLang } from '../lib/i18n'
+import { Link } from 'react-router-dom'
 
 const MATERIALS_EN: Record<string, string> = {
   'Acier allié': 'Alloy steel',
@@ -18,7 +19,7 @@ const PREVIEW_COUNT = 8
 
 export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
-  const { lang, t } = useLang()
+  const { lang, t, lp } = useLang()
   const material = (m: string) => (lang === 'en' ? MATERIALS_EN[m] ?? m : m)
   const [openIdx, setOpenIdx] = useState<number | null>(null)
   const [showAll, setShowAll] = useState(false)
@@ -196,18 +197,37 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
           </div>
         )}
 
+        {/* Texto ampliado (SEO): qué tipo de piezas se muestran */}
+        <div className="mt-20 max-w-3xl">
+          <h2 className="font-display uppercase text-3xl md:text-4xl leading-tight mb-6">
+            {t('Pièces usinées, soudées et fabriquées sur mesure', 'Custom machined, welded and fabricated parts')}
+          </h2>
+          <p className="font-sans font-light text-white/70 leading-relaxed mb-5 text-base md:text-lg">
+            {t(
+              "Cette galerie présente des pièces réalisées dans notre atelier de Nicolet, au Centre-du-Québec : tournage, fraisage CNC et CNC 5 axes, perçage et alésage, rectification, usinage complexe, soudure et fabrication mécanique, ainsi que des remises à neuf.",
+              'This gallery shows parts made in our Nicolet shop, in the Centre-du-Québec region: turning, CNC milling and 5-axis CNC, drilling and boring, grinding, complex machining, welding and mechanical fabrication, as well as refurbishment.'
+            )}
+          </p>
+          <p className="font-sans font-light text-white/70 leading-relaxed mb-5 text-base md:text-lg">
+            {t(
+              "Nous travaillons l'acier, l'acier allié, l'aluminium, l'inox et la fonte, en pièce unitaire comme en série. Vous avez une pièce à reproduire ou un plan à nous soumettre ? Demandez une soumission gratuite : réponse sous 24 à 48 heures ouvrables.",
+              'We work with steel, alloy steel, aluminum, stainless steel and cast iron, from one-off parts to production runs. Have a part to reproduce or a drawing to send us? Request a free quote: reply within 24 to 48 business hours.'
+            )}
+          </p>
+        </div>
+
         {/* Bottom signature */}
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             Nicolet · {t('Québec', 'Quebec')} · {t("12 500 pi² d'atelier", '12,500 sq ft shop')}
           </div>
-          <a
-            href="/contact"
+          <Link
+            to={lp('/contact')}
             className="inline-flex items-center gap-3 self-start px-5 py-2.5 border border-white/20 rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
           >
             {t("Discuter d'un projet", 'Discuss a project')}
             <span className="w-5 h-px bg-current" />
-          </a>
+          </Link>
         </div>
       </div>
 

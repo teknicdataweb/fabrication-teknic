@@ -14,7 +14,7 @@ const LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const { lang, setLang, t } = useLang()
+  const { lang, setLang, t, lp } = useLang()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function Navbar() {
         }`}
       >
         <nav className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center group flex-shrink-0" onClick={() => setDrawerOpen(false)}>
+          <Link to={lp('/')} className="flex items-center group flex-shrink-0" onClick={() => setDrawerOpen(false)}>
             <img
               src="/logo-teknic.png"
               alt="Fabrication TEK-NIC"
@@ -61,7 +61,7 @@ export default function Navbar() {
             {LINKS.map((l) => (
               <li key={l.to}>
                 <Link
-                  to={l.to}
+                  to={lp(l.to)}
                   className="relative font-sans text-xs tracking-[0.25em] text-white/70 hover:text-white transition-colors group"
                 >
                   {lang === 'fr' ? l.fr : l.en}
@@ -141,7 +141,7 @@ export default function Navbar() {
                   style={{ transitionDelay: drawerOpen ? `${100 + i * 60}ms` : '0ms' }}
                 >
                   <Link
-                    to={l.to}
+                    to={lp(l.to)}
                     onClick={() => setDrawerOpen(false)}
                     className="group flex items-baseline gap-4"
                   >
@@ -162,7 +162,7 @@ export default function Navbar() {
               Nicolet · {t('Québec', 'Quebec')}
             </div>
             <Link
-              to="/contact"
+              to={lp('/contact')}
               onClick={() => setDrawerOpen(false)}
               className="inline-flex items-center gap-2 px-4 py-2 border border-teknic-red rounded-full bg-teknic-red text-white font-mono text-[10px] tracking-[0.3em] uppercase"
             >

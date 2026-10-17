@@ -3,10 +3,11 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Sparks from './Sparks'
+import { Link } from 'react-router-dom'
 import { useLang } from '../lib/i18n'
 
 export default function Hero() {
-  const { t } = useLang()
+  const { t, lp } = useLang()
   const container = useRef<HTMLDivElement>(null)
   const line1 = useRef<HTMLSpanElement>(null)
   const line2 = useRef<HTMLSpanElement>(null)
@@ -66,6 +67,11 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-20 text-center px-6 max-w-6xl">
+        <p className="font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/70 mb-6">
+          {t("Atelier d'usinage CNC et de fabrication métallique", 'CNC machine shop and metal fabrication')}
+          <span className="mx-2 text-teknic-red">·</span>
+          Nicolet, Centre-du-Québec
+        </p>
         <h1 className="font-display flex flex-col leading-[0.9] tracking-tight uppercase">
           <span
             ref={line1}
@@ -107,13 +113,13 @@ export default function Hero() {
         </p>
 
         <div ref={cta} className="mt-12 flex items-center justify-center gap-4">
-          <a
-            href="/services"
+          <Link
+            to={lp('/services')}
             className="group inline-flex items-center gap-3 px-8 py-4 border border-white/20 rounded-full font-sans text-xs tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red hover:scale-105 transition-all duration-300"
           >
             {t('Découvrir nos services', 'Discover our services')}
             <span className="w-6 h-px bg-white group-hover:w-10 transition-all duration-300" />
-          </a>
+          </Link>
         </div>
       </div>
 

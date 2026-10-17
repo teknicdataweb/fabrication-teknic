@@ -7,7 +7,7 @@ const linkClass =
   'font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase hover:text-teknic-red transition-colors'
 
 export default function Footer() {
-  const { t } = useLang()
+  const { t, lp } = useLang()
   return (
     <footer className="relative w-full bg-[#050505] text-white border-t border-white/5">
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -33,18 +33,18 @@ export default function Footer() {
           <a href={t('/legal/cookies.html', '/legal/cookies.en.html')} className={linkClass}>
             {t('Cookies', 'Cookies')}
           </a>
-          <Link to="/carrieres" className={linkClass}>
+          <Link to={lp('/carrieres')} className={linkClass}>
             {t('Carrières', 'Careers')}
           </Link>
           <button type="button" onClick={() => setConsent(null)} className={linkClass}>
             {t('Gérer les témoins', 'Manage cookies')}
           </button>
-          <a
-            href="/"
+          <Link
+            to={lp('/')}
             className={linkClass}
           >
             {t('Retour en haut', 'Back to top')}
-          </a>
+          </Link>
         </nav>
         <div className="flex items-center gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">

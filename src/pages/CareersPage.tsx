@@ -19,7 +19,7 @@ export default function CareersPage() {
     breadcrumbLd([
       { name: t('Accueil', 'Home'), path: '/' },
       { name: t('Carrières', 'Careers'), path: '/carrieres' },
-    ])
+    ], lang)
   )
 
   const [poste, setPoste] = useState('')

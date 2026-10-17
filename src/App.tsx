@@ -16,6 +16,19 @@ import ContactPage from './pages/ContactPage'
 import CareersPage from './pages/CareersPage'
 import NotFoundPage from './pages/NotFoundPage'
 
+import { localizePath } from './lib/i18n'
+
+// Rutas del sitio (en francés); cada una existe también en inglés bajo /en
+const PAGES: [string, () => JSX.Element][] = [
+  ['/', HomePage],
+  ['/services', ServicesPage],
+  ['/services/:id', ServiceDetailPage],
+  ['/equipements', EquipementsPage],
+  ['/portfolio', PortfolioPage],
+  ['/contact', ContactPage],
+  ['/carrieres', CareersPage],
+]
+
 gsap.registerPlugin(ScrollTrigger)
 ;(window as any).gsap = gsap
 ;(window as any).ScrollTrigger = ScrollTrigger
@@ -35,17 +48,16 @@ export default function App() {
       <Navbar />
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/services/:id" element={<ServiceDetailPage />} />
-          <Route path="/equipements" element={<EquipementsPage />} />
-          <Route path="/portfolio" element={<PortfolioPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/carrieres" element={<CareersPage />} />
+          {/* Francés (predeterminado) en la raíz y su versión en inglés bajo /en */}
+          {PAGES.flatMap(([frPath, Page]) =>
+            (['fr', 'en'] as const).map((l) => (
+              <Route key={`${l}:${frPath}`} path={localizePath(frPath, l)} element={<Page />} />
+            ))
+          )}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-      {pathname === '/' && <JoinUs />}
+      {(pathname === '/' || pathname === '/en' || pathname === '/en/') && <JoinUs />}
       <Footer />
       <CookieBanner />
     </div>

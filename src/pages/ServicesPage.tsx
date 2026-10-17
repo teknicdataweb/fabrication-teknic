@@ -6,7 +6,7 @@ import { useLang } from '../lib/i18n'
 
 /** Resumen de servicios: una tarjeta por servicio, cada una lleva a su página */
 export default function ServicesPage() {
-  const { lang, t } = useLang()
+  const { lang, t, lp } = useLang()
   usePageMeta(
     t("Services d'usinage, fabrication et soudure | TEK-NIC", 'Machining, Fabrication & Welding Services | TEK-NIC'),
     t(
@@ -17,7 +17,7 @@ export default function ServicesPage() {
     breadcrumbLd([
       { name: t('Accueil', 'Home'), path: '/' },
       { name: 'Services', path: '/services' },
-    ])
+    ], lang)
   )
 
   return (
@@ -47,7 +47,7 @@ export default function ServicesPage() {
             return (
               <Link
                 key={s.id}
-                to={`/services/${s.id}`}
+                to={lp(`/services/${s.id}`)}
                 className="group relative block rounded-lg overflow-hidden border border-white/10 hover:border-white/30 transition-colors duration-500"
                 style={{ background: `linear-gradient(160deg, ${s.bg.from} 0%, ${s.bg.to} 100%)` }}
               >
