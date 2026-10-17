@@ -76,7 +76,7 @@ function setContent(html, selector, value) {
 
 let count = 0
 for (const r of routes) {
-  const url = SITE + r.path
+  const url = `${SITE}${r.path}/`
   let html = template
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${esc(r.title)}</title>`)
   html = setContent(html, 'name="description"', r.description)

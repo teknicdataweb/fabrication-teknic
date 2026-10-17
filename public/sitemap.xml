@@ -25,61 +25,61 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/services</loc>
+    <loc>https://teknicweb.netlify.app/services/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/equipements</loc>
+    <loc>https://teknicweb.netlify.app/equipements/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/portfolio</loc>
+    <loc>https://teknicweb.netlify.app/portfolio/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/contact</loc>
+    <loc>https://teknicweb.netlify.app/contact/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/carrieres</loc>
+    <loc>https://teknicweb.netlify.app/carrieres/</loc>
     <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/services/usinage</loc>
+    <loc>https://teknicweb.netlify.app/services/usinage/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/services/fabrication</loc>
+    <loc>https://teknicweb.netlify.app/services/fabrication/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/services/soudure</loc>
+    <loc>https://teknicweb.netlify.app/services/soudure/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/services/mecanique</loc>
+    <loc>https://teknicweb.netlify.app/services/mecanique/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://teknicweb.netlify.app/services/3d</loc>
+    <loc>https://teknicweb.netlify.app/services/3d/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

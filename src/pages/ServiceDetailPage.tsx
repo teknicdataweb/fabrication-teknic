@@ -2,7 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, Phone, MessageSquare, Mail } from 'lucide-react'
 import { SERVICES } from '../data/services'
 import { SERVICE_DETAILS } from '../data/serviceDetails'
-import { usePageMeta, breadcrumbLd, SITE } from '../lib/pageMeta'
+import { usePageMeta, breadcrumbLd, SITE, canonicalUrl } from '../lib/pageMeta'
 import { useLang } from '../lib/i18n'
 
 /** "IMPRESSION 3D" -> "Impression 3D" (las palabras con cifras, como 3D, se dejan tal cual) */
@@ -29,7 +29,7 @@ export default function ServiceDetailPage() {
             '@type': 'Service',
             name: s.name[lang],
             description: s.description[lang],
-            url: `${SITE}/services/${s.id}`,
+            url: canonicalUrl(`/services/${s.id}`),
             areaServed: ['Québec', 'Canada'],
             provider: { '@type': 'LocalBusiness', name: 'Fabrication TEK-NIC', url: SITE },
           },

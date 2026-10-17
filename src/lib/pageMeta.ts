@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 
 const SITE = 'https://teknicweb.netlify.app'
 
+/** Netlify sirve /services como /services/, así que la URL canónica lleva barra final */
+export const canonicalUrl = (path: string) => SITE + (path === '/' ? '/' : path.replace(/\/$/, '') + '/')
+
 function setMeta(selector: string, attr: 'name' | 'property', key: string, content: string) {
   let el = document.querySelector(selector) as HTMLMetaElement | null
   if (!el) {
@@ -15,7 +18,7 @@ function setMeta(selector: string, attr: 'name' | 'property', key: string, conte
 /** Actualiza título, descripción, URL canónica, Open Graph/Twitter y datos estructurados (JSON-LD) de cada página */
 export function usePageMeta(title: string, description: string, path: string, jsonLd?: object) {
   useEffect(() => {
-    const url = SITE + path
+    const url = canonicalUrl(path)
     document.title = title
 
     setMeta('meta[name="description"]', 'name', 'description', description)
@@ -58,7 +61,7 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
       '@type': 'ListItem',
       position: i + 1,
       name: it.name,
-      item: SITE + it.path,
+      item: canonicalUrl(it.path),
     })),
   }
 }
