@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Link } from 'react-router-dom'
 import { ExternalLink } from 'lucide-react'
 import { SERVICES } from '../data/services'
 import type { Service } from '../data/services'
-
-const lang: 'fr' | 'en' = 'fr'
+import { useLang } from '../lib/i18n'
+import { goToService } from '../lib/goToService'
 
 export default function ServicesShowcase() {
+  const { lang, t } = useLang()
   const container = useRef<HTMLDivElement>(null)
   const pinTarget = useRef<HTMLDivElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
@@ -38,6 +40,17 @@ export default function ServicesShowcase() {
         pin: pinTarget.current!,
         pinSpacing: true,
         anticipatePin: 1,
+        // Al soltar el scroll, se acomoda en el centro del servicio más cercano (sin dejar dos mezclados)
+        snap: {
+          snapTo: (progress: number) => {
+            // En los extremos no se fuerza nada, para poder salir de la sección sin resistencia
+            if (progress < 0.04 || progress > 0.96) return progress
+            return (Math.min(total - 1, Math.floor(progress * total)) + 0.5) / total
+          },
+          delay: 0.15,
+          duration: { min: 0.25, max: 0.6 },
+          ease: 'power2.inOut',
+        },
         onUpdate: (self) => {
           const idx = Math.min(
             total - 1,
@@ -93,11 +106,13 @@ export default function ServicesShowcase() {
             </span>
           </div>
           <h2 className="font-display uppercase leading-[0.85] text-5xl sm:text-6xl md:text-7xl mb-4">
-            Nos <span className="text-teknic-red">disciplines</span>
+            {t('Nos ', 'Our ')}<span className="text-teknic-red">{t('disciplines', 'disciplines')}</span>
           </h2>
           <p className="font-sans font-light text-white/60 text-sm md:text-base leading-relaxed">
-            Quatre expertises sous un même toit. Chaque projet est pris en charge
-            de bout en bout par nos équipes.
+            {t(
+              'Quatre expertises sous un même toit. Chaque projet est pris en charge de bout en bout par nos équipes.',
+              'Four areas of expertise under one roof. Every project is handled end to end by our teams.'
+            )}
           </p>
         </div>
 
@@ -144,20 +159,41 @@ export default function ServicesShowcase() {
 
         {/* Section label */}
         <div className="absolute top-24 left-6 md:left-12 z-30 font-mono text-[10px] tracking-[0.4em] text-white/40 uppercase">
-          Nos Services · 04 disciplines
+          {t('Nos Services', 'Our Services')} · 04 disciplines
         </div>
 
-        {/* Progress indicators */}
-        <div className="absolute top-24 right-6 md:right-12 z-30 flex gap-2 items-center">
-          {SERVICES.map((_, i) => (
-            <div
-              key={i}
-              className={`h-px transition-all duration-500 ${
-                i === active ? 'w-10 bg-white' : 'w-4 bg-white/30'
-              }`}
-            />
+        {/* Progress indicators: clicables, el activo muestra el nombre */}
+        <nav
+          aria-label={t('Services', 'Services')}
+          className="absolute top-24 right-6 md:right-12 z-30 flex gap-4 items-center"
+        >
+          {SERVICES.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => goToService(s.id)}
+              aria-label={s.name[lang]}
+              aria-current={i === active ? 'true' : undefined}
+              className="group flex items-center gap-2 py-2"
+            >
+              <span
+                className={`font-mono text-[10px] tracking-[0.25em] uppercase transition-all duration-500 ${
+                  i === active
+                    ? 'max-w-[200px] opacity-100 text-white'
+                    : 'max-w-0 overflow-hidden opacity-0 text-white/60 group-hover:max-w-[40px] group-hover:opacity-100'
+                }`}
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                {i === active ? `0${i + 1} · ${s.name[lang]}` : `0${i + 1}`}
+              </span>
+              <span
+                className={`h-px transition-all duration-500 ${
+                  i === active ? 'w-10 bg-white' : 'w-4 bg-white/30 group-hover:bg-white/70'
+                }`}
+              />
+            </button>
           ))}
-        </div>
+        </nav>
 
         {/* Slides stacked, crossfade via opacity */}
         {SERVICES.map((s, i) => {
@@ -165,22 +201,15 @@ export default function ServicesShowcase() {
           return (
             <div
               key={s.id}
-              className="absolute inset-0 z-20 transition-opacity duration-700 ease-out"
+              className={`absolute inset-0 z-20 transition-opacity duration-700 ease-out ${isActive ? 'slide-active' : ''}`}
               style={{
                 opacity: isActive ? 1 : 0,
                 pointerEvents: isActive ? 'auto' : 'none',
               }}
             >
-              <div className="h-full w-full grid grid-cols-[1.1fr_1.4fr_1fr] gap-6 px-6 md:px-12 py-32">
+              <div className="h-full w-full grid grid-cols-[1.1fr_1.4fr_1fr] gap-6 px-6 md:px-12 pt-24 pb-16">
                 {/* LEFT */}
-                <div
-                  className="relative flex flex-col justify-center"
-                  style={{
-                    transform: isActive ? 'translateY(0)' : 'translateY(30px)',
-                    transition:
-                      'transform 800ms cubic-bezier(0.22,1,0.36,1) 100ms',
-                  }}
-                >
+                <div className="slide-left relative flex flex-col justify-center">
                   {/* Partner badge (only for external services) */}
                   {s.external && s.partnerLabel && (
                     <div
@@ -207,14 +236,14 @@ export default function ServicesShowcase() {
                     <div className="self-start mb-6 bg-white rounded-md p-2 shadow-xl shadow-black/40">
                       <img
                         src={s.badge.src}
-                        alt={s.badge.alt}
+                        alt={lang === 'en' && s.badge.altEn ? s.badge.altEn : s.badge.alt}
                         loading="lazy"
                         className="block h-24 w-auto"
                       />
                     </div>
                   )}
 
-                  <div className="flex items-baseline gap-3 mb-8">
+                  <div className="flex items-baseline gap-3 mb-4">
                     <span
                       className="font-mono text-sm tracking-[0.3em]"
                       style={{ color: s.accent }}
@@ -226,16 +255,43 @@ export default function ServicesShowcase() {
                     </span>
                   </div>
 
-                  <h2 className="font-display uppercase leading-[0.85] text-6xl md:text-7xl lg:text-8xl xl:text-9xl mb-8">
+                  <h2
+                    className={`font-display uppercase leading-[0.85] mb-4 ${
+                      s.name[lang].includes(' ')
+                        ? 'whitespace-nowrap'
+                        : 'text-6xl md:text-7xl lg:text-[min(6rem,12vh)] xl:text-[min(8rem,12vh)]'
+                    }`}
+                    // Nombres de varias palabras: una sola línea, con el tamaño que cabe antes del video
+                    style={
+                      s.name[lang].includes(' ')
+                        ? { fontSize: `min(calc((34vw - 72px) / ${(s.name[lang].length * 0.43).toFixed(2)}), 12vh)` }
+                        : undefined
+                    }
+                  >
                     {s.name[lang]}
                   </h2>
 
-                  <p className="font-serif italic text-xl md:text-2xl text-white/80 max-w-md leading-snug mb-10">
-                    {s.headline[lang]}
+                  {s.headline[lang] && (
+                    <p className="font-serif italic text-xl md:text-2xl text-white/80 max-w-md leading-snug mb-3">
+                      {s.headline[lang]}
+                    </p>
+                  )}
+
+                  <p className="font-sans font-light text-white/70 leading-relaxed max-w-lg text-sm lg:text-[15px] mb-6">
+                    {s.description[lang]}
                   </p>
 
-                  {s.external && s.externalUrl ? (
-                    <a
+                  <div className="flex flex-wrap items-center gap-3 self-start">
+                    <Link
+                      to={`/services/${s.id}`}
+                      className="inline-flex items-center gap-3 self-start px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
+                      style={{ borderColor: `${s.accent}55` }}
+                    >
+                      {t('En savoir plus', 'Learn more')}
+                      <span className="w-6 h-px bg-current" />
+                    </Link>
+                    {s.external && s.externalUrl && (
+                      <a
                       href={s.externalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -245,29 +301,25 @@ export default function ServicesShowcase() {
                         backgroundColor: `${s.accent}20`,
                       }}
                     >
-                      Visiter le site
+                      {t('Visiter le site', 'Visit the website')}
                       <ExternalLink
                         className="w-3.5 h-3.5 transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
                         strokeWidth={2}
                       />
                     </a>
-                  ) : (
-                    <a
-                      href="#soumission"
-                      className="inline-flex items-center gap-3 self-start px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
-                      style={{ borderColor: `${s.accent}55` }}
-                    >
-                      En savoir plus
-                      <span className="w-6 h-px bg-current" />
-                    </a>
-                  )}
+                    )}
+                  </div>
                 </div>
 
                 {/* CENTER — Massive image / video */}
                 <div className="relative flex items-center justify-center">
                   <div
                     className={
-                      s.video
+                      s.video && s.videoShape === 'landscape'
+                        ? 'relative w-full aspect-[4/3] max-h-[78vh] max-w-[760px] mx-auto'
+                        : s.video && s.videoShape === 'square'
+                        ? 'relative w-full aspect-square max-h-[70vh] max-w-[560px] mx-auto'
+                        : s.video
                         ? 'relative h-[70vh] lg:h-[85vh] aspect-[9/16] max-w-full mx-auto'
                         : 'relative w-full h-[70vh] lg:h-[85vh] max-w-[520px]'
                     }
@@ -287,7 +339,7 @@ export default function ServicesShowcase() {
                       }}
                     >
                       {s.video ? (
-                        <ServiceVideo src={s.video} objectFit="contain" />
+                        <ServiceVideo src={s.video} objectFit={s.videoShape ? 'cover' : 'contain'} active={isActive} />
                       ) : s.image ? (
                         <img
                           src={s.image}
@@ -321,32 +373,13 @@ export default function ServicesShowcase() {
                 </div>
 
                 {/* RIGHT */}
-                <div
-                  className="relative flex flex-col justify-center"
-                  style={{
-                    transform: isActive ? 'translateY(0)' : 'translateY(30px)',
-                    transition:
-                      'transform 800ms cubic-bezier(0.22,1,0.36,1) 200ms',
-                  }}
-                >
-                  <div className="mb-8">
-                    <span
-                      className="font-mono text-[10px] tracking-[0.3em] uppercase pb-2 border-b block w-fit mb-6"
-                      style={{ borderColor: `${s.accent}80`, color: s.accent }}
-                    >
-                      Description
-                    </span>
-                    <p className="font-sans font-light text-white/70 leading-relaxed max-w-sm text-sm md:text-base">
-                      {s.description[lang]}
-                    </p>
-                  </div>
-
+                <div className="slide-right relative flex flex-col justify-center">
                   <div>
                     <span
                       className="font-mono text-[10px] tracking-[0.3em] uppercase pb-2 border-b block w-fit mb-6"
                       style={{ borderColor: `${s.accent}80`, color: s.accent }}
                     >
-                      Spécifications
+                      {t('Spécifications', 'Specifications')}
                     </span>
                     <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-sm">
                       {s.specs.map((spec, k) => (
@@ -359,7 +392,7 @@ export default function ServicesShowcase() {
                             {spec.label[lang]}
                           </div>
                           <div className="font-display text-xl md:text-2xl text-white">
-                            {spec.value}
+                            {lang === 'en' && spec.valueEn ? spec.valueEn : spec.value}
                           </div>
                         </div>
                       ))}
@@ -373,7 +406,7 @@ export default function ServicesShowcase() {
 
         {/* Bottom scroll hint */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
-          Défiler pour explorer
+          {t('Défiler pour explorer', 'Scroll to explore')}
         </div>
       </div>
     </section>
@@ -383,24 +416,44 @@ export default function ServicesShowcase() {
 function ServiceVideo({
   src,
   objectFit = 'contain',
+  active,
 }: {
   src: string
   objectFit?: 'contain' | 'cover'
+  /** Escritorio: true cuando la diapositiva está activa (el video arranca desde el inicio y se pausa al salir) */
+  active?: boolean
 }) {
   const ref = useRef<HTMLVideoElement>(null)
   // Derive poster path: /service-3d.mp4 -> /service-3d-poster.jpg
   const poster = src.replace(/\.[^.]+$/, '-poster.jpg')
 
-  // Pause when off-screen to save battery / CPU
+  // Escritorio (prop active): cada vez que se llega al servicio, el video empieza desde el principio
   useEffect(() => {
+    if (active === undefined) return
+    const el = ref.current
+    if (!el) return
+    if (active) {
+      el.currentTime = 0
+      el.play().catch(() => {})
+    } else {
+      el.pause()
+    }
+  }, [active])
+
+  // Móvil (sin prop active): pausa fuera de pantalla y vuelve a empezar desde el inicio al entrar en vista
+  useEffect(() => {
+    if (active !== undefined) return
     const el = ref.current
     if (!el) return
     let raf = 0
+    let wasIn = false
     const check = () => {
       raf = 0
       const r = el.getBoundingClientRect()
       const vh = window.innerHeight
       const inView = r.bottom > -100 && r.top < vh + 100
+      if (inView && !wasIn) el.currentTime = 0
+      wasIn = inView
       if (inView && el.paused) {
         el.play().catch(() => {})
       } else if (!inView && !el.paused) {
@@ -439,6 +492,7 @@ function ServiceVideo({
 }
 
 function MediaPlaceholder({ accent, label }: { accent: string; label: string }) {
+  const { t } = useLang()
   return (
     <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
       {/* Concentric rings */}
@@ -463,7 +517,7 @@ function MediaPlaceholder({ accent, label }: { accent: string; label: string }) 
           className="font-mono text-[10px] tracking-[0.4em] uppercase mb-2"
           style={{ color: accent }}
         >
-          Media · à venir
+          {t('Média · à venir', 'Media · coming soon')}
         </div>
         <div className="font-display text-2xl md:text-3xl uppercase text-white/70 tracking-tight">
           {label}
@@ -474,6 +528,7 @@ function MediaPlaceholder({ accent, label }: { accent: string; label: string }) 
 }
 
 function MobileServiceCard({ s, index }: { s: Service; index: number }) {
+  const { lang, t } = useLang()
   const ref = useRef<HTMLElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
 
@@ -544,14 +599,14 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
       {/* Media — 9:16 for videos (native vertical), 4:5 for photos */}
       <div
         className={`relative w-full overflow-hidden ${
-          s.video ? 'aspect-[9/16]' : 'aspect-[4/5]'
+          s.video && s.videoShape === 'landscape' ? 'aspect-video' : s.video && s.videoShape === 'square' ? 'aspect-square' : s.video ? 'aspect-[9/16]' : 'aspect-[4/5]'
         }`}
         style={{
           background: `linear-gradient(160deg, ${s.bg.from} 0%, ${s.bg.to} 100%)`,
         }}
       >
         {s.video ? (
-          <ServiceVideo src={s.video} objectFit="contain" />
+          <ServiceVideo src={s.video} objectFit={s.videoShape ? 'cover' : 'contain'} />
         ) : s.image ? (
           <img
             ref={imgRef}
@@ -617,7 +672,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
       <div className="relative p-5 md:p-6">
         {s.badge && (
           <div className="inline-block mb-4 bg-white rounded-md p-1.5 shadow-lg shadow-black/40">
-            <img src={s.badge.src} alt={s.badge.alt} loading="lazy" className="block h-20 w-auto" />
+            <img src={s.badge.src} alt={lang === 'en' && s.badge.altEn ? s.badge.altEn : s.badge.alt} loading="lazy" className="block h-20 w-auto" />
           </div>
         )}
 
@@ -625,9 +680,11 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
           {s.name[lang]}
         </h3>
 
-        <p className="font-serif italic text-white/80 text-base leading-snug mb-4">
-          {s.headline[lang]}
-        </p>
+        {s.headline[lang] && (
+          <p className="font-serif italic text-white/80 text-base leading-snug mb-4">
+            {s.headline[lang]}
+          </p>
+        )}
 
         <p className="font-sans font-light text-white/60 text-sm leading-relaxed mb-5">
           {s.description[lang]}
@@ -644,14 +701,23 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
                 {spec.label[lang]}
               </div>
               <div className="font-display text-base text-white">
-                {spec.value}
+                {lang === 'en' && spec.valueEn ? spec.valueEn : spec.value}
               </div>
             </div>
           ))}
         </div>
 
-        {s.external && s.externalUrl ? (
-          <a
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            to={`/services/${s.id}`}
+            className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white active:scale-95 transition-transform duration-200"
+            style={{ borderColor: `${s.accent}70` }}
+          >
+            {t('En savoir plus', 'Learn more')}
+            <span className="w-4 h-px bg-current" />
+          </Link>
+          {s.external && s.externalUrl && (
+            <a
             href={s.externalUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -661,19 +727,11 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
               backgroundColor: `${s.accent}20`,
             }}
           >
-            Visiter le site
+            {t('Visiter le site', 'Visit the website')}
             <ExternalLink className="w-3 h-3" strokeWidth={2} />
           </a>
-        ) : (
-          <a
-            href="#soumission"
-            className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-full font-sans text-[10px] tracking-[0.3em] uppercase text-white active:scale-95 transition-transform duration-200"
-            style={{ borderColor: `${s.accent}70` }}
-          >
-            En savoir plus
-            <span className="w-4 h-px bg-current" />
-          </a>
-        )}
+          )}
+        </div>
       </div>
     </article>
   )

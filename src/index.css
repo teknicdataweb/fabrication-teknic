@@ -62,3 +62,82 @@ a, button, [role="button"], input, textarea, select {
   -webkit-text-stroke: 1px rgba(255,255,255,0.3);
   color: transparent;
 }
+
+/* Destello metálico: una franja de luz cruza la tarjeta al pasar el cursor */
+.metal-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 1.2s ease;
+}
+.group:hover .metal-sheen::after {
+  transform: translateX(120%);
+}
+
+/* Línea de acero que crece al entrar en pantalla */
+.reveal-line {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.is-visible .reveal-line {
+  transform: scaleX(1);
+}
+
+/* Trayectoria de herramienta: línea roja que se dibuja con el scroll */
+.trace-path {
+  fill: none;
+  stroke: #c8102e;
+  stroke-width: 1.5;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 4px rgba(200, 16, 46, 0.6));
+}
+
+/* Etiqueta de servicio asociado: brillo que cruza una vez cada pocos segundos */
+.partner-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: pill-shine 3.6s ease-in-out infinite;
+}
+@keyframes pill-shine {
+  0%, 55% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+
+/* Carrusel de servicios (escritorio): el contenido de cada servicio entra escalonado */
+.slide-left > *,
+.slide-right > * {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 600ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slide-active .slide-left > *,
+.slide-active .slide-right > * {
+  opacity: 1;
+  transform: none;
+}
+.slide-active .slide-left > :nth-child(1) { transition-delay: 120ms; }
+.slide-active .slide-left > :nth-child(2) { transition-delay: 200ms; }
+.slide-active .slide-left > :nth-child(3) { transition-delay: 280ms; }
+.slide-active .slide-left > :nth-child(4) { transition-delay: 360ms; }
+.slide-active .slide-left > :nth-child(5) { transition-delay: 440ms; }
+.slide-active .slide-left > :nth-child(6) { transition-delay: 520ms; }
+.slide-active .slide-left > :nth-child(7) { transition-delay: 600ms; }
+.slide-active .slide-right > :nth-child(1) { transition-delay: 320ms; }
+@media (prefers-reduced-motion: reduce) {
+  .slide-left > *,
+  .slide-right > * {
+    transform: none;
+    transition: opacity 300ms ease;
+  }
+}

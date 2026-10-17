@@ -1,18 +1,22 @@
 import { useState, FormEvent } from 'react'
 import { Send, Check, Loader2 } from 'lucide-react'
+import { useLang } from '../lib/i18n'
+import { Field, FormStyles } from './formParts'
 
 const SERVICE_OPTIONS = [
-  { value: '', label: 'Sélectionner un service…' },
-  { value: 'usinage-cnc', label: 'Usinage CNC' },
-  { value: 'tournage', label: 'Tournage' },
-  { value: 'soudage', label: 'Soudage' },
-  { value: 'maintenance', label: 'Maintenance industrielle' },
-  { value: 'autre', label: 'Autre' },
+  { value: '', fr: 'Sélectionner un service…', en: 'Select a service…' },
+  { value: 'usinage-cnc', fr: 'Usinage CNC', en: 'CNC machining' },
+  { value: 'tournage', fr: 'Tournage', en: 'Turning' },
+  { value: 'soudage', fr: 'Soudage', en: 'Welding' },
+  { value: 'maintenance', fr: 'Maintenance industrielle', en: 'Industrial maintenance' },
+  { value: 'autre', fr: 'Autre', en: 'Other' },
 ]
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
-export default function Soumission() {
+export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
+  const Title = asH1 ? 'h1' : 'h2'
+  const { t } = useLang()
   const [status, setStatus] = useState<Status>('idle')
   const [form, setForm] = useState({
     name: '',
@@ -73,29 +77,31 @@ export default function Soumission() {
           <div className="flex items-center gap-4 mb-6">
             <span className="h-px w-12 bg-teknic-red" />
             <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-teknic-red">
-              06 · Soumission
+              06 · {t('Soumission', 'Quote')}
             </span>
           </div>
-          <h2 className="font-display uppercase leading-[0.85] text-5xl md:text-6xl lg:text-7xl mb-8">
-            Un projet <br />
-            <span className="text-teknic-red">en tête ?</span>
-          </h2>
+          <Title className="font-display uppercase leading-[0.85] text-5xl md:text-6xl lg:text-7xl mb-8">
+            {t('Un projet', 'A project')} <br />
+            <span className="text-teknic-red">{t('en tête ?', 'in mind?')}</span>
+          </Title>
           <p className="font-sans font-light text-white/60 text-base md:text-lg leading-relaxed mb-8 max-w-md">
-            Décrivez-nous votre besoin — pièce unitaire, série ou projet complexe.
-            Notre équipe vous répond avec une soumission détaillée.
+            {t(
+              'Décrivez-nous votre besoin — pièce unitaire, série ou projet complexe. Notre équipe vous répond avec une soumission détaillée.',
+              'Tell us what you need — a single part, a production run or a complex project. Our team will reply with a detailed quote.'
+            )}
           </p>
           <div className="space-y-3 text-sm text-white/50">
             <div className="flex items-start gap-3">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-teknic-red flex-shrink-0" />
-              <span>Réponse sous 24 à 48 heures ouvrables</span>
+              <span>{t('Réponse sous 24 à 48 heures ouvrables', 'Reply within 24 to 48 business hours')}</span>
             </div>
             <div className="flex items-start gap-3">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-teknic-red flex-shrink-0" />
-              <span>Estimation gratuite et sans engagement</span>
+              <span>{t('Estimation gratuite et sans engagement', 'Free, no-obligation estimate')}</span>
             </div>
             <div className="flex items-start gap-3">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-teknic-red flex-shrink-0" />
-              <span>Confidentialité garantie sur vos plans</span>
+              <span>{t('Confidentialité garantie sur vos plans', 'Your drawings are kept confidential')}</span>
             </div>
           </div>
         </div>
@@ -113,37 +119,37 @@ export default function Soumission() {
 
           <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-white/10">
             <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
-              Formulaire
+              {t('Formulaire', 'Form')}
             </h3>
             <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
-              5 champs
+              {t('5 champs', '5 fields')}
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-            <Field label="Nom / Entreprise" required>
+            <Field label={t('Nom / Entreprise', 'Name / Company')} required>
               <input
                 type="text"
                 required
                 value={form.name}
                 onChange={onChange('name')}
-                placeholder="Jean Tremblay · Acme inc."
+                placeholder={t('Jean Tremblay · Acme inc.', 'John Smith · Acme Inc.')}
                 className="input"
               />
             </Field>
 
-            <Field label="Courriel" required>
+            <Field label={t('Courriel', 'Email')} required>
               <input
                 type="email"
                 required
                 value={form.email}
                 onChange={onChange('email')}
-                placeholder="vous@exemple.com"
+                placeholder={t('vous@exemple.com', 'you@example.com')}
                 className="input"
               />
             </Field>
 
-            <Field label="Téléphone">
+            <Field label={t('Téléphone', 'Phone')}>
               <input
                 type="tel"
                 value={form.phone}
@@ -153,7 +159,7 @@ export default function Soumission() {
               />
             </Field>
 
-            <Field label="Type de service" required>
+            <Field label={t('Type de service', 'Service type')} required>
               <select
                 required
                 value={form.service}
@@ -162,20 +168,20 @@ export default function Soumission() {
               >
                 {SERVICE_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value} className="bg-[#0A0A0A] text-white">
-                    {o.label}
+                    {t(o.fr, o.en)}
                   </option>
                 ))}
               </select>
             </Field>
           </div>
 
-          <Field label="Description du projet" required>
+          <Field label={t('Description du projet', 'Project description')} required>
             <textarea
               required
               rows={5}
               value={form.message}
               onChange={onChange('message')}
-              placeholder="Matériau, tolérances, quantité, délai souhaité…"
+              placeholder={t('Matériau, tolérances, quantité, délai souhaité…', 'Material, tolerances, quantity, desired deadline…')}
               className="input resize-none"
             />
           </Field>
@@ -183,11 +189,11 @@ export default function Soumission() {
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="max-w-xs">
               <p className="font-sans font-light text-[11px] text-white/40 leading-relaxed">
-                En envoyant, vous acceptez d'être contacté par notre équipe.
+                {t("En envoyant, vous acceptez d'être contacté par notre équipe.", 'By submitting, you agree to be contacted by our team.')}
               </p>
               {status === 'error' && (
                 <p role="alert" className="font-sans text-[11px] text-teknic-red leading-relaxed mt-2">
-                  Une erreur est survenue. Réessayez ou écrivez-nous à info@fabricationteknic.com.
+                  {t('Une erreur est survenue. Réessayez ou écrivez-nous à ', 'Something went wrong. Please try again or write to us at ')}info@fabricationteknic.com.
                 </p>
               )}
             </div>
@@ -202,20 +208,20 @@ export default function Soumission() {
 
               {(status === 'idle' || status === 'error') && (
                 <>
-                  <span className="relative z-10">{status === 'error' ? 'Réessayer' : 'Envoyer la demande'}</span>
+                  <span className="relative z-10">{status === 'error' ? t('Réessayer', 'Try again') : t('Envoyer la demande', 'Send request')}</span>
                   <Send className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={2} />
                 </>
               )}
               {status === 'sending' && (
                 <>
                   <Loader2 className="relative z-10 w-4 h-4 animate-spin" />
-                  <span className="relative z-10">Envoi…</span>
+                  <span className="relative z-10">{t('Envoi…', 'Sending…')}</span>
                 </>
               )}
               {status === 'sent' && (
                 <>
                   <Check className="relative z-10 w-4 h-4" />
-                  <span className="relative z-10">Envoyé · Merci</span>
+                  <span className="relative z-10">{t('Envoyé · Merci', 'Sent · Thank you')}</span>
                 </>
               )}
             </button>
@@ -223,52 +229,7 @@ export default function Soumission() {
         </form>
       </div>
 
-      <style>{`
-        .input {
-          width: 100%;
-          background: transparent;
-          border: 1px solid rgba(255,255,255,0.10);
-          border-radius: 0.5rem;
-          padding: 0.85rem 1rem;
-          color: #fff;
-          font-family: 'Inter', sans-serif;
-          font-weight: 300;
-          font-size: 0.9rem;
-          transition: all 0.3s ease;
-          outline: none;
-        }
-        .input::placeholder { color: rgba(255,255,255,0.30); }
-        .input:hover { border-color: rgba(255,255,255,0.20); }
-        .input:focus {
-          border-color: #C8102E;
-          box-shadow:
-            0 0 0 3px rgba(200,16,46,0.12),
-            0 0 30px rgba(200,16,46,0.15);
-          background: rgba(200,16,46,0.03);
-        }
-        .input:focus::placeholder { color: rgba(255,255,255,0.15); }
-        select.input option { padding: 0.5rem; }
-      `}</style>
+      <FormStyles />
     </section>
-  )
-}
-
-function Field({
-  label,
-  required,
-  children,
-}: {
-  label: string
-  required?: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <label className="block group">
-      <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/50 mb-2 flex items-center gap-1">
-        {label}
-        {required && <span className="text-teknic-red">*</span>}
-      </span>
-      {children}
-    </label>
   )
 }

@@ -1,19 +1,25 @@
 import { useEffect, useState, useCallback } from 'react'
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 import { PROJECTS } from '../data/portfolio'
+import { useLang } from '../lib/i18n'
 
-const lang: 'fr' | 'en' = 'fr'
-
-const ASPECT = {
-  portrait: 'aspect-[3/4]',
-  landscape: 'aspect-[4/3]',
-  square: 'aspect-square',
+const MATERIALS_EN: Record<string, string> = {
+  'Acier allié': 'Alloy steel',
+  'Acier peint': 'Painted steel',
+  Acier: 'Steel',
+  Aluminium: 'Aluminum',
+  Fonte: 'Cast iron',
+  Inox: 'Stainless steel',
+  'Multi-matériaux': 'Multi-material',
 }
 
 // Cantidad de fotos visibles antes de desplegar la galería completa (2 filas en escritorio)
 const PREVIEW_COUNT = 8
 
-export default function Portfolio() {
+export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
+  const Title = asH1 ? 'h1' : 'h2'
+  const { lang, t } = useLang()
+  const material = (m: string) => (lang === 'en' ? MATERIALS_EN[m] ?? m : m)
   const [openIdx, setOpenIdx] = useState<number | null>(null)
   const [showAll, setShowAll] = useState(false)
   const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0, PREVIEW_COUNT)
@@ -75,32 +81,43 @@ export default function Portfolio() {
               05 · Portfolio
             </span>
           </div>
-          <h2 className="font-display uppercase leading-[0.85] text-5xl md:text-7xl lg:text-8xl mb-6">
-            Pièces <span className="text-teknic-red">livrées</span>
-          </h2>
+          <Title className="font-display uppercase leading-[0.85] text-5xl md:text-7xl lg:text-8xl mb-6">
+            {t('Pièces ', 'Delivered ')}<span className="text-teknic-red">{t('livrées', 'parts')}</span>
+          </Title>
           <p className="max-w-2xl font-sans font-light text-white/60 text-base md:text-lg leading-relaxed">
-            Une sélection de projets — simples ou complexes — réalisés dans notre
-            atelier. Cliquez sur une image pour l'agrandir.
+            {t(
+              "Une sélection de projets — simples ou complexes — réalisés dans notre atelier. Cliquez sur une image pour l'agrandir.",
+              'A selection of projects — simple or complex — made in our shop. Click an image to enlarge it.'
+            )}
           </p>
         </div>
 
         {/* Sub-header */}
         <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-white/10">
           <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
-            Galerie · Réalisations
+            {t('Galerie · Réalisations', 'Gallery · Projects')}
           </h3>
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
-            {PROJECTS.length.toString().padStart(2, '0')} projets
+            {PROJECTS.length.toString().padStart(2, '0')} {t('projets', 'projects')}
           </span>
         </div>
 
         {/* Grid — masonry-like via CSS columns for varied aspect ratios */}
+        {/* Mientras la galería está cerrada, toda el área es el botón para desplegarla */}
+        <div
+          className={`rounded-xl border border-white/10 bg-white/[0.02] p-3 md:p-4 transition-colors ${
+            showAll ? '' : 'cursor-pointer hover:border-teknic-red/50'
+          }`}
+          onClick={showAll ? undefined : () => setShowAll(true)}
+        >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
           {visibleProjects.map((p, i) => (
             <button
               key={p.id}
-              onClick={() => setOpenIdx(i)}
-              className={`group relative block w-full text-left rounded-lg overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 ${ASPECT[p.aspect]}`}
+              onClick={() => {
+                if (showAll) setOpenIdx(i)
+              }}
+              className={`group relative block w-full text-left rounded-lg overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 aspect-[4/3]`}
             >
               {/* Corner ticks — same as Equipements highlight cards */}
               <span className="absolute top-3 left-3 w-3 h-3 z-20 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
@@ -143,7 +160,7 @@ export default function Portfolio() {
                 </div>
                 {p.material && (
                   <div className="font-sans font-light text-[11px] text-white/50 mt-1">
-                    {p.material}
+                    {material(p.material)}
                   </div>
                 )}
               </div>
@@ -156,8 +173,16 @@ export default function Portfolio() {
           ))}
         </div>
 
-        {/* Déploiement de la galerie complète */}
-        {PROJECTS.length > PREVIEW_COUNT && (
+        {!showAll && (
+          <div className="mt-4 flex items-center justify-center gap-3 py-3 border-t border-white/10 font-sans text-[11px] tracking-[0.3em] uppercase text-white/80">
+            {t('Voir toutes les réalisations', 'See all projects')} ({PROJECTS.length})
+            <span className="font-mono text-base leading-none">+</span>
+          </div>
+        )}
+        </div>
+
+        {/* Repliegue de la galería */}
+        {showAll && (
           <div className="mt-10 flex justify-center">
             <button
               type="button"
@@ -165,7 +190,7 @@ export default function Portfolio() {
               aria-expanded={showAll}
               className="inline-flex items-center gap-3 px-6 py-3 border border-white/20 rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-white/10 transition-colors duration-300"
             >
-              {showAll ? 'Afficher moins' : `Voir toutes les réalisations (${PROJECTS.length})`}
+              {showAll ? t('Afficher moins', 'Show less') : t(`Voir toutes les réalisations (${PROJECTS.length})`, `See all projects (${PROJECTS.length})`)}
               <span className="font-mono text-base leading-none">{showAll ? '−' : '+'}</span>
             </button>
           </div>
@@ -174,13 +199,13 @@ export default function Portfolio() {
         {/* Bottom signature */}
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
-            Nicolet · Québec · 12 500 pi² d'atelier
+            Nicolet · {t('Québec', 'Quebec')} · {t("12 500 pi² d'atelier", '12,500 sq ft shop')}
           </div>
           <a
-            href="#contact"
+            href="/contact"
             className="inline-flex items-center gap-3 self-start px-5 py-2.5 border border-white/20 rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
           >
-            Discuter d'un projet
+            {t("Discuter d'un projet", 'Discuss a project')}
             <span className="w-5 h-px bg-current" />
           </a>
         </div>
@@ -196,7 +221,7 @@ export default function Portfolio() {
           <button
             onClick={close}
             className="absolute top-6 right-6 z-30 w-11 h-11 flex items-center justify-center rounded-full border border-white/20 text-white hover:bg-teknic-red hover:border-teknic-red transition-all"
-            aria-label="Fermer"
+            aria-label={t('Fermer', 'Close')}
           >
             <X className="w-5 h-5" />
           </button>
@@ -208,7 +233,7 @@ export default function Portfolio() {
               prev()
             }}
             className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full border border-white/20 text-white hover:bg-teknic-red hover:border-teknic-red transition-all"
-            aria-label="Précédent"
+            aria-label={t('Précédent', 'Previous')}
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -220,7 +245,7 @@ export default function Portfolio() {
               next()
             }}
             className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full border border-white/20 text-white hover:bg-teknic-red hover:border-teknic-red transition-all"
-            aria-label="Suivant"
+            aria-label={t('Suivant', 'Next')}
           >
             <ChevronRight className="w-6 h-6" />
           </button>
@@ -253,7 +278,7 @@ export default function Portfolio() {
                 </h4>
                 {openProject.material && (
                   <div className="font-sans font-light text-sm text-white/60 mt-2">
-                    Matériau : {openProject.material}
+                    {t('Matériau', 'Material')} : {material(openProject.material)}
                   </div>
                 )}
               </div>

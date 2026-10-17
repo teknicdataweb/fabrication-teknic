@@ -1,4 +1,8 @@
+import { useEffect, useState } from 'react'
 import { MapPin, Mail, Phone, User } from 'lucide-react'
+import { getConsent, onConsentChange } from '../lib/consent'
+import { MAP_EMBED_SRC, MAP_LINK } from '../lib/map'
+import { useLang } from '../lib/i18n'
 
 const CONTACTS = [
   {
@@ -24,7 +28,48 @@ const CONTACTS = [
   },
 ]
 
-export default function Contact() {
+// Correo con asunto y texto prearmados (francés / inglés)
+const EMAIL_SUBJECT = {
+  fr: 'Demande de soumission · Fabrication TEK-NIC',
+  en: 'Quote request · Fabrication TEK-NIC',
+}
+const EMAIL_BODY = {
+  fr: [
+    'Bonjour,',
+    '',
+    'Je souhaite obtenir une soumission pour un projet.',
+    '',
+    'Nom / entreprise :',
+    'Téléphone :',
+    'Type de service (usinage, fabrication, soudure, mécanique, impression 3D) :',
+    'Description du projet, matériau, quantité et délai souhaité :',
+    '',
+    'Merci,',
+  ].join('\n'),
+  en: [
+    'Hello,',
+    '',
+    'I would like to get a quote for a project.',
+    '',
+    'Name / company:',
+    'Phone:',
+    'Service type (machining, fabrication, welding, mechanics, 3D printing):',
+    'Project description, material, quantity and desired deadline:',
+    '',
+    'Thank you,',
+  ].join('\n'),
+}
+
+export default function Contact({ asH1 = false }: { asH1?: boolean }) {
+  const Title = asH1 ? 'h1' : 'h2'
+  const { lang, t } = useLang()
+  const emailHref = `mailto:info@fabricationteknic.com?subject=${encodeURIComponent(
+    EMAIL_SUBJECT[lang]
+  )}&body=${encodeURIComponent(EMAIL_BODY[lang])}`
+  // La carte Google pose des témoins tiers: elle ne s'affiche qu'après acceptation
+  const [mapAllowed, setMapAllowed] = useState(() => getConsent() === 'accepted')
+  useEffect(() => onConsentChange(() => setMapAllowed(getConsent() === 'accepted')), [])
+
   return (
     <section
       id="contact"
@@ -53,12 +98,14 @@ export default function Contact() {
               07 · Contact
             </span>
           </div>
-          <h2 className="font-display uppercase leading-[0.85] text-5xl md:text-7xl lg:text-8xl mb-6">
-            Parlons <span className="text-teknic-red">métal</span>
-          </h2>
+          <Title className="font-display uppercase leading-[0.85] text-5xl md:text-7xl lg:text-8xl mb-6">
+            {t('Parlons ', "Let's talk ")}<span className="text-teknic-red">{t('métal', 'metal')}</span>
+          </Title>
           <p className="max-w-2xl font-sans font-light text-white/60 text-base md:text-lg leading-relaxed">
-            Passez à l'atelier, appelez-nous ou écrivez-nous. Notre équipe est prête
-            à répondre à vos questions techniques.
+            {t(
+              "Passez à l'atelier, appelez-nous ou écrivez-nous. Notre équipe est prête à répondre à vos questions techniques.",
+              'Drop by the shop, call us or write to us. Our team is ready to answer your technical questions.'
+            )}
           </p>
         </div>
 
@@ -66,11 +113,38 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4 md:gap-6 mb-6">
           {/* Address — wide card */}
           <a
-            href="https://maps.google.com/?q=50+Route+Marie-Victorin+Nicolet+QC+J3T+1A1"
+            href={MAP_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="group relative flex flex-col justify-between border border-white/10 rounded-lg p-6 md:p-8 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden min-h-[280px]"
           >
+            {/* Carte en arrière-plan : toute la carte ouvre Google Maps */}
+            <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+              {mapAllowed ? (
+                <iframe
+                  src={MAP_EMBED_SRC}
+                  title={t("Carte de l'atelier", 'Map of the shop')}
+                  tabIndex={-1}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full border-0 opacity-60"
+                  style={{
+                    filter: 'invert(0.92) hue-rotate(180deg) contrast(0.85) saturate(0.7) brightness(0.95)',
+                  }}
+                />
+              ) : (
+                // Sans témoins : image fixe du plan, sans cookies (si l'image manque, fond sombre)
+                <img
+                  src="/brand/map-atelier.jpg"
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover opacity-70"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                  }}
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30" />
+            </div>
+
             <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
             <span className="absolute top-3 right-3 w-3 h-3 border-t border-r border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
             <span className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
@@ -93,7 +167,7 @@ export default function Contact() {
                   />
                 </div>
                 <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
-                  Adresse de l'atelier
+                  {t("Adresse de l'atelier", 'Shop address')}
                 </span>
               </div>
 
@@ -101,23 +175,23 @@ export default function Contact() {
                 50, <span className="text-teknic-red">Marie-Victorin</span>
               </div>
               <div className="font-sans font-light text-white/70 text-base md:text-lg">
-                Nicolet, Québec · J3T 1A1
+                Nicolet, {t('Québec', 'Quebec')} · J3T 1A1
               </div>
             </div>
 
             <div className="relative z-10 flex items-center justify-between pt-8 mt-8 border-t border-white/5">
               <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
-                12 500 pi² d'atelier
+                {t("12 500 pi² d'atelier", '12,500 sq ft shop')}
               </div>
               <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 group-hover:text-teknic-red uppercase transition-colors">
-                Voir sur la carte →
+                {t('Voir sur la carte →', 'View on map →')}
               </div>
             </div>
           </a>
 
           {/* Email — tall card */}
           <a
-            href="mailto:info@fabricationteknic.com"
+            href={emailHref}
             className="group relative flex flex-col justify-between border border-white/10 rounded-lg p-6 md:p-8 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
           >
             <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
@@ -134,7 +208,7 @@ export default function Contact() {
                   />
                 </div>
                 <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
-                  Courriel
+                  {t('Courriel', 'Email')}
                 </span>
               </div>
 
@@ -147,7 +221,7 @@ export default function Contact() {
 
             <div className="relative z-10 pt-8 mt-8 border-t border-white/5">
               <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 group-hover:text-teknic-red uppercase transition-colors">
-                Nous écrire →
+                {t('Nous écrire →', 'Write to us →')}
               </div>
             </div>
           </a>
@@ -157,10 +231,10 @@ export default function Contact() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {CONTACTS.map((c) => {
             const Icon = c.icon
+            const phone = c.href.replace('tel:', '')
             return (
-              <a
+              <div
                 key={c.value}
-                href={c.href}
                 className="group relative flex flex-col border border-white/10 rounded-lg p-6 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
               >
                 <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
@@ -177,7 +251,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
-                      {c.role || 'Ligne directe'}
+                      {c.role ? t('Direction', 'Management') : t('Ligne directe', 'Direct line')}
                     </div>
                     <div className="font-sans text-sm text-white/80 mt-0.5">
                       {c.label}
@@ -188,7 +262,22 @@ export default function Contact() {
                 <div className="relative z-10 font-display text-2xl md:text-3xl uppercase text-white tracking-tight mt-auto">
                   {c.value}
                 </div>
-              </a>
+
+                <div className="relative z-10 mt-6 flex flex-wrap gap-3">
+                  <a
+                    href={`tel:+1${phone}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
+                  >
+                    {t('Appeler', 'Call')}
+                  </a>
+                  <a
+                    href={`sms:+1${phone}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
+                  >
+                    {t('Envoyer un message', 'Send a message')}
+                  </a>
+                </div>
+              </div>
             )
           })}
         </div>
@@ -199,10 +288,10 @@ export default function Contact() {
             <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_12px_rgba(74,222,128,0.6)] animate-pulse" />
             <div>
               <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40 mb-1">
-                Heures d'ouverture
+                {t("Heures d'ouverture", 'Opening hours')}
               </div>
               <div className="font-display text-lg md:text-xl uppercase tracking-tight">
-                Lundi – Vendredi · <span className="text-teknic-red">7h à 17h</span>
+                {t('Lundi – Vendredi', 'Monday – Friday')} · <span className="text-teknic-red">{t('7h à 17h', '7 AM to 5 PM')}</span>
               </div>
             </div>
           </div>
@@ -210,7 +299,7 @@ export default function Contact() {
             href="#soumission"
             className="inline-flex items-center gap-3 self-start px-6 py-3 rounded-full border border-white/20 font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
           >
-            Demander une soumission
+            {t('Demander une soumission', 'Request a quote')}
             <span className="w-5 h-px bg-current" />
           </a>
         </div>

@@ -1,11 +1,13 @@
+import { goToService } from '../lib/goToService'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Sparks from './Sparks'
+import { useLang } from '../lib/i18n'
 
 export default function Hero() {
+  const { t } = useLang()
   const container = useRef<HTMLDivElement>(null)
-  const eyebrow = useRef<HTMLParagraphElement>(null)
   const line1 = useRef<HTMLSpanElement>(null)
   const line2 = useRef<HTMLSpanElement>(null)
   const subtitle = useRef<HTMLParagraphElement>(null)
@@ -14,8 +16,7 @@ export default function Hero() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
-      tl.from(eyebrow.current, { y: 40, opacity: 0, duration: 1 })
-        .from(line1.current, { y: 120, opacity: 0, duration: 1.2 }, '-=0.6')
+      tl.from(line1.current, { y: 120, opacity: 0, duration: 1.2 })
         .from(line2.current, { y: 120, opacity: 0, duration: 1.2 }, '-=0.9')
         .from(subtitle.current, { y: 30, opacity: 0, duration: 0.9 }, '-=0.6')
         .from(cta.current, { y: 20, opacity: 0, duration: 0.7 }, '-=0.5')
@@ -65,25 +66,18 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-20 text-center px-6 max-w-6xl">
-        <p
-          ref={eyebrow}
-          className="font-sans text-xs md:text-sm tracking-[0.4em] text-white/60 mb-8 uppercase"
-        >
-          Depuis 2014 · Nicolet, Québec
-        </p>
-
         <h1 className="font-display flex flex-col leading-[0.9] tracking-tight uppercase">
           <span
             ref={line1}
-            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white"
           >
-            L'art
+            {t("L'allié de vos projets", 'Your ally in')}
           </span>
           <span
             ref={line2}
-            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-teknic-red"
           >
-            du <span className="text-teknic-red">métal</span>
+            {t('industriels', 'industrial projects')}
           </span>
         </h1>
 
@@ -91,15 +85,33 @@ export default function Hero() {
           ref={subtitle}
           className="font-sans font-light text-sm md:text-base tracking-[0.35em] text-white/70 mt-8 uppercase"
         >
-          Usinage · Fabrication · Soudure · Conception
+          {[
+            { id: 'usinage', label: t('Usinage', 'Machining') },
+            { id: 'fabrication', label: 'Fabrication' },
+            { id: 'soudure', label: t('Soudure', 'Welding') },
+            { id: '3d', label: t('Impression 3D', '3D Printing') },
+          ].map((item, i, all) => (
+            <span key={item.id}>
+              <button
+                type="button"
+                onClick={() => goToService(item.id)}
+                className="group relative inline-block pb-1 text-white/70 hover:text-white transition-colors duration-300 cursor-pointer"
+                style={{ font: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', background: 'none', border: 0 }}
+              >
+                {item.label}
+                <span className="absolute left-0 bottom-0 h-px w-full bg-teknic-red origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
+              </button>
+              {i < all.length - 1 && <span className="mx-3">·</span>}
+            </span>
+          ))}
         </p>
 
         <div ref={cta} className="mt-12 flex items-center justify-center gap-4">
           <a
-            href="#services"
+            href="/services"
             className="group inline-flex items-center gap-3 px-8 py-4 border border-white/20 rounded-full font-sans text-xs tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red hover:scale-105 transition-all duration-300"
           >
-            Découvrir nos services
+            {t('Découvrir nos services', 'Discover our services')}
             <span className="w-6 h-px bg-white group-hover:w-10 transition-all duration-300" />
           </a>
         </div>
@@ -115,7 +127,7 @@ export default function Hero() {
 
       {/* Corner tech labels */}
       <div className="absolute top-24 left-6 md:left-12 z-20 font-mono text-[10px] tracking-widest text-white/30 hidden md:block">
-        50° 21' N · 72° 39' W
+        46° 13' N · 72° 37' W
       </div>
       <div className="absolute bottom-8 right-6 md:right-12 z-20 font-mono text-[10px] tracking-widest text-white/30 hidden md:block">
         TEK-NIC / EST. QC

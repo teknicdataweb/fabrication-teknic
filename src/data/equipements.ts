@@ -3,6 +3,7 @@ export type Highlight = {
   category: { fr: string; en: string }
   name: string
   subtitle: { fr: string; en: string }
+  description: { fr: string; en: string }
   specs: { label: string; value: string }[]
   featured?: string
 }
@@ -15,6 +16,10 @@ export const HIGHLIGHTS: Highlight[] = [
     subtitle: {
       fr: 'CNC conversationnel',
       en: 'Conversational CNC',
+    },
+    description: {
+      fr: "Alésage horizontal de grande capacité pour les pièces lourdes, jusqu'à 11 000 lb. Sa table rotative à 360° permet d'usiner plusieurs faces en une seule installation, avec une grande précision.",
+      en: "Large-capacity horizontal boring for heavy parts, up to 11,000 lb. Its 360° rotary table lets us machine several faces in a single setup, with high precision.",
     },
     specs: [
       { label: 'X', value: '80"' },
@@ -29,6 +34,10 @@ export const HIGHLIGHTS: Highlight[] = [
     category: { fr: 'Centre d\'usinage', en: 'Machining center' },
     name: 'Mitsubishi',
     subtitle: { fr: 'CNC numérique', en: 'Numerical CNC' },
+    description: {
+      fr: "Centre d'usinage polyvalent pour le fraisage, le perçage et le taraudage de pièces de taille moyenne, avec des résultats précis et répétables.",
+      en: "Versatile machining center for milling, drilling and tapping medium-sized parts, with precise, repeatable results.",
+    },
     specs: [
       { label: 'X', value: '49.25"' },
       { label: 'Y', value: '27.625"' },
@@ -40,6 +49,10 @@ export const HIGHLIGHTS: Highlight[] = [
     category: { fr: 'Alésage vertical', en: 'Vertical boring' },
     name: 'Giddings & Lewis',
     subtitle: { fr: 'CNC conversationnel', en: 'Conversational CNC' },
+    description: {
+      fr: "Alésage vertical pour les pièces de grand diamètre, jusqu'à 59 po de diamètre et 48 po de hauteur, idéal pour les pièces rondes et volumineuses.",
+      en: "Vertical boring for large-diameter parts, up to 59 in. in diameter and 48 in. in height, ideal for large, round workpieces.",
+    },
     specs: [
       { label: 'Ø', value: '59"' },
       { label: 'H', value: '48"' },
@@ -155,3 +168,31 @@ export const CAPABILITIES: Capability[] = [
     detail: { fr: '12 500 pi²', en: '12,500 sq ft' },
   },
 ]
+
+/** Descripción corta (y foto opcional) bajo el subtítulo de cada bloque.
+ *  `image` es opcional (ej. '/equipements/cnc.jpg'). */
+export type BlockIntro = {
+  description: { fr: string; en: string }
+  image?: string
+}
+
+export const BLOCK_INTROS: Record<'cnc' | 'lathes' | 'welding', BlockIntro> = {
+  cnc: {
+    description: {
+      fr: "Nos centres d'usinage CNC et nos aléseuses horizontales et verticales usinent des pièces lourdes et complexes, jusqu'à 11 000 lb, avec une précision au millième de degré.",
+      en: 'Our CNC machining centers and horizontal and vertical boring mills machine heavy, complex parts up to 11,000 lb, with precision down to a thousandth of a degree.',
+    },
+  },
+  lathes: {
+    description: {
+      fr: "Tours conventionnels et CNC, fraiseuse, perceuse radiale, rectifieuses planes et alésage portatif : l'équipement pour réaliser vos pièces de la matière brute à la finition.",
+      en: 'Conventional and CNC lathes, milling, radial drill, surface grinders and portable boring: the equipment to produce your parts from raw material to finished surface.',
+    },
+  },
+  welding: {
+    description: {
+      fr: "Soudage de l'aluminium, de l'inox, de l'acier, de la fonte et du laiton, appuyé par un pont roulant de 7 tonnes, la coupe, le sablage et la peinture dans un atelier de 12 500 pi².",
+      en: 'Welding of aluminum, stainless steel, steel, cast iron and brass, backed by a 7-ton overhead crane, cutting, sandblasting and painting in a 12,500 sq ft shop.',
+    },
+  },
+}

@@ -1,9 +1,13 @@
+import { Link } from 'react-router-dom'
 import { setConsent } from '../lib/consent'
+import { QuebecFlag, CanadaFlag } from './Flags'
+import { useLang } from '../lib/i18n'
 
 const linkClass =
   'font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase hover:text-teknic-red transition-colors'
 
 export default function Footer() {
+  const { t } = useLang()
   return (
     <footer className="relative w-full bg-[#050505] text-white border-t border-white/5">
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -14,41 +18,39 @@ export default function Footer() {
             className="h-8 w-auto opacity-80"
           />
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
-            © {new Date().getFullYear()} · Tous droits réservés
+            © {new Date().getFullYear()} · {t('Tous droits réservés', 'All rights reserved')}
           </span>
         </div>
-        <nav aria-label="Informations légales" className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          <a href="/legal/confidentialite.html" className={linkClass}>
-            Confidentialité
+        <nav aria-label={t('Informations légales', 'Legal information')} className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <a href={t('/legal/confidentialite.html', '/legal/confidentialite.en.html')} className={linkClass}>
+            {t('Confidentialité', 'Privacy')}
           </a>
-          <a href="/legal/conditions.html" className={linkClass}>
-            Conditions
+          <a href={t('/legal/conditions.html', '/legal/conditions.en.html')} className={linkClass}>
+            {t('Conditions', 'Terms')}
           </a>
-          <a href="/legal/cookies.html" className={linkClass}>
-            Cookies
+          <a href={t('/legal/cookies.html', '/legal/cookies.en.html')} className={linkClass}>
+            {t('Cookies', 'Cookies')}
           </a>
+          <Link to="/carrieres" className={linkClass}>
+            {t('Carrières', 'Careers')}
+          </Link>
           <button type="button" onClick={() => setConsent(null)} className={linkClass}>
-            Gérer les témoins
+            {t('Gérer les témoins', 'Manage cookies')}
           </button>
           <a
-            href="https://www.cwbgroup.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Vérifier la certification CWB (CSA W47.1) sur cwbgroup.org"
-            className="inline-flex items-center bg-white rounded p-1 hover:opacity-90 transition-opacity"
-          >
-            <img src="/brand/cwb-certified.png" alt="CWB Certifié CSA W47.1" loading="lazy" className="block h-8 w-auto" />
-          </a>
-          <a
-            href="#accueil"
+            href="/"
             className={linkClass}
           >
-            Retour en haut
+            {t('Retour en haut', 'Back to top')}
           </a>
         </nav>
         <div className="flex items-center gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
-            Nicolet · Québec
+            Nicolet · {t('Québec', 'Quebec')}
+          </span>
+          <span className="flex items-center gap-2" aria-hidden="false">
+            <QuebecFlag title={t('Drapeau du Québec', 'Flag of Quebec')} />
+            <CanadaFlag title={t('Drapeau du Canada', 'Flag of Canada')} />
           </span>
         </div>
       </div>

@@ -13,13 +13,25 @@ export type Service = {
     to: string
   }
   accent: string
-  specs: { label: { fr: string; en: string }; value: string }[]
+  specs: { label: { fr: string; en: string }; value: string; valueEn?: string }[]
   // Optional — for partner brands that live on their own domain
   external?: boolean
   externalUrl?: string
   partnerLabel?: { fr: string; en: string }
   // Optional — small certification logo shown next to the service
-  badge?: { src: string; alt: string }
+  badge?: { src: string; alt: string; altEn?: string }
+  // Optional — contacts of the partner company, shown on its service page
+  contacts?: { name: string; phone: string }[]
+  email?: string
+  // Optional — short looping video for the services overview card
+  cardVideo?: string
+  // Optional — short line shown on the services overview card when the service has no headline
+  cardText?: { fr: string; en: string }
+  // Optional — photo used as the cover on the services overview page (replaces the card video), with a logo over it
+  cover?: string
+  coverLogo?: { src: string; alt: string }
+  // Optional — shape of the video so its frame matches it (no empty bars); default is vertical (9:16)
+  videoShape?: 'landscape' | 'square'
 }
 
 export const SERVICES: Service[] = [
@@ -51,9 +63,10 @@ export const SERVICES: Service[] = [
     id: 'fabrication',
     number: '02',
     name: { fr: 'FABRICATION', en: 'FABRICATION' },
-    headline: {
-      fr: 'Le métal, façonné à la demande',
-      en: 'Metal, shaped on demand',
+    headline: { fr: '', en: '' },
+    cardText: {
+      fr: 'Structures, composants et assemblages sur mesure',
+      en: 'Custom structures, components and assemblies',
     },
     description: {
       fr:
@@ -63,12 +76,14 @@ export const SERVICES: Service[] = [
     },
     image: '/service-fabrication.jpg',
     video: '/service-fabrication.mp4',
+    videoShape: 'landscape',
+    cardVideo: '/service-fabrication-card.mp4',
     bg: { from: '#451A03', via: '#78350F', to: '#1C0B02' },
     accent: '#F59E0B',
     specs: [
-      { label: { fr: 'Atelier', en: 'Shop area' }, value: '12 500 pi²' },
-      { label: { fr: 'Pont roulant', en: 'Overhead crane' }, value: '7 tonnes' },
-      { label: { fr: 'Scie', en: 'Saw' }, value: 'jusqu\'à 18"' },
+      { label: { fr: 'Atelier', en: 'Shop area' }, value: '12 500 pi²', valueEn: '12,500 sq ft' },
+      { label: { fr: 'Pont roulant', en: 'Overhead crane' }, value: '7 tonnes', valueEn: '7 tons' },
+      { label: { fr: 'Scie', en: 'Saw' }, value: 'jusqu\'à 18"', valueEn: 'up to 18"' },
       { label: { fr: 'Perceuse radiale', en: 'Radial drill' }, value: 'Ø 2¼"' },
     ],
   },
@@ -88,9 +103,11 @@ export const SERVICES: Service[] = [
     },
     image: '/service-soudure.jpg',
     video: '/service-soudure.mp4',
+    cardVideo: '/service-soudure-card.mp4',
     badge: {
       src: '/brand/cwb-certified.png',
       alt: 'Logo CWB — Certifié CSA W47.1',
+      altEn: 'CWB logo — CSA W47.1 Certified',
     },
     bg: { from: '#1E3A8A', via: '#1E40AF', to: '#0C1B4A' },
     accent: '#60A5FA',
@@ -117,13 +134,14 @@ export const SERVICES: Service[] = [
     },
     image: '/service-mecanique.jpg',
     video: '/service-mecanique.mp4',
+    cardVideo: '/service-mecanique-card.mp4',
     bg: { from: '#450A0A', via: '#7F1D1D', to: '#1A0303' },
     accent: '#C8102E',
     specs: [
       { label: { fr: 'Réparation', en: 'Repair' }, value: '✓' },
       { label: { fr: 'Entretien', en: 'Maintenance' }, value: '24/7' },
       { label: { fr: 'Sablage', en: 'Sandblast' }, value: '✓' },
-      { label: { fr: 'Peinture', en: 'Painting' }, value: 'Industrielle' },
+      { label: { fr: 'Peinture', en: 'Painting' }, value: 'Industrielle', valueEn: 'Industrial' },
     ],
   },
   {
@@ -142,16 +160,24 @@ export const SERVICES: Service[] = [
     },
     image: '',
     video: '/service-3d.mp4',
+    cover: '/service-3d-cover.jpg',
+    coverLogo: { src: '/brand/dg-innovation-logo.png', alt: 'DG Innovation 3D' },
+    videoShape: 'square',
     bg: { from: '#083344', via: '#0E7490', to: '#022530' },
     accent: '#06B6D4',
     specs: [
-      { label: { fr: 'Conception', en: 'Design' }, value: 'CAO' },
-      { label: { fr: 'Prototypage', en: 'Prototyping' }, value: 'Rapide' },
-      { label: { fr: 'Format', en: 'Format' }, value: 'Intermédiaire' },
-      { label: { fr: 'Pièces', en: 'Parts' }, value: 'Industrielles' },
+      { label: { fr: 'Conception', en: 'Design' }, value: 'CAO', valueEn: 'CAD' },
+      { label: { fr: 'Prototypage', en: 'Prototyping' }, value: 'Rapide', valueEn: 'Rapid' },
+      { label: { fr: 'Format', en: 'Format' }, value: 'Intermédiaire', valueEn: 'Intermediate' },
+      { label: { fr: 'Pièces', en: 'Parts' }, value: 'Industrielles', valueEn: 'Industrial' },
     ],
     external: true,
     externalUrl: 'https://dginnovation3d.ca/',
+    contacts: [
+      { name: 'Rémi Domingue', phone: '819-944-4737' },
+      { name: 'Victor Gill', phone: '819-692-4226' },
+    ],
+    email: 'info@dginnovation3d.ca',
     partnerLabel: {
       fr: 'Service partenaire · DG Innovation 3D',
       en: 'Partner service · DG Innovation 3D',

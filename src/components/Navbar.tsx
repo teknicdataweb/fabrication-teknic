@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { useLang } from '../lib/i18n'
 
 const LINKS = [
-  { fr: 'ACCUEIL', en: 'HOME', href: '#accueil' },
-  { fr: 'SERVICES', en: 'SERVICES', href: '#services' },
-  { fr: 'ÉQUIPEMENTS', en: 'EQUIPMENT', href: '#equipements' },
-  { fr: 'PORTFOLIO', en: 'PORTFOLIO', href: '#portfolio' },
-  { fr: 'CONTACT', en: 'CONTACT', href: '#contact' },
+  { fr: 'ACCUEIL', en: 'HOME', to: '/' },
+  { fr: 'SERVICES', en: 'SERVICES', to: '/services' },
+  { fr: 'ÉQUIPEMENTS', en: 'EQUIPMENT', to: '/equipements' },
+  { fr: 'PORTFOLIO', en: 'PORTFOLIO', to: '/portfolio' },
+  { fr: 'CARRIÈRES', en: 'CAREERS', to: '/carrieres' },
+  { fr: 'CONTACT', en: 'CONTACT', to: '/contact' },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [lang, setLang] = useState<'fr' | 'en'>('fr')
+  const { lang, setLang, t } = useLang()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function Navbar() {
         }`}
       >
         <nav className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between gap-4">
-          <a href="#accueil" className="flex items-center group flex-shrink-0" onClick={() => setDrawerOpen(false)}>
+          <Link to="/" className="flex items-center group flex-shrink-0" onClick={() => setDrawerOpen(false)}>
             <img
               src="/logo-teknic.png"
               alt="Fabrication TEK-NIC"
@@ -49,19 +52,19 @@ export default function Navbar() {
               }`}
               style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }}
             />
-          </a>
+          </Link>
 
           {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-6 lg:gap-8">
+          <ul className="hidden lg:flex items-center gap-5 xl:gap-8">
             {LINKS.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
+              <li key={l.to}>
+                <Link
+                  to={l.to}
                   className="relative font-sans text-xs tracking-[0.25em] text-white/70 hover:text-white transition-colors group"
                 >
                   {lang === 'fr' ? l.fr : l.en}
                   <span className="absolute left-0 -bottom-1 h-px w-0 bg-teknic-red transition-all duration-300 group-hover:w-full" />
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -71,7 +74,7 @@ export default function Navbar() {
             <button
               onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')}
               className="font-mono text-xs tracking-widest text-white/60 hover:text-white transition-colors"
-              aria-label="Toggle language"
+              aria-label={t('Changer de langue', 'Switch language')}
             >
               <span className={lang === 'fr' ? 'text-white' : ''}>FR</span>
               <span className="mx-1 text-white/30">|</span>
@@ -81,8 +84,8 @@ export default function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setDrawerOpen((v) => !v)}
-              className="md:hidden w-10 h-10 flex items-center justify-center rounded border border-white/15 text-white hover:border-teknic-red hover:text-teknic-red transition-all"
-              aria-label={drawerOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded border border-white/15 text-white hover:border-teknic-red hover:text-teknic-red transition-all"
+              aria-label={drawerOpen ? t('Fermer le menu', 'Close menu') : t('Ouvrir le menu', 'Open menu')}
               aria-expanded={drawerOpen}
             >
               {drawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -93,7 +96,7 @@ export default function Navbar() {
 
       {/* Mobile drawer */}
       <div
-        className={`md:hidden fixed inset-0 z-40 transition-opacity duration-500 ${
+        className={`lg:hidden fixed inset-0 z-40 transition-opacity duration-500 ${
           drawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -129,14 +132,14 @@ export default function Navbar() {
             <ul className="flex flex-col gap-4">
               {LINKS.map((l, i) => (
                 <li
-                  key={l.href}
+                  key={l.to}
                   className={`transition-all duration-500 ${
                     drawerOpen ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'
                   }`}
                   style={{ transitionDelay: drawerOpen ? `${100 + i * 60}ms` : '0ms' }}
                 >
-                  <a
-                    href={l.href}
+                  <Link
+                    to={l.to}
                     onClick={() => setDrawerOpen(false)}
                     className="group flex items-baseline gap-4"
                   >
@@ -146,7 +149,7 @@ export default function Navbar() {
                     <span className="font-display text-4xl sm:text-5xl uppercase text-white group-hover:text-teknic-red transition-colors leading-none">
                       {lang === 'fr' ? l.fr : l.en}
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -154,15 +157,15 @@ export default function Navbar() {
 
           <div className="pt-8 border-t border-white/10 flex items-center justify-between">
             <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
-              Nicolet · Québec
+              Nicolet · {t('Québec', 'Quebec')}
             </div>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               onClick={() => setDrawerOpen(false)}
               className="inline-flex items-center gap-2 px-4 py-2 border border-teknic-red rounded-full bg-teknic-red text-white font-mono text-[10px] tracking-[0.3em] uppercase"
             >
               Contact
-            </a>
+            </Link>
           </div>
         </div>
       </div>

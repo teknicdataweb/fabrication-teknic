@@ -4,22 +4,24 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo-teknic.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Fabrication TEK-NIC — Usinage, fabrication, soudure et mécanique industrielle. Nicolet, Québec." />
-    <meta name="keywords" content="usinage, fabrication, soudure, mécanique, CNC, Nicolet, Québec" />
+    <meta name="description" content="Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission." />
+    <meta name="keywords" content="usinage CNC, fabrication métallique, soudure, mécanique industrielle, impression 3D, atelier d'usinage, Nicolet, Centre-du-Québec, Québec" />
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="business.business" />
     <meta property="og:url" content="https://teknicweb.netlify.app/" />
-    <meta property="og:title" content="Fabrication TEK-NIC · L'art du métal" />
-    <meta property="og:description" content="Usinage, fabrication, soudure et mécanique industrielle. Nicolet, Québec." />
+    <meta property="og:title" content="Usinage CNC, fabrication et soudure à Nicolet | TEK-NIC" />
+    <meta property="og:description" content="Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission." />
     <meta property="og:image" content="https://teknicweb.netlify.app/service-fabrication.jpg" />
     <meta property="og:locale" content="fr_CA" />
+    <meta property="og:locale:alternate" content="en_CA" />
+    <meta property="og:site_name" content="Fabrication TEK-NIC" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://teknicweb.netlify.app/" />
-    <meta name="twitter:title" content="Fabrication TEK-NIC" />
-    <meta name="twitter:description" content="Usinage, fabrication, soudure et mécanique industrielle" />
+    <meta name="twitter:title" content="Usinage CNC, fabrication et soudure à Nicolet | TEK-NIC" />
+    <meta name="twitter:description" content="Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission." />
     <meta name="twitter:image" content="https://teknicweb.netlify.app/service-fabrication.jpg" />
 
     <!-- Canonical URL -->
@@ -35,7 +37,19 @@
       "@type": "LocalBusiness",
       "name": "Fabrication TEK-NIC",
       "image": "https://teknicweb.netlify.app/logo-teknic.png",
-      "description": "Usinage, fabrication, soudure et mécanique industrielle à Nicolet, Québec",
+      "description": "Usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Québec",
+      "knowsLanguage": ["fr", "en"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Usinage CNC" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Fabrication métallique" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Soudure" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mécanique industrielle" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Impression 3D" } }
+        ]
+      },
       "url": "https://teknicweb.netlify.app",
       "telephone": "+1-819-870-3271",
       "email": "info@fabricationteknic.com",
@@ -82,7 +96,7 @@
     }
     </script>
 
-    <title>Fabrication TEK-NIC · L'art du métal</title>
+    <title>Usinage CNC, fabrication et soudure à Nicolet | TEK-NIC</title>
   </head>
   <body class="bg-black text-white antialiased">
     <div id="root"></div>
@@ -101,6 +115,16 @@
         <option value="autre"></option>
       </select>
       <textarea name="message"></textarea>
+      <input name="bot-field" />
+    </form>
+    <!-- Netlify Forms: formulario de candidaturas (con CV adjunto) -->
+    <form name="candidature" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="poste" />
+      <textarea name="message"></textarea>
+      <input type="file" name="cv" />
       <input name="bot-field" />
     </form>
     <script type="module" src="/src/main.tsx"></script>

@@ -5,3 +5,9 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+
+# Sitio de una página con rutas: cualquier ruta carga la aplicación (las páginas legales son archivos estáticos y no se ven afectadas)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
