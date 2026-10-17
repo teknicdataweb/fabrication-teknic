@@ -148,7 +148,7 @@ export default function ApplicationForm({ poste }: { poste: string }) {
 
       <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="max-w-xs">
-          <p className="font-sans font-light text-[11px] text-white/40 leading-relaxed">
+          <p className="font-sans font-light text-[11px] text-white/60 leading-relaxed">
             {t(
               "En envoyant, vous acceptez que nous utilisions ces renseignements pour évaluer votre candidature.",
               'By submitting, you agree that we may use this information to assess your application.'

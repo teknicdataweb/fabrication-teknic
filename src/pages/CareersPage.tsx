@@ -57,20 +57,26 @@ export default function CareersPage() {
           </h1>
           <p className="font-sans font-light text-white/60 text-base md:text-lg leading-relaxed">
             {t(
-              'Chez Fabrication TEK-NIC, nous travaillons le métal avec rigueur et passion. Découvrez nos postes ouverts et joignez une équipe qui vous donne les outils pour exceller.',
-              'At Fabrication TEK-NIC, we work metal with rigor and passion. Discover our open positions and join a team that gives you the tools to excel.'
+              JOBS.length > 0
+                ? 'Chez Fabrication TEK-NIC, nous travaillons le métal avec rigueur et passion. Découvrez nos postes ouverts et joignez une équipe qui vous donne les outils pour exceller.'
+                : "Chez Fabrication TEK-NIC, nous travaillons le métal avec rigueur et passion. Aucun poste n'est ouvert pour le moment, mais nous aimons rencontrer des gens de métier : envoyez-nous votre candidature.",
+              JOBS.length > 0
+                ? 'At Fabrication TEK-NIC, we work metal with rigor and passion. Discover our open positions and join a team that gives you the tools to excel.'
+                : 'At Fabrication TEK-NIC, we work metal with rigor and passion. There are no open positions right now, but we love meeting skilled people: send us your application.'
             )}
           </p>
         </div>
 
-        <div className="flex items-baseline justify-between mb-6 pb-4 border-b border-white/10">
-          <h2 className="font-display text-xl md:text-2xl uppercase tracking-tight">
-            {t('Postes ouverts', 'Open positions')}
-          </h2>
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
-            {JOBS.length.toString().padStart(2, '0')} {t('offres', 'openings')}
-          </span>
-        </div>
+        {JOBS.length > 0 && (
+          <div className="flex items-baseline justify-between mb-6 pb-4 border-b border-white/10">
+            <h2 className="font-display text-xl md:text-2xl uppercase tracking-tight">
+              {t('Postes ouverts', 'Open positions')}
+            </h2>
+            <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
+              {JOBS.length.toString().padStart(2, '0')} {t('offres', 'openings')}
+            </span>
+          </div>
+        )}
 
         <div className="flex flex-col gap-4">
           {JOBS.map((job) => (

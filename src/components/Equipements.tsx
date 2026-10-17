@@ -99,7 +99,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
             <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
               {t('Usinage CNC · Alésage', 'CNC machining · Boring')}
             </h3>
-            <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
               {t('03 machines phares', '03 flagship machines')}
             </span>
           </div>
@@ -131,7 +131,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'radial-gradient(circle at 50% 0%, rgba(200,16,46,0.12) 0%, transparent 60%)' }} />
 
                 <div className="relative z-10">
-                  <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase mb-3">
+                  <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase mb-3">
                     {h.category[lang]}
                   </div>
                   <h4 className="font-display text-3xl md:text-4xl uppercase leading-none mb-1 bg-gradient-to-b from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">
@@ -147,7 +147,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
                   <div className="grid grid-cols-4 gap-3 mb-6">
                     {h.specs.map((s) => (
                       <div key={s.label} className="border-l border-white/10 group-hover:border-teknic-red/40 pl-2 transition-colors duration-500">
-                        <div className="font-mono text-[9px] tracking-widest text-white/40 uppercase mb-1">
+                        <div className="font-mono text-[9px] tracking-widest text-white/60 uppercase mb-1">
                           {s.label}
                         </div>
                         <div className="font-display text-base md:text-lg text-white">
@@ -180,7 +180,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
             <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
               {t('Tours · Perçage · Rectification', 'Lathes · Drilling · Grinding')}
             </h3>
-            <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
               {LATHES.length.toString().padStart(2, '0')} {t('équipements', 'machines')}
             </span>
           </div>
@@ -190,16 +190,16 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
           {/* Desktop table */}
           <div className="hidden md:block">
             <div className="grid grid-cols-[1.4fr_1fr_1.4fr_auto] gap-6 pb-3 mb-2 border-b border-white/10">
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
                 {t('Type', 'Type')}
               </div>
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
                 {t('Marque / Modèle', 'Brand / Model')}
               </div>
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
                 {t('Capacité', 'Capacity')}
               </div>
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase w-8 text-right">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase w-8 text-right">
                 #
               </div>
             </div>
@@ -218,7 +218,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
                   <div className="font-display text-lg text-white tracking-tight">
                     {row.spec}
                   </div>
-                  <div className="font-mono text-[10px] tracking-widest text-white/30 group-hover:text-teknic-red w-8 text-right transition-colors">
+                  <div className="font-mono text-[10px] tracking-widest text-white/50 group-hover:text-teknic-red w-8 text-right transition-colors">
                     {(i + 1).toString().padStart(2, '0')}
                   </div>
                 </li>
@@ -234,7 +234,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
                 className="border border-white/10 rounded-lg p-4 hover:border-teknic-red/40 transition-colors"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <div className="font-mono text-[10px] tracking-widest text-white/40 uppercase">
+                  <div className="font-mono text-[10px] tracking-widest text-white/60 uppercase">
                     {row.type[lang]}
                   </div>
                   <span className="font-mono text-[10px] text-teknic-red">
@@ -268,7 +268,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
             <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
               {t('Soudage · Capacités industrielles', 'Welding · Industrial capabilities')}
             </h3>
-            <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
               {CAPABILITIES.length.toString().padStart(2, '0')} {t('capacités', 'capabilities')}
             </span>
           </div>
@@ -284,7 +284,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
 
         {/* Bottom signature */}
         <div className="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
+          <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             Nicolet, {t('Québec', 'Quebec')} · 50 Route Marie-Victorin
           </div>
           <a

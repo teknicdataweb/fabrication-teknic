@@ -110,8 +110,8 @@ export default function ServicesShowcase() {
           </h2>
           <p className="font-sans font-light text-white/60 text-sm md:text-base leading-relaxed">
             {t(
-              'Quatre expertises sous un même toit. Chaque projet est pris en charge de bout en bout par nos équipes.',
-              'Four areas of expertise under one roof. Every project is handled end to end by our teams.'
+              'Cinq expertises sous un même toit. Chaque projet est pris en charge de bout en bout par nos équipes.',
+              'Five areas of expertise under one roof. Every project is handled end to end by our teams.'
             )}
           </p>
         </div>
@@ -158,8 +158,8 @@ export default function ServicesShowcase() {
         />
 
         {/* Section label */}
-        <div className="absolute top-24 left-6 md:left-12 z-30 font-mono text-[10px] tracking-[0.4em] text-white/40 uppercase">
-          {t('Nos Services', 'Our Services')} · 04 disciplines
+        <div className="absolute top-24 left-6 md:left-12 z-30 font-mono text-[10px] tracking-[0.4em] text-white/60 uppercase">
+          {t('Nos Services', 'Our Services')} · {String(SERVICES.length).padStart(2, '0')} disciplines
         </div>
 
         {/* Progress indicators: clicables, el activo muestra el nombre */}
@@ -236,6 +236,8 @@ export default function ServicesShowcase() {
                     <div className="self-start mb-6 bg-white rounded-md p-2 shadow-xl shadow-black/40">
                       <img
                         src={s.badge.src}
+                        width={364}
+                        height={496}
                         alt={lang === 'en' && s.badge.altEn ? s.badge.altEn : s.badge.alt}
                         loading="lazy"
                         className="block h-24 w-auto"
@@ -250,7 +252,7 @@ export default function ServicesShowcase() {
                     >
                       {s.number}
                     </span>
-                    <span className="font-mono text-xs tracking-[0.3em] text-white/40">
+                    <span className="font-mono text-xs tracking-[0.3em] text-white/60">
                       / 0{SERVICES.length}
                     </span>
                   </div>
@@ -388,7 +390,7 @@ export default function ServicesShowcase() {
                           className="border-l pl-4"
                           style={{ borderColor: `${s.accent}40` }}
                         >
-                          <div className="font-mono text-[10px] tracking-widest uppercase text-white/40 mb-1">
+                          <div className="font-mono text-[10px] tracking-widest uppercase text-white/60 mb-1">
                             {spec.label[lang]}
                           </div>
                           <div className="font-display text-xl md:text-2xl text-white">
@@ -405,7 +407,7 @@ export default function ServicesShowcase() {
         })}
 
         {/* Bottom scroll hint */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
           {t('Défiler pour explorer', 'Scroll to explore')}
         </div>
       </div>
@@ -639,7 +641,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
             >
               {s.number}
             </span>
-            <span className="font-mono text-[10px] tracking-[0.3em] text-white/40">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-white/60">
               / 0{SERVICES.length}
             </span>
           </div>
@@ -672,7 +674,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
       <div className="relative p-5 md:p-6">
         {s.badge && (
           <div className="inline-block mb-4 bg-white rounded-md p-1.5 shadow-lg shadow-black/40">
-            <img src={s.badge.src} alt={lang === 'en' && s.badge.altEn ? s.badge.altEn : s.badge.alt} loading="lazy" className="block h-20 w-auto" />
+            <img src={s.badge.src} alt={lang === 'en' && s.badge.altEn ? s.badge.altEn : s.badge.alt} width={364} height={496} loading="lazy" className="block h-20 w-auto" />
           </div>
         )}
 
@@ -697,7 +699,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
               className="border-l pl-3"
               style={{ borderColor: `${s.accent}40` }}
             >
-              <div className="font-mono text-[9px] tracking-widest uppercase text-white/40 mb-1">
+              <div className="font-mono text-[9px] tracking-widest uppercase text-white/60 mb-1">
                 {spec.label[lang]}
               </div>
               <div className="font-display text-base text-white">

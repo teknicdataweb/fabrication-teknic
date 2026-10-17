@@ -119,17 +119,17 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-        <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+        <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
           Scroll
         </span>
         <div className="h-12 w-px bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
       </div>
 
       {/* Corner tech labels */}
-      <div className="absolute top-24 left-6 md:left-12 z-20 font-mono text-[10px] tracking-widest text-white/30 hidden md:block">
+      <div className="absolute top-24 left-6 md:left-12 z-20 font-mono text-[10px] tracking-widest text-white/50 hidden md:block">
         46° 13' N · 72° 37' W
       </div>
-      <div className="absolute bottom-8 right-6 md:right-12 z-20 font-mono text-[10px] tracking-widest text-white/30 hidden md:block">
+      <div className="absolute bottom-8 right-6 md:right-12 z-20 font-mono text-[10px] tracking-widest text-white/50 hidden md:block">
         TEK-NIC / EST. QC
       </div>
     </section>

@@ -2,7 +2,11 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo-teknic.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0b0b0b" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission." />
     <meta name="keywords" content="usinage CNC, fabrication métallique, soudure, mécanique industrielle, impression 3D, atelier d'usinage, Nicolet, Centre-du-Québec, Québec" />
@@ -12,7 +16,10 @@
     <meta property="og:url" content="https://teknicweb.netlify.app/" />
     <meta property="og:title" content="Usinage CNC, fabrication et soudure à Nicolet | TEK-NIC" />
     <meta property="og:description" content="Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission." />
-    <meta property="og:image" content="https://teknicweb.netlify.app/service-fabrication.jpg" />
+    <meta property="og:image" content="https://teknicweb.netlify.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Fabrication TEK-NIC — Usinage CNC, fabrication et soudure à Nicolet, Québec" />
     <meta property="og:locale" content="fr_CA" />
     <meta property="og:locale:alternate" content="en_CA" />
     <meta property="og:site_name" content="Fabrication TEK-NIC" />
@@ -22,7 +29,7 @@
     <meta name="twitter:url" content="https://teknicweb.netlify.app/" />
     <meta name="twitter:title" content="Usinage CNC, fabrication et soudure à Nicolet | TEK-NIC" />
     <meta name="twitter:description" content="Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission." />
-    <meta name="twitter:image" content="https://teknicweb.netlify.app/service-fabrication.jpg" />
+    <meta name="twitter:image" content="https://teknicweb.netlify.app/og-image.jpg" />
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://teknicweb.netlify.app/" />
@@ -100,6 +107,18 @@
   </head>
   <body class="bg-black text-white antialiased">
     <div id="root"></div>
+    <noscript>
+      <main style="font-family: sans-serif; padding: 2rem; color: #fff; background: #000">
+        <h1>Fabrication TEK-NIC — Usinage CNC, fabrication et soudure à Nicolet, Québec</h1>
+        <p>Usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D. Atelier de 12 500 pi² à Nicolet, Québec.</p>
+        <p>50, route Marie-Victorin, Nicolet (Québec) J3T 1A1 · 819-870-3271 · info@fabricationteknic.com</p>
+        <nav>
+          <a href="/services">Services</a> · <a href="/equipements">Équipements</a> · <a href="/portfolio">Portfolio</a> ·
+          <a href="/carrieres">Carrières</a> · <a href="/contact">Contact</a>
+        </nav>
+        <p>Veuillez activer JavaScript pour utiliser ce site.</p>
+      </main>
+    </noscript>
 
     <!-- Netlify Forms: copie estática para que Netlify registre el formulario "soumission" -->
     <form name="soumission" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>

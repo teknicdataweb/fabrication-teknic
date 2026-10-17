@@ -121,7 +121,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
             <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
               {t('Formulaire', 'Form')}
             </h3>
-            <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
               {t('5 champs', '5 fields')}
             </span>
           </div>
@@ -188,7 +188,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
 
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="max-w-xs">
-              <p className="font-sans font-light text-[11px] text-white/40 leading-relaxed">
+              <p className="font-sans font-light text-[11px] text-white/60 leading-relaxed">
                 {t("En envoyant, vous acceptez d'être contacté par notre équipe.", 'By submitting, you agree to be contacted by our team.')}
               </p>
               {status === 'error' && (

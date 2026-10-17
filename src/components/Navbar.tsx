@@ -47,6 +47,8 @@ export default function Navbar() {
             <img
               src="/logo-teknic.png"
               alt="Fabrication TEK-NIC"
+              width={640}
+              height={227}
               className={`transition-all duration-500 w-auto ${
                 scrolled ? 'h-9 md:h-12' : 'h-11 md:h-14'
               }`}
@@ -77,7 +79,7 @@ export default function Navbar() {
               aria-label={t('Changer de langue', 'Switch language')}
             >
               <span className={lang === 'fr' ? 'text-white' : ''}>FR</span>
-              <span className="mx-1 text-white/30">|</span>
+              <span className="mx-1 text-white/50">|</span>
               <span className={lang === 'en' ? 'text-white' : ''}>EN</span>
             </button>
 
@@ -143,7 +145,7 @@ export default function Navbar() {
                     onClick={() => setDrawerOpen(false)}
                     className="group flex items-baseline gap-4"
                   >
-                    <span className="font-mono text-[10px] tracking-widest text-white/30 group-hover:text-teknic-red transition-colors">
+                    <span className="font-mono text-[10px] tracking-widest text-white/50 group-hover:text-teknic-red transition-colors">
                       0{i + 1}
                     </span>
                     <span className="font-display text-4xl sm:text-5xl uppercase text-white group-hover:text-teknic-red transition-colors leading-none">
@@ -156,7 +158,7 @@ export default function Navbar() {
           </div>
 
           <div className="pt-8 border-t border-white/10 flex items-center justify-between">
-            <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+            <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
               Nicolet · {t('Québec', 'Quebec')}
             </div>
             <Link

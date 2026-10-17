@@ -4,7 +4,7 @@ import { QuebecFlag, CanadaFlag } from './Flags'
 import { useLang } from '../lib/i18n'
 
 const linkClass =
-  'font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase hover:text-teknic-red transition-colors'
+  'font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase hover:text-teknic-red transition-colors'
 
 export default function Footer() {
   const { t } = useLang()
@@ -15,9 +15,11 @@ export default function Footer() {
           <img
             src="/logo-teknic.png"
             alt="Fabrication TEK-NIC"
+            width={640}
+            height={227}
             className="h-8 w-auto opacity-80"
           />
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             © {new Date().getFullYear()} · {t('Tous droits réservés', 'All rights reserved')}
           </span>
         </div>
@@ -45,7 +47,7 @@ export default function Footer() {
           </a>
         </nav>
         <div className="flex items-center gap-6">
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             Nicolet · {t('Québec', 'Quebec')}
           </span>
           <span className="flex items-center gap-2" aria-hidden="false">
@@ -62,12 +64,14 @@ export default function Footer() {
           aria-label="Powered by DGreat.AI — dgreatai.com"
           className="group flex items-center justify-center gap-4 py-5"
         >
-          <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/40 transition-colors group-hover:text-white/70">
+          <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/60 transition-colors group-hover:text-white/70">
             Powered by
           </span>
           <img
             src="/brand/dgreat-logo.png"
             alt="DGreat.AI"
+            width={860}
+            height={150}
             loading="lazy"
             className="h-6 w-auto opacity-80 transition-opacity group-hover:opacity-100"
           />

@@ -132,15 +132,17 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
                   }}
                 />
               ) : (
-                // Sans témoins : image fixe du plan, sans cookies (si l'image manque, fond sombre)
-                <img
-                  src="/brand/map-atelier.jpg"
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover opacity-70"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none'
+                // Sans témoins : fond de plan stylisé (sans image externe ni cookies)
+                <div
+                  className="absolute inset-0 opacity-60"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px), radial-gradient(circle at 78% 50%, rgba(200,16,46,0.28) 0%, transparent 45%)',
+                    backgroundSize: '48px 48px, 48px 48px, 100% 100%',
                   }}
-                />
+                >
+                  <MapPin className="absolute right-[18%] top-1/2 -translate-y-1/2 w-10 h-10 text-teknic-red/80" strokeWidth={1.5} />
+                </div>
               )}
               <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30" />
             </div>
@@ -166,7 +168,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
                     strokeWidth={1.5}
                   />
                 </div>
-                <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
+                <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/60">
                   {t("Adresse de l'atelier", 'Shop address')}
                 </span>
               </div>
@@ -180,7 +182,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
             </div>
 
             <div className="relative z-10 flex items-center justify-between pt-8 mt-8 border-t border-white/5">
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
                 {t("12 500 pi² d'atelier", '12,500 sq ft shop')}
               </div>
               <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 group-hover:text-teknic-red uppercase transition-colors">
@@ -207,7 +209,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
                     strokeWidth={1.5}
                   />
                 </div>
-                <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
+                <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/60">
                   {t('Courriel', 'Email')}
                 </span>
               </div>
@@ -250,7 +252,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
                     />
                   </div>
                   <div>
-                    <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
+                    <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/60">
                       {c.role ? t('Direction', 'Management') : t('Ligne directe', 'Direct line')}
                     </div>
                     <div className="font-sans text-sm text-white/80 mt-0.5">
@@ -287,7 +289,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
           <div className="flex items-center gap-4">
             <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_12px_rgba(74,222,128,0.6)] animate-pulse" />
             <div>
-              <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40 mb-1">
+              <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/60 mb-1">
                 {t("Heures d'ouverture", 'Opening hours')}
               </div>
               <div className="font-display text-lg md:text-xl uppercase tracking-tight">

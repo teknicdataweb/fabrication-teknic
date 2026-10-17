@@ -11,7 +11,7 @@ export function FormStyles() {
           border-radius: 0.5rem;
           padding: 0.85rem 1rem;
           color: #fff;
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter Variable', 'Inter', sans-serif;
           font-weight: 300;
           font-size: 0.9rem;
           transition: all 0.3s ease;

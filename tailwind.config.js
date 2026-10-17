@@ -4,10 +4,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Anton"', '"Bodoni Moda"', 'serif'],
-        serif: ['"Bodoni Moda"', 'serif'],
-        sans: ['"Inter"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        display: ['"Anton"', '"Bodoni Moda Variable"', 'serif'],
+        serif: ['"Bodoni Moda Variable"', 'serif'],
+        sans: ['"Inter Variable"', '"Inter"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono Variable"', '"JetBrains Mono"', 'monospace'],
       },
       colors: {
         teknic: {

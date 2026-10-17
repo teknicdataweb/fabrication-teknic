@@ -29,18 +29,24 @@ export default function CustomCursor() {
 
     window.addEventListener('mousemove', onMove)
 
-    const interactive = document.querySelectorAll('a, button, [role="button"], input, textarea, select, .cursor-hover')
-    interactive.forEach((el) => {
-      el.addEventListener('mouseenter', onEnterInteractive)
-      el.addEventListener('mouseleave', onLeaveInteractive)
-    })
+    // Delegación en el documento: funciona también con lo que aparece después (banner, menú, páginas nuevas)
+    const SELECTOR = 'a, button, [role="button"], input, textarea, select, label, summary, .cursor-hover'
+    let hovering = false
+    const onOver = (e: MouseEvent) => {
+      const el = (e.target as Element | null)?.closest?.(SELECTOR)
+      if (el && !hovering) {
+        hovering = true
+        onEnterInteractive()
+      } else if (!el && hovering) {
+        hovering = false
+        onLeaveInteractive()
+      }
+    }
+    document.addEventListener('mouseover', onOver)
 
     return () => {
       window.removeEventListener('mousemove', onMove)
-      interactive.forEach((el) => {
-        el.removeEventListener('mouseenter', onEnterInteractive)
-        el.removeEventListener('mouseleave', onLeaveInteractive)
-      })
+      document.removeEventListener('mouseover', onOver)
     }
   }, [])
 
@@ -48,11 +54,11 @@ export default function CustomCursor() {
     <>
       <div
         ref={ring}
-        className="pointer-events-none fixed left-0 top-0 z-[100] hidden md:block h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 mix-blend-difference"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 mix-blend-difference"
       />
       <div
         ref={dot}
-        className="pointer-events-none fixed left-0 top-0 z-[100] hidden md:block h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white mix-blend-difference"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white mix-blend-difference"
       />
     </>
   )

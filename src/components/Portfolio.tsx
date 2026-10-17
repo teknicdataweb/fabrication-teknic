@@ -97,7 +97,7 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
           <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
             {t('Galerie · Réalisations', 'Gallery · Projects')}
           </h3>
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">
             {PROJECTS.length.toString().padStart(2, '0')} {t('projets', 'projects')}
           </span>
         </div>
@@ -198,7 +198,7 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
 
         {/* Bottom signature */}
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
+          <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
             Nicolet · {t('Québec', 'Quebec')} · {t("12 500 pi² d'atelier", '12,500 sq ft shop')}
           </div>
           <a
@@ -282,7 +282,7 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
                   </div>
                 )}
               </div>
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase whitespace-nowrap">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase whitespace-nowrap">
                 {(openIdx! + 1).toString().padStart(2, '0')} / {PROJECTS.length.toString().padStart(2, '0')}
               </div>
             </div>

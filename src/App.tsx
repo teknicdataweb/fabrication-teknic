@@ -14,6 +14,7 @@ import EquipementsPage from './pages/EquipementsPage'
 import PortfolioPage from './pages/PortfolioPage'
 import ContactPage from './pages/ContactPage'
 import CareersPage from './pages/CareersPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 gsap.registerPlugin(ScrollTrigger)
 ;(window as any).gsap = gsap
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/carrieres" element={<CareersPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       {pathname === '/' && <JoinUs />}

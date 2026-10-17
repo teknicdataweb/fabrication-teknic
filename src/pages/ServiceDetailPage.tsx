@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, Phone, MessageSquare, Mail } from 'lucide-react'
 import { SERVICES } from '../data/services'
+import { SERVICE_DETAILS } from '../data/serviceDetails'
 import { usePageMeta, breadcrumbLd, SITE } from '../lib/pageMeta'
 import { useLang } from '../lib/i18n'
 
@@ -89,7 +90,7 @@ export default function ServiceDetailPage() {
 
             {s.badge && (
               <div className="inline-block bg-white rounded-md p-2 mb-6 shadow-xl shadow-black/40">
-                <img src={s.badge.src} alt={lang === 'en' && s.badge.altEn ? s.badge.altEn : s.badge.alt} className="block h-24 w-auto" />
+                <img src={s.badge.src} alt={lang === 'en' && s.badge.altEn ? s.badge.altEn : s.badge.alt} width={364} height={496} className="block h-24 w-auto" />
               </div>
             )}
 
@@ -97,7 +98,7 @@ export default function ServiceDetailPage() {
               <span className="font-mono text-sm tracking-[0.3em]" style={{ color: s.accent }}>
                 {s.number}
               </span>
-              <span className="font-mono text-xs tracking-[0.3em] text-white/40">/ 05</span>
+              <span className="font-mono text-xs tracking-[0.3em] text-white/60">/ 05</span>
             </div>
 
             <h1 className="font-display uppercase leading-[0.85] text-5xl md:text-7xl lg:text-8xl mb-6">
@@ -109,7 +110,7 @@ export default function ServiceDetailPage() {
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md mb-12">
               {s.specs.map((spec, k) => (
                 <div key={k} className="border-l pl-4" style={{ borderColor: `${s.accent}40` }}>
-                  <div className="font-mono text-[10px] tracking-widest uppercase text-white/40 mb-1">
+                  <div className="font-mono text-[10px] tracking-widest uppercase text-white/60 mb-1">
                     {spec.label[lang]}
                   </div>
                   <div className="font-display text-xl md:text-2xl text-white">{lang === 'en' && spec.valueEn ? spec.valueEn : spec.value}</div>
@@ -150,7 +151,7 @@ export default function ServiceDetailPage() {
 
             {s.contacts && s.email && (
               <div className="mt-14 pt-8 border-t border-white/10">
-                <div className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/40 mb-6">{t('Nous joindre', 'Contact us')}</div>
+                <div className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/60 mb-6">{t('Nous joindre', 'Contact us')}</div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mb-4">
                   {s.contacts.map((c) => {
                     const digits = c.phone.replace(/\D/g, '')
@@ -199,6 +200,31 @@ export default function ServiceDetailPage() {
             ) : null}
           </div>
         </div>
+
+        {/* Texto ampliado del servicio */}
+        {SERVICE_DETAILS[s.id] && (
+          <div className="mt-20 pt-12 border-t border-white/10 max-w-3xl">
+            <h2 className="font-display uppercase text-3xl md:text-4xl leading-tight mb-6">
+              {SERVICE_DETAILS[s.id].heading[lang]}
+            </h2>
+            {SERVICE_DETAILS[s.id].paragraphs.map((p, i) => (
+              <p key={i} className="font-sans font-light text-white/70 leading-relaxed mb-5 text-base md:text-lg">
+                {p[lang]}
+              </p>
+            ))}
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-[11px] tracking-[0.25em] uppercase">
+              <Link to="/equipements" className="text-white/70 hover:text-teknic-red transition-colors">
+                {t('Voir nos équipements →', 'See our equipment →')}
+              </Link>
+              <Link to="/portfolio" className="text-white/70 hover:text-teknic-red transition-colors">
+                {t('Voir nos réalisations →', 'See our work →')}
+              </Link>
+              <Link to="/services" className="text-white/70 hover:text-teknic-red transition-colors">
+                {t('Tous les services →', 'All services →')}
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

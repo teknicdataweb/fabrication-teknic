@@ -7,8 +7,8 @@ export default function EquipementsPage() {
   usePageMeta(
     t('Équipements CNC, tours et soudage | TEK-NIC', 'CNC Machines, Lathes & Welding Equipment | TEK-NIC'),
     t(
-      'Centres CNC, tours, rectifieuses et capacités de soudage de notre atelier à Nicolet, Québec.',
-      'CNC centers, lathes, grinders and welding capabilities of our shop in Nicolet, Quebec.'
+      "Centres d'usinage CNC, aléseuses, tours, rectifieuses et soudage : le parc machine de notre atelier de 12 500 pi² à Nicolet, Québec.",
+      'CNC machining centers, boring mills, lathes, grinders and welding: the machine fleet of our 12,500 sq ft shop in Nicolet, Quebec.'
     ),
     '/equipements',
     breadcrumbLd([

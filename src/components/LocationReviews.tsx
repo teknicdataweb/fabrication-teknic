@@ -35,7 +35,7 @@ export default function LocationReviews() {
         {/* Sub-header */}
         <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-white/10">
           <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">{t('Avis · Google', 'Reviews · Google')}</h3>
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/40 uppercase">Nicolet · QC</span>
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/60 uppercase">Nicolet · QC</span>
         </div>
 
         <div className="group relative border border-white/10 rounded-lg p-6 md:p-10 bg-gradient-to-br from-white/[0.02] to-transparent">
@@ -48,12 +48,12 @@ export default function LocationReviews() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
             {/* Note */}
             <div>
-              <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">Google Reviews</span>
+              <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/60">Google Reviews</span>
               <div className="flex items-baseline gap-3 mt-4 mb-4">
                 <span className="font-display text-6xl md:text-7xl leading-none tracking-tight">
                   {REVIEWS.rating.toFixed(1)}
                 </span>
-                <span className="font-mono text-white/40 text-sm">/ 5.0</span>
+                <span className="font-mono text-white/60 text-sm">/ 5.0</span>
               </div>
               <div className="flex items-center gap-1 mb-3">
                 {[0, 1, 2, 3, 4].map((i) => (

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Briefcase } from 'lucide-react'
 import { useLang } from '../lib/i18n'
+import { JOBS } from '../data/jobs'
 
 /** Invitación a trabajar con la empresa: abre el correo con un mensaje prearmado */
 export default function JoinUs() {
@@ -29,8 +30,12 @@ export default function JoinUs() {
           </h2>
           <p className="font-sans font-light text-white/60 text-base md:text-lg leading-relaxed">
             {t(
-              'Consultez nos postes ouverts ou envoyez-nous votre candidature spontanée. Nous aimons rencontrer des gens passionnés par le métal.',
-              'Browse our open positions or send us a spontaneous application. We love meeting people who are passionate about metal.'
+              JOBS.length > 0
+                ? 'Consultez nos postes ouverts ou envoyez-nous votre candidature spontanée. Nous aimons rencontrer des gens passionnés par le métal.'
+                : 'Envoyez-nous votre candidature spontanée. Nous aimons rencontrer des gens passionnés par le métal.',
+              JOBS.length > 0
+                ? 'Browse our open positions or send us a spontaneous application. We love meeting people who are passionate about metal.'
+                : 'Send us a spontaneous application. We love meeting people who are passionate about metal.'
             )}
           </p>
         </div>
@@ -41,7 +46,7 @@ export default function JoinUs() {
         >
           <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           <Briefcase className="relative z-10 w-4 h-4" strokeWidth={2} />
-          <span className="relative z-10">{t('Voir les emplois', 'See job openings')}</span>
+          <span className="relative z-10">{JOBS.length > 0 ? t('Voir les emplois', 'See job openings') : t('Postuler', 'Apply')}</span>
         </Link>
       </div>
     </section>

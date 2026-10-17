@@ -9,8 +9,8 @@ export default function ContactPage() {
   usePageMeta(
     t('Soumission gratuite et contact | Fabrication TEK-NIC', 'Free Quote & Contact | Fabrication TEK-NIC'),
     t(
-      'Demandez une soumission gratuite à Fabrication TEK-NIC, Nicolet, Québec. Réponse sous 24 à 48 heures.',
-      'Request a free quote from Fabrication TEK-NIC, Nicolet, Quebec. Reply within 24 to 48 hours.'
+      "Demandez une soumission gratuite à Fabrication TEK-NIC, atelier d'usinage et de fabrication à Nicolet, Québec. Réponse sous 24 à 48 heures.",
+      'Request a free quote from Fabrication TEK-NIC, a machining and fabrication shop in Nicolet, Quebec. Reply within 24 to 48 hours.'
     ),
     '/contact',
     breadcrumbLd([

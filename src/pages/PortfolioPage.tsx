@@ -7,8 +7,8 @@ export default function PortfolioPage() {
   usePageMeta(
     t('Réalisations : pièces usinées et soudées | TEK-NIC', 'Our Work: Machined & Welded Parts | TEK-NIC'),
     t(
-      'Réalisations de Fabrication TEK-NIC : pièces usinées, soudées et fabriquées sur mesure à Nicolet, Québec.',
-      'Fabrication TEK-NIC projects: custom machined, welded and fabricated parts in Nicolet, Quebec.'
+      'Réalisations de Fabrication TEK-NIC : pièces usinées, soudées et fabriquées sur mesure en acier, aluminium et inox, à Nicolet, Québec.',
+      'Fabrication TEK-NIC projects: custom machined, welded and fabricated parts in steel, aluminum and stainless steel, made in Nicolet, Quebec.'
     ),
     '/portfolio',
     breadcrumbLd([
