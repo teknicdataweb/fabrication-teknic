@@ -4,6 +4,8 @@ import { SERVICES } from '../data/services'
 import { SERVICE_DETAILS } from '../data/serviceDetails'
 import { usePageMeta, breadcrumbLd, SITE, canonicalUrl } from '../lib/pageMeta'
 import { useLang } from '../lib/i18n'
+import { useToast } from '../components/Toast'
+import { copyAndShow, isTouchDevice, gmailComposeUrl } from '../lib/contactActions'
 
 /** "IMPRESSION 3D" -> "Impression 3D" (las palabras con cifras, como 3D, se dejan tal cual) */
 const titleCase = (name: string) =>
@@ -16,6 +18,11 @@ const titleCase = (name: string) =>
 export default function ServiceDetailPage() {
   const { id } = useParams()
   const { lang, t, lp } = useLang()
+  const { show, toast } = useToast()
+  // En computadora no suele haber programa de correo/teléfono: se copia el dato y se avisa
+  const copyAndNotify = (text: string, message: string, fallback: string = message) => {
+    if (!isTouchDevice()) copyAndShow(text, message, fallback, show)
+  }
   const s = SERVICES.find((x) => x.id === id)
 
   usePageMeta(
@@ -141,11 +148,20 @@ export default function ServiceDetailPage() {
               </Link>
             )}
             {s.email && (
-              <ContactButton
-                href={`mailto:${s.email}?subject=${encodeURIComponent(t(EMAIL_SUBJECT.fr, EMAIL_SUBJECT.en))}&body=${encodeURIComponent(t(EMAIL_BODY.fr, EMAIL_BODY.en))}`}
-                icon={Mail}
-                label={t('Écrire un courriel', 'Send an email')}
-              />
+              <>
+                <ContactButton
+                  href={`mailto:${s.email}?subject=${encodeURIComponent(t(EMAIL_SUBJECT.fr, EMAIL_SUBJECT.en))}&body=${encodeURIComponent(t(EMAIL_BODY.fr, EMAIL_BODY.en))}`}
+                  icon={Mail}
+                  label={t('Écrire un courriel', 'Send an email')}
+                  onClick={() => copyAndNotify(s.email!, t('Adresse copiée : ', 'Address copied: ') + s.email)}
+                />
+                <ContactButton
+                  href={gmailComposeUrl(s.email, t(EMAIL_SUBJECT.fr, EMAIL_SUBJECT.en), t(EMAIL_BODY.fr, EMAIL_BODY.en))}
+                  icon={Mail}
+                  label={t('Ouvrir Gmail', 'Open Gmail')}
+                  external
+                />
+              </>
             )}
             </div>
 
@@ -163,11 +179,24 @@ export default function ServiceDetailPage() {
                         <div className="font-display uppercase text-white text-lg leading-tight mb-1">{c.name}</div>
                         <div className="font-sans text-sm text-white/60 mb-4">{c.phone}</div>
                         <div className="flex flex-wrap gap-2">
-                          <ContactButton href={`tel:+1${digits}`} icon={Phone} label={t('Appeler', 'Call')} />
                           <ContactButton
-                            href={`sms:+1${digits}?body=${encodeURIComponent(t(SMS_TEXT.fr, SMS_TEXT.en))}`}
+                            href={`tel:+1${digits}`}
+                            icon={Phone}
+                            label={t('Appeler', 'Call')}
+                            onClick={() =>
+                              copyAndNotify(c.phone, t('Numéro copié : ', 'Number copied: ') + c.phone + t(' — composez-le depuis votre téléphone.', ' — dial it from your phone.'))
+                            }
+                          />
+                          <ContactButton
+                            href={`sms:+1${digits}?&body=${encodeURIComponent(t(SMS_TEXT.fr, SMS_TEXT.en))}`}
                             icon={MessageSquare}
                             label={t('Message', 'Text')}
+                            onClick={() =>
+                              copyAndNotify(
+                                t(SMS_TEXT.fr, SMS_TEXT.en),
+                                t('Message copié — envoyez-le au ', 'Message copied — send it to ') + c.phone + t(' depuis votre téléphone.', ' from your phone.')
+                              )
+                            }
                           />
                         </div>
                       </div>
@@ -226,6 +255,7 @@ export default function ServiceDetailPage() {
           </div>
         )}
       </div>
+      {toast}
     </section>
   )
 }
@@ -269,15 +299,21 @@ function ContactButton({
   icon: Icon,
   label,
   wide = false,
+  onClick,
+  external = false,
 }: {
   href: string
   icon: typeof Phone
   label: string
   wide?: boolean
+  onClick?: () => void
+  external?: boolean
 }) {
   return (
     <a
       href={href}
+      onClick={onClick}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       className={`group relative overflow-hidden inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.25em] uppercase text-white hover:border-teknic-red transition-colors duration-300 ${wide ? 'w-full sm:w-auto' : ''}`}
     >
       <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none" />

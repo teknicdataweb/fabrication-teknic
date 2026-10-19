@@ -3,6 +3,8 @@ import { MapPin, Mail, Phone, User } from 'lucide-react'
 import { getConsent, onConsentChange } from '../lib/consent'
 import { MAP_EMBED_SRC, MAP_LINK } from '../lib/map'
 import { useLang } from '../lib/i18n'
+import { useToast } from './Toast'
+import { copyAndShow, isTouchDevice, gmailComposeUrl } from '../lib/contactActions'
 
 const CONTACTS = [
   {
@@ -10,6 +12,7 @@ const CONTACTS = [
     label: 'Bureau · Office',
     value: '819-870-3271',
     href: 'tel:8198703271',
+    first: '',
     role: null as string | null,
   },
   {
@@ -17,6 +20,7 @@ const CONTACTS = [
     label: 'François Champagne',
     value: '819-383-0679',
     href: 'tel:8193830679',
+    first: 'François',
     role: 'Direction',
   },
   {
@@ -24,6 +28,7 @@ const CONTACTS = [
     label: 'Stéphane Philibert',
     value: '819-269-3189',
     href: 'tel:8192693189',
+    first: 'Stéphane',
     role: 'Direction',
   },
 ]
@@ -63,6 +68,9 @@ const EMAIL_BODY = {
 export default function Contact({ asH1 = false }: { asH1?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
   const { lang, t } = useLang()
+  const { show, toast } = useToast()
+  const EMAIL = 'info@fabricationteknic.com'
+  const gmailHref = gmailComposeUrl(EMAIL, EMAIL_SUBJECT[lang], EMAIL_BODY[lang])
   const emailHref = `mailto:info@fabricationteknic.com?subject=${encodeURIComponent(
     EMAIL_SUBJECT[lang]
   )}&body=${encodeURIComponent(EMAIL_BODY[lang])}`
@@ -192,8 +200,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
           </a>
 
           {/* Email — tall card */}
-          <a
-            href={emailHref}
+          <div
             className="group relative flex flex-col justify-between border border-white/10 rounded-lg p-6 md:p-8 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
           >
             <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
@@ -221,12 +228,36 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
               </div>
             </div>
 
-            <div className="relative z-10 pt-8 mt-8 border-t border-white/5">
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 group-hover:text-teknic-red uppercase transition-colors">
-                {t('Nous écrire →', 'Write to us →')}
-              </div>
+            <div className="relative z-10 pt-8 mt-8 border-t border-white/5 flex flex-wrap gap-3">
+              <a
+                href={emailHref}
+                onClick={() => {
+                  if (!isTouchDevice())
+                    copyAndShow(EMAIL, t('Adresse copiée : ', 'Address copied: ') + EMAIL, t('Notre adresse : ', 'Our address: ') + EMAIL, show)
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
+              >
+                {t('Écrire un courriel', 'Write an email')}
+              </a>
+              <a
+                href={gmailHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
+              >
+                {t('Ouvrir Gmail', 'Open Gmail')}
+              </a>
+              <button
+                type="button"
+                onClick={() =>
+                  copyAndShow(EMAIL, t('Adresse copiée : ', 'Address copied: ') + EMAIL, t('Notre adresse : ', 'Our address: ') + EMAIL, show)
+                }
+                className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
+              >
+                {t("Copier l'adresse", 'Copy address')}
+              </button>
             </div>
-          </a>
+          </div>
         </div>
 
         {/* Phones — 3 cards */}
@@ -234,6 +265,10 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
           {CONTACTS.map((c) => {
             const Icon = c.icon
             const phone = c.href.replace('tel:', '')
+            const smsText = t(
+              `Bonjour${c.first ? ' ' + c.first : ''}, je vous contacte via le site Fabrication TEK-NIC au sujet d'un projet. Pourriez-vous me rappeler ? Merci.`,
+              `Hello${c.first ? ' ' + c.first : ''}, I am contacting you through the Fabrication TEK-NIC website about a project. Could you call me back? Thank you.`
+            )
             return (
               <div
                 key={c.value}
@@ -268,12 +303,30 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
                 <div className="relative z-10 mt-6 flex flex-wrap gap-3">
                   <a
                     href={`tel:+1${phone}`}
+                    onClick={() => {
+                      if (!isTouchDevice())
+                        copyAndShow(
+                          c.value,
+                          t('Numéro copié : ', 'Number copied: ') + c.value + t(' — composez-le depuis votre téléphone.', ' — dial it from your phone.'),
+                          t('Numéro : ', 'Number: ') + c.value + t(' — composez-le depuis votre téléphone.', ' — dial it from your phone.'),
+                          show
+                        )
+                    }}
                     className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
                   >
                     {t('Appeler', 'Call')}
                   </a>
                   <a
-                    href={`sms:+1${phone}`}
+                    href={`sms:+1${phone}?&body=${encodeURIComponent(smsText)}`}
+                    onClick={() => {
+                      if (!isTouchDevice())
+                        copyAndShow(
+                          smsText,
+                          t('Message copié — envoyez-le au ', 'Message copied — send it to ') + c.value + t(' depuis votre téléphone.', ' from your phone.'),
+                          t('Envoyez un message au ', 'Send a message to ') + c.value + t(' depuis votre téléphone.', ' from your phone.'),
+                          show
+                        )
+                    }}
                     className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
                   >
                     {t('Envoyer un message', 'Send a message')}
@@ -307,6 +360,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
         </div>
 
       </div>
+      {toast}
     </section>
   )
 }
