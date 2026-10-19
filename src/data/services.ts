@@ -138,6 +138,7 @@ export const SERVICES: Service[] = [
     image: '/service-mecanique.jpg',
     video: '/service-mecanique.mp4',
     cardVideo: '/service-mecanique-card.mp4',
+    cardFit: 'contain',
     bg: { from: '#450A0A', via: '#7F1D1D', to: '#1A0303' },
     accent: '#C8102E',
     specs: [
