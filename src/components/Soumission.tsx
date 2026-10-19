@@ -1,5 +1,5 @@
-import { useState, FormEvent } from 'react'
-import { Send, Check, Loader2 } from 'lucide-react'
+import { useRef, useState, FormEvent } from 'react'
+import { Send, Check, Loader2, Paperclip, X } from 'lucide-react'
 import { useLang } from '../lib/i18n'
 import { Field, FormStyles } from './formParts'
 
@@ -12,12 +12,21 @@ const SERVICE_OPTIONS = [
   { value: 'autre', fr: 'Autre', en: 'Other' },
 ]
 
+// Archivos adjuntos (planos, dibujos): Netlify limita el envío a ~8 Mo, por eso 7 Mo en total y 3 archivos
+const MAX_FILES = 3
+const MAX_TOTAL_BYTES = 7 * 1024 * 1024
+const ACCEPT = '.pdf,.dwg,.dxf,.step,.stp,.igs,.iges,.stl,.jpg,.jpeg,.png,.zip,.doc,.docx,.xls,.xlsx'
+const formatSize = (b: number) => (b >= 1024 * 1024 ? `${(b / 1024 / 1024).toFixed(1)} Mo` : `${Math.max(1, Math.round(b / 1024))} Ko`)
+
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
   const { t } = useLang()
   const [status, setStatus] = useState<Status>('idle')
+  const [files, setFiles] = useState<File[]>([])
+  const [fileError, setFileError] = useState<'' | 'count' | 'size'>('')
+  const fileInput = useRef<HTMLInputElement>(null)
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -31,19 +40,43 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }))
 
+  const onFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const added = Array.from(e.target.files ?? [])
+    e.target.value = '' // permite volver a elegir el mismo archivo
+    if (added.length === 0) return
+    const merged = [...files, ...added].filter((f, i, all) => all.findIndex((g) => g.name === f.name && g.size === f.size) === i)
+    if (merged.length > MAX_FILES) {
+      setFileError('count')
+      return
+    }
+    if (merged.reduce((sum, f) => sum + f.size, 0) > MAX_TOTAL_BYTES) {
+      setFileError('size')
+      return
+    }
+    setFileError('')
+    setFiles(merged)
+  }
+
+  const removeFile = (index: number) => {
+    setFiles((list) => list.filter((_, i) => i !== index))
+    setFileError('')
+  }
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setStatus('sending')
     try {
-      // Netlify recibe el envío en "/" y avisa por correo al equipo
-      const res = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ 'form-name': 'soumission', ...form }).toString(),
-      })
+      // Netlify recibe el envío en "/" (multipart, para poder adjuntar planos) y avisa por correo al equipo
+      const body = new FormData()
+      body.append('form-name', 'soumission')
+      Object.entries(form).forEach(([k, v]) => body.append(k, v))
+      files.forEach((file, i) => body.append(`plan${i + 1}`, file))
+      const res = await fetch('/', { method: 'POST', body })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setStatus('sent')
       setForm({ name: '', email: '', phone: '', service: '', message: '' })
+      setFiles([])
+      setFileError('')
       setTimeout(() => setStatus('idle'), 3000)
     } catch {
       setStatus('error')
@@ -185,6 +218,66 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
               className="input resize-none"
             />
           </Field>
+
+          {/* Archivos adjuntos (opcional) */}
+          <div className="mt-5">
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/50 mb-2 block">
+              {t('Plans ou fichiers (optionnel)', 'Drawings or files (optional)')}
+            </span>
+            <input
+              ref={fileInput}
+              type="file"
+              multiple
+              accept={ACCEPT}
+              onChange={onFiles}
+              className="sr-only"
+              tabIndex={-1}
+              aria-hidden="true"
+            />
+            <button
+              type="button"
+              onClick={() => fileInput.current?.click()}
+              className="input flex items-center gap-3 text-left cursor-pointer"
+            >
+              <Paperclip className="w-4 h-4 text-teknic-red shrink-0" strokeWidth={1.5} />
+              <span className="text-white/60">{t('Ajouter des fichiers…', 'Add files…')}</span>
+            </button>
+            <p className="font-sans font-light text-[11px] text-white/50 leading-relaxed mt-2">
+              {t(
+                'PDF, DXF, DWG, STEP, STL, images, Word ou Excel · 3 fichiers maximum, 7 Mo au total.',
+                'PDF, DXF, DWG, STEP, STL, images, Word or Excel · up to 3 files, 7 MB in total.'
+              )}
+            </p>
+            {files.length > 0 && (
+              <ul className="mt-3 space-y-2">
+                {files.map((f, i) => (
+                  <li
+                    key={`${f.name}-${f.size}`}
+                    className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2.5"
+                  >
+                    <span className="min-w-0 truncate font-sans text-sm text-white/80">
+                      {f.name} <span className="text-white/50">· {formatSize(f.size)}</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeFile(i)}
+                      aria-label={t('Retirer le fichier ', 'Remove file ') + f.name}
+                      className="shrink-0 rounded-full p-1 text-white/60 hover:text-teknic-red"
+                    >
+                      <X className="w-4 h-4" strokeWidth={2} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {fileError && (
+              <p role="alert" className="font-sans text-[11px] text-teknic-red leading-relaxed mt-2">
+                {fileError === 'count'
+                  ? t("Maximum 3 fichiers. Retirez-en un avant d'en ajouter un autre.", 'Maximum 3 files. Remove one before adding another.')
+                  : t('Les fichiers dépassent 7 Mo au total. Choisissez des fichiers plus légers.', 'The files exceed 7 MB in total. Please choose smaller files.')}
+              </p>
+            )}
+          </div>
 
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="max-w-xs">
