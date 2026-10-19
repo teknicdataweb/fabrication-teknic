@@ -25,6 +25,8 @@ export type Service = {
   email?: string
   // Optional — short looping video for the services overview card
   cardVideo?: string
+  // Optional — how the card video fits its frame: 'contain' shows the whole (vertical) video over a blurred copy of itself
+  cardFit?: 'cover' | 'contain'
   // Optional — short line shown on the services overview card when the service has no headline
   cardText?: { fr: string; en: string }
   // Optional — photo used as the cover on the services overview page (replaces the card video), with a logo over it
@@ -104,6 +106,7 @@ export const SERVICES: Service[] = [
     image: '/service-soudure.jpg',
     video: '/service-soudure.mp4',
     cardVideo: '/service-soudure-card.mp4',
+    cardFit: 'contain',
     badge: {
       src: '/brand/cwb-certified.png',
       alt: 'Logo CWB — Certifié CSA W47.1',

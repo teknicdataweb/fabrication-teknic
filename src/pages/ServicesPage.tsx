@@ -59,6 +59,29 @@ export default function ServicesPage() {
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover object-[50%_40%] transition-transform duration-700 group-hover:scale-105"
                     />
+                  ) : s.cardVideo && s.cardFit === 'contain' ? (
+                    // Video vertical: se ve completo, sobre una copia desenfocada de sí mismo que rellena los lados
+                    <>
+                      <video
+                        src={s.cardVideo}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        aria-hidden="true"
+                        className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl opacity-60"
+                      />
+                      <video
+                        src={s.cardVideo}
+                        poster={s.video ? s.video.replace(/\.mp4$/, '-poster.jpg') : cover}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        aria-label={s.name[lang]}
+                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                    </>
                   ) : s.cardVideo ? (
                     <video
                       src={s.cardVideo}
