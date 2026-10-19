@@ -579,7 +579,8 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
   return (
     <article
       ref={ref}
-      className="group relative rounded-lg overflow-hidden border border-white/10 animate-[fadeUp_800ms_ease-out_both]"
+      id={`service-${s.id}`}
+      className="group relative scroll-mt-24 rounded-lg overflow-hidden border border-white/10 animate-[fadeUp_800ms_ease-out_both]"
       style={{
         background: `linear-gradient(160deg, ${s.bg.from}80 0%, ${s.bg.to}90 100%)`,
         animationDelay: `${index * 100}ms`,
