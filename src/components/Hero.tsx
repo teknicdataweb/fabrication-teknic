@@ -67,11 +67,6 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-20 text-center px-6 max-w-6xl">
-        <p className="font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/70 mb-6">
-          {t("Atelier d'usinage CNC et de fabrication métallique", 'CNC machine shop and metal fabrication')}
-          <span className="mx-2 text-teknic-red">·</span>
-          Nicolet, Centre-du-Québec
-        </p>
         <h1 className="font-display flex flex-col leading-[0.9] tracking-tight uppercase">
           <span
             ref={line1}
