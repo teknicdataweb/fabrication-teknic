@@ -184,7 +184,14 @@ export default function ServicesShowcase() {
                 }`}
                 style={{ whiteSpace: 'nowrap' }}
               >
-                {i === active ? `0${i + 1} · ${s.name[lang]}` : `0${i + 1}`}
+                {i === active ? (
+                  <>
+                    {`0${i + 1}`}
+                    <span className="hidden xl:inline"> · {s.name[lang]}</span>
+                  </>
+                ) : (
+                  `0${i + 1}`
+                )}
               </span>
               <span
                 className={`h-px transition-all duration-500 ${

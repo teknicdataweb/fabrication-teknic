@@ -4,6 +4,8 @@ import gsap from 'gsap'
 export default function CustomCursor() {
   const dot = useRef<HTMLDivElement>(null)
   const ring = useRef<HTMLDivElement>(null)
+  // En pantallas táctiles no hay ratón: no se dibuja el cursor personalizado
+  const coarse = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
 
   useEffect(() => {
     if (window.matchMedia('(pointer: coarse)').matches) return
@@ -49,6 +51,8 @@ export default function CustomCursor() {
       document.removeEventListener('mouseover', onOver)
     }
   }, [])
+
+  if (coarse) return null
 
   return (
     <>

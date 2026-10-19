@@ -45,15 +45,14 @@ html.lenis, html.lenis body {
 }
 
 /* Cursor */
-* {
-  cursor: none;
-}
-a, button, [role="button"], input, textarea, select {
-  cursor: none;
-}
-
-@media (max-width: 768px) {
-  * { cursor: auto; }
+/* El cursor del sistema solo se oculta con ratón (el personalizado lo reemplaza); no en pantallas táctiles ni ventanas angostas */
+@media (hover: hover) and (pointer: fine) and (min-width: 769px) {
+  * {
+    cursor: none;
+  }
+  a, button, [role="button"], input, textarea, select {
+    cursor: none;
+  }
 }
 
 .text-stroke {

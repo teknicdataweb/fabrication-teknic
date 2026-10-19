@@ -28,6 +28,7 @@ export function FormStyles() {
         }
         .input:focus::placeholder { color: rgba(255,255,255,0.15); }
         select.input option { padding: 0.5rem; }
+        @media (max-width: 767px) { .input { font-size: 16px; } }
       `}</style>
   )
 }
