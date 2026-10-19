@@ -6,6 +6,27 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
 
+# Servicios que ya no existen como página propia: se redirigen al más cercano
+[[redirects]]
+  from = "/services/soudure"
+  to = "/services/fabrication/"
+  status = 301
+
+[[redirects]]
+  from = "/services/mecanique"
+  to = "/services/usinage/"
+  status = 301
+
+[[redirects]]
+  from = "/en/services/soudure"
+  to = "/en/services/fabrication/"
+  status = 301
+
+[[redirects]]
+  from = "/en/services/mecanique"
+  to = "/en/services/usinage/"
+  status = 301
+
 # Sitio de una página con rutas: cualquier ruta carga la aplicación (las páginas legales son archivos estáticos y no se ven afectadas)
 [[redirects]]
   from = "/*"

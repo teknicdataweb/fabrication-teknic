@@ -12,8 +12,8 @@ export default function CareersPage() {
   usePageMeta(
     t('Carrières et emplois à Nicolet | Fabrication TEK-NIC', 'Careers & Jobs in Nicolet | Fabrication TEK-NIC'),
     t(
-      "Joignez-vous à Fabrication TEK-NIC : emplois en usinage CNC, soudure et mécanique industrielle à Nicolet, Québec. Postulez dès aujourd'hui.",
-      'Join Fabrication TEK-NIC: jobs in CNC machining, welding and industrial mechanics in Nicolet, Quebec. Apply today.'
+      "Joignez-vous à Fabrication TEK-NIC : emplois en usinage CNC, fabrication et conception à Nicolet, Québec. Postulez dès aujourd'hui.",
+      'Join Fabrication TEK-NIC: jobs in CNC machining, fabrication and design in Nicolet, Quebec. Apply today.'
     ),
     '/carrieres',
     breadcrumbLd([

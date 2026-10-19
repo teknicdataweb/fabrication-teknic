@@ -8,10 +8,10 @@ import { useLang } from '../lib/i18n'
 export default function ServicesPage() {
   const { lang, t, lp } = useLang()
   usePageMeta(
-    t("Services d'usinage, fabrication et soudure | TEK-NIC", 'Machining, Fabrication & Welding Services | TEK-NIC'),
+    t("Services d'usinage, fabrication et conception | TEK-NIC", 'Machining, Fabrication & Design Services | TEK-NIC'),
     t(
-      'Usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Québec. Un seul atelier pour tout votre projet.',
-      'CNC machining, metal fabrication, welding, industrial mechanics and 3D printing in Nicolet, Quebec. One shop for your whole project.'
+      'Usinage CNC, fabrication métallique, conception (CAO) et impression 3D à Nicolet, Québec. Un seul atelier pour tout votre projet.',
+      'CNC machining, metal fabrication, design (CAD) and 3D printing in Nicolet, Quebec. One shop for your whole project.'
     ),
     '/services',
     breadcrumbLd([
@@ -35,8 +35,8 @@ export default function ServicesPage() {
           </h1>
           <p className="font-sans font-light text-white/60 text-base md:text-lg leading-relaxed">
             {t(
-              'Cinq expertises sous un même toit. Chaque projet est pris en charge de bout en bout par nos équipes.',
-              'Five areas of expertise under one roof. Every project is handled end to end by our teams.'
+              'Quatre expertises sous un même toit. Chaque projet est pris en charge de bout en bout par nos équipes.',
+              'Four areas of expertise under one roof. Every project is handled end to end by our teams.'
             )}
           </p>
         </div>

@@ -36,6 +36,7 @@ export type Service = {
   videoShape?: 'landscape' | 'square'
 }
 
+// Fondos de la marca: negro, rojo, gris y blanco (el blanco va en textos y acentos)
 export const SERVICES: Service[] = [
   {
     id: 'usinage',
@@ -46,14 +47,12 @@ export const SERVICES: Service[] = [
       en: 'Precision within 0.001°',
     },
     description: {
-      fr:
-        "Centres d'usinage horizontaux et verticaux CNC pour pièces jusqu'à 11 000 lb, avec rotation 360° et tolérances microniques. En atelier et sur site.",
-      en:
-        'Horizontal and vertical CNC machining centers for parts up to 11,000 lb, with 360° rotation and micron tolerances. In-house and on-site.',
+      fr: "Centres d'usinage CNC horizontaux et verticaux pour pièces jusqu'à 11 000 lb, avec des tolérances microniques.",
+      en: 'Horizontal and vertical CNC machining centers for parts up to 11,000 lb, with micron tolerances.',
     },
     image: '/service-usinage.jpg',
-    bg: { from: '#0F172A', via: '#1E293B', to: '#020617' },
-    accent: '#94A3B8',
+    bg: { from: '#0B0B0C', via: '#3A3D42', to: '#040405' },
+    accent: '#F0434F',
     specs: [
       { label: { fr: 'Capacité', en: 'Capacity' }, value: '11 000 lb' },
       { label: { fr: 'Rotation', en: 'Rotation' }, value: '360° / 0.001°' },
@@ -71,104 +70,63 @@ export const SERVICES: Service[] = [
       en: 'Custom structures, components and assemblies',
     },
     description: {
-      fr:
-        "Fabrication métallique sur mesure, structures, composants et assemblages complexes réalisés dans nos 12 500 pi² d'atelier équipé.",
-      en:
-        'Custom metal fabrication, structures, components and complex assemblies built in our 12,500 sq ft equipped shop.',
+      fr: "Structures, composants et assemblages métalliques sur mesure, soudés et finis dans notre atelier de 12 500 pi².",
+      en: 'Custom metal structures, components and assemblies, welded and finished in our 12,500 sq ft shop.',
     },
     image: '/service-fabrication.jpg',
     video: '/service-fabrication.mp4',
     videoShape: 'landscape',
     cardVideo: '/service-fabrication-card.mp4',
-    bg: { from: '#451A03', via: '#78350F', to: '#1C0B02' },
-    accent: '#F59E0B',
+    bg: { from: '#3D0811', via: '#9B1126', to: '#16040A' },
+    accent: '#FFFFFF',
     specs: [
       { label: { fr: 'Atelier', en: 'Shop area' }, value: '12 500 pi²', valueEn: '12,500 sq ft' },
       { label: { fr: 'Pont roulant', en: 'Overhead crane' }, value: '7 tonnes', valueEn: '7 tons' },
-      { label: { fr: 'Scie', en: 'Saw' }, value: 'jusqu\'à 18"', valueEn: 'up to 18"' },
+      { label: { fr: 'Scie', en: 'Saw' }, value: "jusqu'à 18\"", valueEn: 'up to 18"' },
       { label: { fr: 'Perceuse radiale', en: 'Radial drill' }, value: 'Ø 2¼"' },
     ],
   },
   {
-    id: 'soudure',
+    id: 'conception',
     number: '03',
-    name: { fr: 'SOUDURE', en: 'WELDING' },
+    name: { fr: 'CONCEPTION', en: 'DESIGN' },
     headline: {
-      fr: 'Chaque cordon, une signature',
-      en: 'Every weld, a signature',
+      fr: "De l'idée au plan",
+      en: 'From idea to drawing',
     },
     description: {
-      fr:
-        'Équipement complet pour souder aluminium, acier inoxydable, acier, fonte d\'acier, fonte ductile et laiton avec finition impeccable.',
-      en:
-        'Complete equipment to weld aluminum, stainless steel, steel, cast steel, ductile iron and brass with impeccable finish.',
+      fr: 'Conception 3D (CAO), plans techniques, rétro-ingénierie et prototypes pour vos pièces sur mesure.',
+      en: '3D design (CAD), technical drawings, reverse engineering and prototypes for your custom parts.',
     },
-    image: '/service-soudure.jpg',
-    video: '/service-soudure.mp4',
-    cardVideo: '/service-soudure-card.mp4',
-    cardFit: 'contain',
-    badge: {
-      src: '/brand/cwb-certified.png',
-      alt: 'Logo CWB — Certifié CSA W47.1',
-      altEn: 'CWB logo — CSA W47.1 Certified',
-    },
-    bg: { from: '#1E3A8A', via: '#1E40AF', to: '#0C1B4A' },
-    accent: '#60A5FA',
+    image: '/service-conception.svg',
+    bg: { from: '#1A1B1E', via: '#6B7078', to: '#0D0E10' },
+    accent: '#FF5A68',
     specs: [
-      { label: { fr: 'Aluminium', en: 'Aluminum' }, value: 'MIG / TIG' },
-      { label: { fr: 'Inox', en: 'Stainless' }, value: 'TIG' },
-      { label: { fr: 'Fonte ductile', en: 'Ductile iron' }, value: '✓' },
-      { label: { fr: 'Laiton & Acier', en: 'Brass & Steel' }, value: '✓' },
-    ],
-  },
-  {
-    id: 'mecanique',
-    number: '04',
-    name: { fr: 'MÉCANIQUE', en: 'MECHANICS' },
-    headline: {
-      fr: 'Réparation, entretien, remise à neuf',
-      en: 'Repair, maintenance, refurbishment',
-    },
-    description: {
-      fr:
-        'Réparation de composants mécaniques, entretien industriel, jet de sable et peinture — tout au même endroit, exécuté par des mains expertes.',
-      en:
-        'Repair of mechanical components, industrial maintenance, sandblasting and painting — all under one roof, delivered by expert hands.',
-    },
-    image: '/service-mecanique.jpg',
-    video: '/service-mecanique.mp4',
-    cardVideo: '/service-mecanique-card.mp4',
-    cardFit: 'contain',
-    bg: { from: '#450A0A', via: '#7F1D1D', to: '#1A0303' },
-    accent: '#C8102E',
-    specs: [
-      { label: { fr: 'Réparation', en: 'Repair' }, value: '✓' },
-      { label: { fr: 'Entretien', en: 'Maintenance' }, value: '24/7' },
-      { label: { fr: 'Sablage', en: 'Sandblast' }, value: '✓' },
-      { label: { fr: 'Peinture', en: 'Painting' }, value: 'Industrielle', valueEn: 'Industrial' },
+      { label: { fr: 'Modélisation', en: 'Modeling' }, value: '3D · CAO', valueEn: '3D · CAD' },
+      { label: { fr: 'Plans', en: 'Drawings' }, value: 'Techniques', valueEn: 'Technical' },
+      { label: { fr: 'Rétro-ingénierie', en: 'Reverse engineering' }, value: '✓' },
+      { label: { fr: 'Prototypage', en: 'Prototyping' }, value: '✓' },
     ],
   },
   {
     id: '3d',
-    number: '05',
+    number: '04',
     name: { fr: 'IMPRESSION 3D', en: '3D PRINTING' },
     headline: {
       fr: 'Concevoir autrement, fabriquer intelligemment',
       en: 'Design differently, build intelligently',
     },
     description: {
-      fr:
-        "Conception et impression 3D pour entreprises, ingénieurs et créateurs. Prototypes, modèles réduits de machines et pièces techniques de calibre industriel — service complet de bout en bout.",
-      en:
-        'Full 3D design and printing service for companies, engineers and creators. Prototypes, scale models and industrial-grade technical parts — end-to-end service.',
+      fr: 'Impression 3D industrielle avec notre partenaire DG Innovation 3D : prototypes, modèles et pièces techniques.',
+      en: 'Industrial 3D printing with our partner DG Innovation 3D: prototypes, models and technical parts.',
     },
     image: '',
     video: '/service-3d.mp4',
     cover: '/service-3d-cover.jpg',
     coverLogo: { src: '/brand/dg-innovation-logo.png', alt: 'DG Innovation 3D' },
     videoShape: 'square',
-    bg: { from: '#083344', via: '#0E7490', to: '#022530' },
-    accent: '#06B6D4',
+    bg: { from: '#050505', via: '#3A0B14', to: '#000000' },
+    accent: '#F0434F',
     specs: [
       { label: { fr: 'Conception', en: 'Design' }, value: 'CAO', valueEn: 'CAD' },
       { label: { fr: 'Prototypage', en: 'Prototyping' }, value: 'Rapide', valueEn: 'Rapid' },

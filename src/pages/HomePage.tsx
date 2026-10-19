@@ -10,10 +10,10 @@ import { useLang } from '../lib/i18n'
 export default function HomePage() {
   const { t } = useLang()
   usePageMeta(
-    t('Usinage CNC, fabrication et soudure à Nicolet | TEK-NIC', 'CNC Machining, Fabrication & Welding in Nicolet | TEK-NIC'),
+    t('Usinage CNC, fabrication et conception à Nicolet | TEK-NIC', 'CNC Machining, Fabrication & Design in Nicolet | TEK-NIC'),
     t(
-      'Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission.',
-      'Fabrication TEK-NIC: CNC machining, metal fabrication, welding, industrial mechanics and 3D printing in Nicolet, Quebec. Request a quote.'
+      'Fabrication TEK-NIC : usinage CNC, fabrication métallique, conception (CAO) et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission.',
+      'Fabrication TEK-NIC: CNC machining, metal fabrication, design (CAD) and 3D printing in Nicolet, Quebec. Request a quote.'
     ),
     '/'
   )

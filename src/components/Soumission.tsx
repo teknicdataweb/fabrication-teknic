@@ -5,10 +5,10 @@ import { Field, FormStyles } from './formParts'
 
 const SERVICE_OPTIONS = [
   { value: '', fr: 'Sélectionner un service…', en: 'Select a service…' },
-  { value: 'usinage-cnc', fr: 'Usinage CNC', en: 'CNC machining' },
-  { value: 'tournage', fr: 'Tournage', en: 'Turning' },
-  { value: 'soudage', fr: 'Soudage', en: 'Welding' },
-  { value: 'maintenance', fr: 'Maintenance industrielle', en: 'Industrial maintenance' },
+  { value: 'usinage', fr: 'Usinage', en: 'Machining' },
+  { value: 'fabrication', fr: 'Fabrication', en: 'Fabrication' },
+  { value: 'conception', fr: 'Conception', en: 'Design' },
+  { value: 'impression-3d', fr: 'Impression 3D', en: '3D printing' },
   { value: 'autre', fr: 'Autre', en: 'Other' },
 ]
 

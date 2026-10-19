@@ -573,9 +573,9 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
     }
   }, [])
 
-  // Portrait images (soudure, mecanique) need centering to keep face visible
+  // Imágenes verticales: se centran arriba para no cortar la parte importante
   const objectPosition =
-    s.id === 'soudure' || s.id === 'mecanique' ? 'center 20%' : 'center'
+    'center'
 
   return (
     <article

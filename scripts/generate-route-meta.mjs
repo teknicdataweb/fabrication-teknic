@@ -52,27 +52,27 @@ const pages = [
   {
     path: '/',
     fr: {
-      title: 'Usinage CNC, fabrication et soudure à Nicolet | TEK-NIC',
+      title: 'Usinage CNC, fabrication et conception à Nicolet | TEK-NIC',
       description:
-        'Fabrication TEK-NIC : usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission.',
+        'Fabrication TEK-NIC : usinage CNC, fabrication métallique, conception (CAO) et impression 3D à Nicolet, Centre-du-Québec. Demandez une soumission.',
     },
     en: {
-      title: 'CNC Machining, Fabrication & Welding in Nicolet | TEK-NIC',
+      title: 'CNC Machining, Fabrication & Design in Nicolet | TEK-NIC',
       description:
-        'Fabrication TEK-NIC: CNC machining, metal fabrication, welding, industrial mechanics and 3D printing in Nicolet, Quebec. Request a quote.',
+        'Fabrication TEK-NIC: CNC machining, metal fabrication, design (CAD) and 3D printing in Nicolet, Quebec. Request a quote.',
     },
   },
   {
     path: '/services',
     fr: {
-      title: "Services d'usinage, fabrication et soudure | TEK-NIC",
+      title: "Services d'usinage, fabrication et conception | TEK-NIC",
       description:
-        'Usinage CNC, fabrication métallique, soudure, mécanique industrielle et impression 3D à Nicolet, Québec. Un seul atelier pour tout votre projet.',
+        'Usinage CNC, fabrication métallique, conception (CAO) et impression 3D à Nicolet, Québec. Un seul atelier pour tout votre projet.',
     },
     en: {
-      title: 'Machining, Fabrication & Welding Services | TEK-NIC',
+      title: 'Machining, Fabrication & Design Services | TEK-NIC',
       description:
-        'CNC machining, metal fabrication, welding, industrial mechanics and 3D printing in Nicolet, Quebec. One shop for your whole project.',
+        'CNC machining, metal fabrication, design (CAD) and 3D printing in Nicolet, Quebec. One shop for your whole project.',
     },
   },
   {
@@ -119,12 +119,12 @@ const pages = [
     fr: {
       title: 'Carrières et emplois à Nicolet | Fabrication TEK-NIC',
       description:
-        "Joignez-vous à Fabrication TEK-NIC : emplois en usinage CNC, soudure et mécanique industrielle à Nicolet, Québec. Postulez dès aujourd'hui.",
+        "Joignez-vous à Fabrication TEK-NIC : emplois en usinage CNC, fabrication et conception à Nicolet, Québec. Postulez dès aujourd'hui.",
     },
     en: {
       title: 'Careers & Jobs in Nicolet | Fabrication TEK-NIC',
       description:
-        'Join Fabrication TEK-NIC: jobs in CNC machining, welding and industrial mechanics in Nicolet, Quebec. Apply today.',
+        'Join Fabrication TEK-NIC: jobs in CNC machining, fabrication and design in Nicolet, Quebec. Apply today.',
     },
   },
   ...services.map((s) => ({

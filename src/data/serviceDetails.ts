@@ -31,29 +31,20 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       },
     ],
   },
-  soudure: {
-    heading: { fr: 'Soudure industrielle certifiée CWB', en: 'CWB-certified industrial welding' },
+  conception: {
+    heading: { fr: 'Conception et dessin technique à Nicolet', en: 'Design and technical drawing in Nicolet' },
     paragraphs: [
       {
-        fr: "Nous disposons de l'équipement complet pour souder l'aluminium, l'acier inoxydable, l'acier, la fonte d'acier, la fonte ductile et le laiton, avec une finition impeccable. Les procédés MIG et TIG sont disponibles.",
-        en: 'We have the complete equipment to weld aluminum, stainless steel, steel, cast steel, ductile iron and brass with an impeccable finish. MIG and TIG processes are available.',
+        fr: "Nous concevons des pièces et des assemblages sur mesure en 3D (CAO) et produisons les plans techniques nécessaires à leur fabrication, avec les tolérances requises.",
+        en: 'We design custom parts and assemblies in 3D (CAD) and produce the technical drawings needed to manufacture them, with the required tolerances.',
       },
       {
-        fr: "Notre atelier est certifié CWB (CSA W47.1). Que ce soit pour une pièce unitaire, une réparation ou un assemblage plus important, la soudure s'intègre à notre fabrication et à notre usinage pour un résultat cohérent.",
-        en: 'Our shop is CWB certified (CSA W47.1). Whether it is a single part, a repair or a larger assembly, welding is integrated with our fabrication and machining for a consistent result.',
-      },
-    ],
-  },
-  mecanique: {
-    heading: { fr: 'Mécanique industrielle, entretien et remise à neuf', en: 'Industrial mechanics, maintenance and refurbishment' },
-    paragraphs: [
-      {
-        fr: "Nous réparons des composants mécaniques et assurons l'entretien industriel, en atelier comme sur site. Nos équipes interviennent pour remettre à neuf des pièces et des équipements afin de prolonger leur durée de vie.",
-        en: 'We repair mechanical components and provide industrial maintenance, both in our shop and on site. Our teams step in to refurbish parts and equipment to extend their service life.',
+        fr: "Vous avez une pièce brisée ou sans plan ? La rétro-ingénierie permet de la reproduire à partir d'un échantillon. Nous pouvons aussi améliorer une pièce existante pour la rendre plus simple à fabriquer, et la prototyper avant de passer à la production.",
+        en: 'Have a broken part or one with no drawing? Reverse engineering lets us reproduce it from a sample. We can also improve an existing part to make it easier to manufacture, and prototype it before moving to production.',
       },
       {
-        fr: "Le jet de sable et la peinture industrielle sont faits sur place : vous obtenez une pièce réparée et protégée, sans avoir à passer par plusieurs fournisseurs.",
-        en: 'Sandblasting and industrial painting are done in-house: you get a repaired and protected part without having to deal with several suppliers.',
+        fr: "Nous travaillons avec les formats courants (STEP, DXF, DWG, PDF), et le même atelier fabrique ensuite la pièce : usinage, fabrication et, au besoin, impression 3D.",
+        en: 'We work with common file formats (STEP, DXF, DWG, PDF), and the same shop then makes the part: machining, fabrication and, when needed, 3D printing.',
       },
     ],
   },

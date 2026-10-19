@@ -89,7 +89,7 @@ export default function Hero() {
           {[
             { id: 'usinage', label: t('Usinage', 'Machining') },
             { id: 'fabrication', label: 'Fabrication' },
-            { id: 'soudure', label: t('Soudure', 'Welding') },
+            { id: 'conception', label: t('Conception', 'Design') },
             { id: '3d', label: t('Impression 3D', '3D Printing') },
           ].map((item, i, all) => (
             <span key={item.id}>
