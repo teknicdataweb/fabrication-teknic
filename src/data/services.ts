@@ -42,7 +42,8 @@ export const SERVICES: Service[] = [
     id: 'usinage',
     number: '01',
     name: { fr: 'USINAGE', en: 'MACHINING' },
-    headline: {
+    headline: { fr: '', en: '' },
+    cardText: {
       fr: 'Précision à 0.001° près',
       en: 'Precision within 0.001°',
     },
@@ -90,7 +91,8 @@ export const SERVICES: Service[] = [
     id: 'conception',
     number: '03',
     name: { fr: 'CONCEPTION', en: 'DESIGN' },
-    headline: {
+    headline: { fr: '', en: '' },
+    cardText: {
       fr: "De l'idée au plan",
       en: 'From idea to drawing',
     },
@@ -112,7 +114,8 @@ export const SERVICES: Service[] = [
     id: '3d',
     number: '04',
     name: { fr: 'IMPRESSION 3D', en: '3D PRINTING' },
-    headline: {
+    headline: { fr: '', en: '' },
+    cardText: {
       fr: 'Concevoir autrement, fabriquer intelligemment',
       en: 'Design differently, build intelligently',
     },
