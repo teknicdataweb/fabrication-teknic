@@ -16,14 +16,18 @@ const MATERIALS_EN: Record<string, string> = {
 
 // Cantidad de fotos visibles antes de desplegar la galería completa (2 filas en escritorio)
 const PREVIEW_COUNT = 8
+// En la portada solo se muestran unas pocas fotos y un botón a la página completa
+const TEASER_COUNT = 6
 
-export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
+export default function Portfolio({ asH1 = false, teaser = false }: { asH1?: boolean; teaser?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
   const { lang, t, lp } = useLang()
   const material = (m: string) => (lang === 'en' ? MATERIALS_EN[m] ?? m : m)
   const [openIdx, setOpenIdx] = useState<number | null>(null)
   const [showAll, setShowAll] = useState(false)
-  const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0, PREVIEW_COUNT)
+  // En la portada (teaser) las fotos se abren directamente; en la página completa primero se despliega la galería
+  const interactive = showAll || teaser
+  const visibleProjects = teaser ? PROJECTS.slice(0, TEASER_COUNT) : showAll ? PROJECTS : PROJECTS.slice(0, PREVIEW_COUNT)
 
   const close = useCallback(() => setOpenIdx(null), [])
   const prev = useCallback(
@@ -73,9 +77,9 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
         style={{ background: 'radial-gradient(circle, #C8102E 0%, transparent 70%)' }}
       />
 
-      <div className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
+      <div className={`relative max-w-[1600px] mx-auto px-6 md:px-12 ${teaser ? 'py-16 md:py-24' : 'py-24 md:py-32'}`}>
         {/* Header — same pattern as Equipements */}
-        <div className="mb-20">
+        <div className={teaser ? 'mb-12' : 'mb-20'}>
           <div className="flex items-center gap-4 mb-6">
             <span className="h-px w-12 bg-teknic-red" />
             <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-teknic-red">
@@ -107,16 +111,16 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
         {/* Mientras la galería está cerrada, toda el área es el botón para desplegarla */}
         <div
           className={`rounded-xl border border-white/10 bg-white/[0.02] p-3 md:p-4 transition-colors ${
-            showAll ? '' : 'cursor-pointer hover:border-teknic-red/50'
+            interactive ? '' : 'cursor-pointer hover:border-teknic-red/50'
           }`}
-          onClick={showAll ? undefined : () => setShowAll(true)}
+          onClick={interactive ? undefined : () => setShowAll(true)}
         >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
           {visibleProjects.map((p, i) => (
             <button
               key={p.id}
               onClick={() => {
-                if (showAll) setOpenIdx(i)
+                if (interactive) setOpenIdx(i)
               }}
               className={`group relative block w-full text-left rounded-lg overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 aspect-[4/3]`}
             >
@@ -174,7 +178,7 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
           ))}
         </div>
 
-        {!showAll && (
+        {!interactive && (
           <div className="mt-4 flex items-center justify-center gap-3 py-3 border-t border-white/10 font-sans text-[11px] tracking-[0.3em] uppercase text-white/80">
             {t('Voir toutes les réalisations', 'See all projects')} ({PROJECTS.length})
             <span className="font-mono text-base leading-none">+</span>
@@ -183,7 +187,7 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
         </div>
 
         {/* Repliegue de la galería */}
-        {showAll && (
+        {showAll && !teaser && (
           <div className="mt-10 flex justify-center">
             <button
               type="button"
@@ -197,6 +201,18 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
           </div>
         )}
 
+        {teaser ? (
+          <div className="mt-12 flex justify-center">
+            <Link
+              to={lp('/portfolio')}
+              className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-teknic-red bg-teknic-red text-white font-sans text-[11px] tracking-[0.3em] uppercase hover:scale-105 transition-transform duration-300"
+            >
+              {t('Voir toutes les réalisations', 'See all projects')}
+              <span className="w-5 h-px bg-current group-hover:w-8 transition-all duration-300" />
+            </Link>
+          </div>
+        ) : (
+          <>
         {/* Texto ampliado (SEO): qué tipo de piezas se muestran */}
         <div className="mt-20 max-w-3xl">
           <h2 className="font-display uppercase text-3xl md:text-4xl leading-tight mb-6">
@@ -229,6 +245,8 @@ export default function Portfolio({ asH1 = false }: { asH1?: boolean }) {
             <span className="w-5 h-px bg-current" />
           </Link>
         </div>
+          </>
+        )}
       </div>
 
       {/* === Fullscreen Modal === */}

@@ -7,6 +7,7 @@ import { SERVICES } from '../data/services'
 import type { Service } from '../data/services'
 import { useLang } from '../lib/i18n'
 import { goToService } from '../lib/goToService'
+import { SLIDE_SCROLL } from '../lib/carousel'
 
 export default function ServicesShowcase() {
   const { lang, t, lp } = useLang()
@@ -36,7 +37,7 @@ export default function ServicesShowcase() {
       const trigger = ScrollTrigger.create({
         trigger: container.current!,
         start: 'top top',
-        end: `+=${total * 800}`,
+        end: `+=${total * SLIDE_SCROLL}`,
         pin: pinTarget.current!,
         pinSpacing: true,
         anticipatePin: 1,

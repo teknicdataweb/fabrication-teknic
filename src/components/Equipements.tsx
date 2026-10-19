@@ -19,7 +19,7 @@ const ICONS = {
 // Filas visibles de la tabla de tornos antes del botón "Voir plus"
 const LATHE_PREVIEW = 4
 
-export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
+export default function Equipements({ asH1 = false, teaser = false }: { asH1?: boolean; teaser?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
   const { lang, t, lp } = useLang()
   const [showAllLathes, setShowAllLathes] = useState(false)
@@ -74,9 +74,9 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
       {/* Ambient red glow */}
       <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none opacity-[0.08]" style={{ background: 'radial-gradient(circle, #C8102E 0%, transparent 70%)' }} />
 
-      <div className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
+      <div className={`relative max-w-[1600px] mx-auto px-6 md:px-12 ${teaser ? 'py-16 md:py-24' : 'py-24 md:py-32'}`}>
         {/* Section Header */}
-        <div className="mb-20">
+        <div className={teaser ? 'mb-12' : 'mb-20'}>
           <div className="flex items-center gap-4 mb-6">
             <span className="h-px w-12 bg-teknic-red" />
             <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-teknic-red">
@@ -95,7 +95,7 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
         </div>
 
         {/* === BLOCK 1 — HIGHLIGHTED CNC & BORING === */}
-        <div className="mb-24">
+        <div className={teaser ? '' : 'mb-24'}>
           <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-white/10">
             <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight">
               {t('Usinage CNC · Alésage', 'CNC machining · Boring')}
@@ -175,6 +175,8 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
           </div>
         </div>
 
+        {!teaser && (
+          <>
         {/* === BLOCK 2 — LATHES / DRILLS TABLE === */}
         <div className="mb-24">
           <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-white/10">
@@ -283,6 +285,21 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
           </div>
         </div>
 
+          </>
+        )}
+
+        {teaser ? (
+          <div className="mt-12 flex justify-center">
+            <Link
+              to={lp('/equipements')}
+              className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-teknic-red bg-teknic-red text-white font-sans text-[11px] tracking-[0.3em] uppercase hover:scale-105 transition-transform duration-300"
+            >
+              {t('Voir tous les équipements', 'See all equipment')}
+              <span className="w-5 h-px bg-current group-hover:w-8 transition-all duration-300" />
+            </Link>
+          </div>
+        ) : (
+          <>
         {/* Bottom signature */}
         <div className="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
@@ -296,6 +313,8 @@ export default function Equipements({ asH1 = false }: { asH1?: boolean }) {
             <span className="w-5 h-px bg-current" />
           </Link>
         </div>
+          </>
+        )}
       </div>
     </section>
   )

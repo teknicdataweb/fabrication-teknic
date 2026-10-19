@@ -22,8 +22,8 @@ export default function HomePage() {
     <>
       <Hero />
       <ServicesShowcase />
-      <Equipements />
-      <Portfolio />
+      <Equipements teaser />
+      <Portfolio teaser />
       <ContactCta />
       <LocationReviews />
     </>
