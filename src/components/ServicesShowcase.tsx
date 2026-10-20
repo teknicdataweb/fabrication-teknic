@@ -53,14 +53,19 @@ export default function ServicesShowcase() {
           ease: 'power2.inOut',
         },
         onUpdate: (self) => {
-          const idx = Math.min(
-            total - 1,
-            Math.floor(self.progress * total * 0.999)
-          )
-          if (idx !== activeRef.current) {
-            activeRef.current = idx
-            setActive(idx)
+          const pos = self.progress * total * 0.999
+          const raw = Math.min(total - 1, Math.floor(pos))
+          const current = activeRef.current
+          // Solo cambia de servicio al pasar el límite por un pequeño margen (evita parpadeos en el borde)
+          const margin = 0.06
+          const crossed = raw > current ? pos >= raw + margin : raw < current ? pos <= raw + 1 - margin : false
+          if (crossed) {
+            activeRef.current = raw
+            setActive(raw)
           }
+          // Posición dentro del servicio activo (0 al entrar, 0.5 centrado, 1 al salir): alimenta el paralaje
+          const within = Math.max(-0.5, Math.min(1.5, pos - activeRef.current))
+          pinTarget.current?.style.setProperty('--slide-p', within.toFixed(3))
         },
       })
       return () => {
@@ -76,7 +81,7 @@ export default function ServicesShowcase() {
     const s = SERVICES[active]
     gsap.to(bgRef.current, {
       background: `radial-gradient(ellipse at 30% 40%, ${s.bg.via} 0%, ${s.bg.from} 45%, ${s.bg.to} 100%)`,
-      duration: 1.2,
+      duration: 0.9,
       ease: 'power2.inOut',
     })
   }, [active, isDesktop])
@@ -209,11 +214,8 @@ export default function ServicesShowcase() {
           return (
             <div
               key={s.id}
-              className={`absolute inset-0 z-20 transition-opacity duration-700 ease-out ${isActive ? 'slide-active' : ''}`}
-              style={{
-                opacity: isActive ? 1 : 0,
-                pointerEvents: isActive ? 'auto' : 'none',
-              }}
+              className={`slide absolute inset-0 z-20 ${isActive ? 'slide-active' : i < active ? 'slide-before' : 'slide-after'}`}
+              style={{ pointerEvents: isActive ? 'auto' : 'none' }}
             >
               <div className="h-full w-full grid grid-cols-[1.1fr_1.4fr_1fr] gap-6 px-6 md:px-12 pt-24 pb-16">
                 {/* LEFT */}
@@ -324,7 +326,7 @@ export default function ServicesShowcase() {
                 {/* CENTER — Massive image / video */}
                 <div className="relative flex items-center justify-center">
                   <div
-                    className={
+                    className={`slide-media ${
                       s.video && s.videoShape === 'landscape'
                         ? 'relative w-full aspect-[4/3] max-h-[78vh] max-w-[760px] mx-auto'
                         : s.video && s.videoShape === 'square'
@@ -332,17 +334,10 @@ export default function ServicesShowcase() {
                         : s.video
                         ? 'relative h-[70vh] lg:h-[85vh] aspect-[9/16] max-w-full mx-auto'
                         : 'relative w-full h-[70vh] lg:h-[85vh] max-w-[520px]'
-                    }
-                    style={{
-                      transform: isActive
-                        ? 'translateY(0) scale(1)'
-                        : 'translateY(60px) scale(0.96)',
-                      transition:
-                        'transform 1000ms cubic-bezier(0.22,1,0.36,1)',
-                    }}
+                    }`}
                   >
                     <div
-                      className="absolute inset-0 rounded-2xl overflow-hidden"
+                      className="slide-media-inner absolute inset-0 rounded-2xl overflow-hidden"
                       style={{
                         boxShadow: `0 40px 120px -20px ${s.accent}40, 0 0 0 1px ${s.accent}20`,
                         background: `linear-gradient(160deg, ${s.bg.from} 0%, ${s.bg.to} 100%)`,
