@@ -13,7 +13,8 @@ const CONTACTS = [
     value: '819-870-3271',
     href: 'tel:8198703271',
     first: '',
-    role: null as string | null,
+    tag: { fr: 'Ligne directe', en: 'Direct line' },
+    topic: 'general' as 'general' | 'print3d',
   },
   {
     icon: User,
@@ -21,7 +22,8 @@ const CONTACTS = [
     value: '819-383-0679',
     href: 'tel:8193830679',
     first: 'François',
-    role: 'Direction',
+    tag: { fr: 'Direction', en: 'Management' },
+    topic: 'general' as 'general' | 'print3d',
   },
   {
     icon: User,
@@ -29,7 +31,27 @@ const CONTACTS = [
     value: '819-269-3189',
     href: 'tel:8192693189',
     first: 'Stéphane',
-    role: 'Direction',
+    tag: { fr: 'Direction', en: 'Management' },
+    topic: 'general' as 'general' | 'print3d',
+  },
+  // Impression 3D: servicio ofrecido con el socio DG Innovation 3D
+  {
+    icon: User,
+    label: 'Rémi Domingue',
+    value: '819-944-4739',
+    href: 'tel:8199444739',
+    first: 'Rémi',
+    tag: { fr: 'Impression 3D · DG Innovation 3D', en: '3D printing · DG Innovation 3D' },
+    topic: 'print3d' as 'general' | 'print3d',
+  },
+  {
+    icon: User,
+    label: 'Victor Gill',
+    value: '819-692-4226',
+    href: 'tel:8196924226',
+    first: 'Victor',
+    tag: { fr: 'Impression 3D · DG Innovation 3D', en: '3D printing · DG Innovation 3D' },
+    topic: 'print3d' as 'general' | 'print3d',
   },
 ]
 
@@ -260,19 +282,26 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
           </div>
         </div>
 
-        {/* Phones — 3 cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-          {CONTACTS.map((c) => {
+        {/* Phones — 3 + 2 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6">
+          {CONTACTS.map((c, i) => {
             const Icon = c.icon
             const phone = c.href.replace('tel:', '')
-            const smsText = t(
-              `Bonjour${c.first ? ' ' + c.first : ''}, je vous contacte via le site Fabrication TEK-NIC au sujet d'un projet. Pourriez-vous me rappeler ? Merci.`,
-              `Hello${c.first ? ' ' + c.first : ''}, I am contacting you through the Fabrication TEK-NIC website about a project. Could you call me back? Thank you.`
-            )
+            // Mensaje de texto prearmado: lleva el nombre de la persona y, para DG Innovation 3D, el tema de impresión 3D
+            const smsText =
+              c.topic === 'print3d'
+                ? t(
+                    `Bonjour ${c.first}, je vous contacte via le site Fabrication TEK-NIC au sujet d'un projet d'impression 3D. Pourriez-vous me rappeler ? Merci.`,
+                    `Hello ${c.first}, I am contacting you through the Fabrication TEK-NIC website about a 3D printing project. Could you call me back? Thank you.`
+                  )
+                : t(
+                    `Bonjour${c.first ? ' ' + c.first : ''}, je vous contacte via le site Fabrication TEK-NIC au sujet d'un projet. Pourriez-vous me rappeler ? Merci.`,
+                    `Hello${c.first ? ' ' + c.first : ''}, I am contacting you through the Fabrication TEK-NIC website about a project. Could you call me back? Thank you.`
+                  )
             return (
               <div
                 key={c.value}
-                className="group relative flex flex-col border border-white/10 rounded-lg p-6 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
+                className={`${i < 3 ? 'md:col-span-2' : 'md:col-span-3'} group relative flex flex-col border border-white/10 rounded-lg p-6 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden`}
               >
                 <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
                 <span className="absolute top-3 right-3 w-3 h-3 border-t border-r border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
@@ -288,7 +317,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
                   </div>
                   <div>
                     <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/60">
-                      {c.role ? t('Direction', 'Management') : t('Ligne directe', 'Direct line')}
+                      {t(c.tag.fr, c.tag.en)}
                     </div>
                     <div className="font-sans text-sm text-white/80 mt-0.5">
                       {c.label}
