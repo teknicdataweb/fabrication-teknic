@@ -38,8 +38,8 @@ const CONTACTS = [
   {
     icon: User,
     label: 'Rémi Domingue',
-    value: '819-944-4739',
-    href: 'tel:8199444739',
+    value: '819-944-4737',
+    href: 'tel:8199444737',
     first: 'Rémi',
     tag: { fr: 'Impression 3D · DG Innovation 3D', en: '3D printing · DG Innovation 3D' },
     topic: 'print3d' as 'general' | 'print3d',
