@@ -118,8 +118,12 @@ export const SERVICES: Service[] = [
       fr: 'Conception 3D (CAO), plans techniques, rétro-ingénierie et prototypes pour vos pièces sur mesure.',
       en: '3D design (CAD), technical drawings, reverse engineering and prototypes for your custom parts.',
     },
-    image: '/service-conception.jpg',
+    image: '/conception-cao-structure-acier-modelisation-3d-nicolet.jpg',
     videoShape: 'landscape',
+    imageAlt: {
+      fr: "Concepteur modélisant en 3D (CAO) une structure d'acier sur deux écrans, Fabrication TEK-NIC à Nicolet, Québec",
+      en: 'Designer modeling a steel structure in 3D (CAD) on two screens, Fabrication TEK-NIC in Nicolet, Quebec',
+    },
     bg: { from: '#1A1B1E', via: '#6B7078', to: '#0D0E10' },
     accent: '#FF5A68',
     specs: [
