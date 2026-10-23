@@ -36,6 +36,15 @@ export type Service = {
   videoShape?: 'landscape' | 'square'
   // Optional — descriptive alt text for the photo (SEO / accessibility); falls back to the service name
   imageAlt?: { fr: string; en: string }
+  // Optional — photo (with a logo over it) shown in the home carousel instead of the video; the service page keeps the video
+  showcaseImage?: string
+  showcaseLogo?: { src: string; alt: string }
+}
+
+/** Vista del servicio para el carrusel de la portada: si tiene foto propia, se usa en lugar del video */
+export function showcaseView(s: Service): Service {
+  if (!s.showcaseImage) return s
+  return { ...s, video: undefined, image: s.showcaseImage, videoShape: 'landscape' }
 }
 
 // Fondos de la marca: negro, rojo, gris y blanco (el blanco va en textos y acentos)
@@ -138,6 +147,12 @@ export const SERVICES: Service[] = [
     cover: '/service-3d-cover.jpg',
     coverLogo: { src: '/brand/dg-innovation-logo.png', alt: 'DG Innovation 3D' },
     videoShape: 'square',
+    showcaseImage: '/impression-3d-industrielle-snapmaker-dg-innovation-nicolet.jpg',
+    showcaseLogo: { src: '/brand/dg-innovation-logo-transparent.png', alt: 'DG Innovation 3D' },
+    imageAlt: {
+      fr: "Imprimante 3D industrielle Snapmaker en cours de préparation, service d'impression 3D avec DG Innovation 3D, Nicolet, Québec",
+      en: 'Industrial Snapmaker 3D printer ready to print, 3D printing service with DG Innovation 3D, Nicolet, Quebec',
+    },
     bg: { from: '#050505', via: '#3A0B14', to: '#000000' },
     accent: '#F0434F',
     specs: [

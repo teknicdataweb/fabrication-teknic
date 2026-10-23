@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Link } from 'react-router-dom'
 import { ExternalLink } from 'lucide-react'
-import { SERVICES } from '../data/services'
+import { SERVICES, showcaseView } from '../data/services'
 import type { Service } from '../data/services'
 import { useLang } from '../lib/i18n'
 import { goToService } from '../lib/goToService'
@@ -251,7 +251,8 @@ export default function ServicesShowcase() {
         </nav>
 
         {/* Slides stacked, crossfade via opacity */}
-        {SERVICES.map((s, i) => {
+        {SERVICES.map((s0, i) => {
+          const s = showcaseView(s0)
           const isActive = i === active
           return (
             <div
@@ -405,6 +406,16 @@ export default function ServicesShowcase() {
                           background: `linear-gradient(to top, ${s.bg.to}CC 0%, transparent 40%, transparent 70%, ${s.bg.to}66 100%)`,
                         }}
                       />
+                      {s.showcaseLogo && (
+                        <img
+                          src={s.showcaseLogo.src}
+                          alt={s.showcaseLogo.alt}
+                          width={520}
+                          height={518}
+                          className="absolute top-4 right-4 z-10 w-28 xl:w-36 h-auto pointer-events-none"
+                          style={{ filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.7))' }}
+                        />
+                      )}
                     </div>
 
                     <span className="absolute -top-3 -left-3 w-6 h-6 border-t border-l border-white/40" />
@@ -576,7 +587,8 @@ function MediaPlaceholder({ accent, label }: { accent: string; label: string }) 
   )
 }
 
-function MobileServiceCard({ s, index }: { s: Service; index: number }) {
+function MobileServiceCard({ s: s0, index }: { s: Service; index: number }) {
+  const s = showcaseView(s0)
   const { lang, t, lp } = useLang()
   const ref = useRef<HTMLElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
@@ -680,6 +692,16 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
             background: `linear-gradient(to top, ${s.bg.to}FA 0%, ${s.bg.to}80 25%, transparent 55%)`,
           }}
         />
+        {s.showcaseLogo && (
+                <img
+                  src={s.showcaseLogo.src}
+                  alt={s.showcaseLogo.alt}
+                  width={520}
+                  height={518}
+                  className="absolute top-4 right-4 z-10 w-24 h-auto pointer-events-none"
+                  style={{ filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.7))' }}
+                />
+              )}
         {/* Number overlay bottom left */}
         <div className="absolute bottom-4 left-5 z-10">
           <div className="flex items-baseline gap-2">
