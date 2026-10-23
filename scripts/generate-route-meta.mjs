@@ -12,7 +12,7 @@ const template = readFileSync(join(dist, 'index.html'), 'utf8')
 const today = new Date().toISOString().slice(0, 10)
 
 // ---- Rutas: francés en la raíz; inglés bajo /en, con dos nombres de ruta traducidos
-const FR_TO_EN = { equipements: 'equipment', carrieres: 'careers', 'soumission-3d': 'quote-3d' }
+const FR_TO_EN = { equipements: 'equipment', carrieres: 'careers', soumission: 'quote', 'soumission-3d': 'quote-3d' }
 const localize = (frPath, lang) => {
   if (lang === 'fr') return frPath
   const segs = frPath.split('/').filter(Boolean)
@@ -125,6 +125,19 @@ const pages = [
       title: 'Careers & Jobs in Nicolet | Fabrication TEK-NIC',
       description:
         'Join Fabrication TEK-NIC: jobs in CNC machining, fabrication and design in Nicolet, Quebec. Apply today.',
+    },
+  },
+  {
+    path: '/soumission',
+    fr: {
+      title: 'Demande de soumission | Fabrication TEK-NIC',
+      description:
+        "Demandez une soumission gratuite pour votre projet d'usinage, de fabrication ou de conception à Nicolet, Québec. Réponse sous 24 à 48 heures.",
+    },
+    en: {
+      title: 'Request a Quote | Fabrication TEK-NIC',
+      description:
+        'Request a free quote for your machining, fabrication or design project in Nicolet, Quebec. Reply within 24 to 48 hours.',
     },
   },
   {

@@ -238,7 +238,7 @@ export default function Portfolio({ asH1 = false, teaser = false }: { asH1?: boo
             Nicolet · {t('Québec', 'Quebec')} · {t("12 500 pi² d'atelier", '12,500 sq ft shop')}
           </div>
           <Link
-            to={`${lp('/contact')}#soumission`}
+            to={`${lp('/soumission')}`}
             className="inline-flex items-center gap-3 self-start px-5 py-2.5 border border-white/20 rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
           >
             {t("Discuter d'un projet", 'Discuss a project')}

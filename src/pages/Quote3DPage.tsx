@@ -1,4 +1,5 @@
 import Soumission from '../components/Soumission'
+import Contact from '../components/Contact'
 import { usePageMeta, breadcrumbLd } from '../lib/pageMeta'
 import { useLang } from '../lib/i18n'
 
@@ -22,5 +23,10 @@ export default function Quote3DPage() {
       lang
     )
   )
-  return <Soumission asH1 variant="3d" />
+  return (
+    <>
+      <Soumission asH1 variant="3d" />
+      <Contact compact />
+    </>
+  )
 }

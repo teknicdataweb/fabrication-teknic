@@ -8,7 +8,7 @@ const STORAGE_KEY = 'teknic-lang'
 
 // El francés es el idioma predeterminado y vive en la raíz (/services).
 // El inglés vive bajo /en (/en/services), con algunos nombres de ruta traducidos.
-const FR_TO_EN: Record<string, string> = { equipements: 'equipment', carrieres: 'careers', 'soumission-3d': 'quote-3d' }
+const FR_TO_EN: Record<string, string> = { equipements: 'equipment', carrieres: 'careers', soumission: 'quote', 'soumission-3d': 'quote-3d' }
 const EN_TO_FR: Record<string, string> = Object.fromEntries(Object.entries(FR_TO_EN).map(([fr, en]) => [en, fr]))
 
 export function langFromPath(pathname: string): Lang {

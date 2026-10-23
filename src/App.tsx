@@ -15,6 +15,7 @@ import PortfolioPage from './pages/PortfolioPage'
 import ContactPage from './pages/ContactPage'
 import CareersPage from './pages/CareersPage'
 import Quote3DPage from './pages/Quote3DPage'
+import QuotePage from './pages/QuotePage'
 import NotFoundPage from './pages/NotFoundPage'
 
 import { localizePath } from './lib/i18n'
@@ -28,6 +29,7 @@ const PAGES: [string, () => JSX.Element][] = [
   ['/portfolio', PortfolioPage],
   ['/contact', ContactPage],
   ['/carrieres', CareersPage],
+  ['/soumission', QuotePage],
   ['/soumission-3d', Quote3DPage],
 ]
 

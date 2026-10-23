@@ -306,7 +306,7 @@ export default function Equipements({ asH1 = false, teaser = false }: { asH1?: b
             Nicolet, {t('Québec', 'Quebec')} · 50 Route Marie-Victorin
           </div>
           <Link
-            to={`${lp('/contact')}#soumission`}
+            to={`${lp('/soumission')}`}
             className="inline-flex items-center gap-3 self-start px-5 py-2.5 border border-white/20 rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
           >
             {t('Demander une soumission', 'Request a quote')}

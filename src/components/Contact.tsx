@@ -87,7 +87,8 @@ const EMAIL_BODY = {
   ].join('\n'),
 }
 
-export default function Contact({ asH1 = false }: { asH1?: boolean }) {
+/** `compact`: solo los teléfonos (oficina + los cuatro socios), para las páginas de soumission */
+export default function Contact({ asH1 = false, compact = false }: { asH1?: boolean; compact?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
   const { lang, t } = useLang()
   const { show, toast } = useToast()
@@ -119,7 +120,24 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
         style={{ background: 'radial-gradient(circle, #C8102E 0%, transparent 70%)' }}
       />
 
-      <div className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
+      <div className={`relative max-w-[1600px] mx-auto px-6 md:px-12 ${compact ? 'pt-4 pb-20 md:pb-28' : 'py-24 md:py-32'}`}>
+        {compact && (
+          <div className="mb-10 md:mb-12">
+            <div className="flex items-center gap-4 mb-4">
+              <span className="h-px w-12 bg-teknic-red" />
+              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-teknic-red">
+                {t('Ou appelez-nous', 'Or call us')}
+              </span>
+            </div>
+            <h2 className="font-display uppercase leading-[0.9] text-3xl md:text-5xl">
+              {t('Joignez-nous ', 'Reach us ')}
+              <span className="text-teknic-red">{t('directement', 'directly')}</span>
+            </h2>
+          </div>
+        )}
+
+        {!compact && (
+          <>
         {/* Header */}
         <div className="mb-20">
           <div className="flex items-center gap-4 mb-6">
@@ -271,6 +289,9 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
           </div>
         </div>
 
+          </>
+        )}
+
         {/* Phones — 3 + 2 cards */}
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6">
           {CONTACTS.map((c, i) => {
@@ -356,6 +377,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
         </div>
 
         {/* Hours banner */}
+        {!compact && (
         <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-5 md:p-6 border border-white/10 rounded-lg bg-gradient-to-r from-white/[0.02] to-transparent">
           <div className="flex items-center gap-4">
             <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_12px_rgba(74,222,128,0.6)] animate-pulse" />
@@ -376,6 +398,7 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
             <span className="w-5 h-px bg-current" />
           </a>
         </div>
+        )}
 
       </div>
       {toast}
