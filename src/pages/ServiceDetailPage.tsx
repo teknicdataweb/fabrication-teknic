@@ -139,7 +139,7 @@ export default function ServiceDetailPage() {
               </a>
             ) : (
               <Link
-                to={lp('/contact')}
+                to={`${lp('/contact')}?service=${s.id}#soumission`}
                 className="inline-flex items-center gap-3 px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
                 style={{ borderColor: `${s.accent}55` }}
               >

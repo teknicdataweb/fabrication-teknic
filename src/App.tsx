@@ -34,13 +34,52 @@ gsap.registerPlugin(ScrollTrigger)
 ;(window as any).ScrollTrigger = ScrollTrigger
 
 export default function App() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
 
-  // Cada página empieza arriba y se recalculan las animaciones por scroll
+  // Cada página empieza arriba (o en la sección pedida con #ancla) y se recalculan las animaciones por scroll
   useEffect(() => {
-    window.scrollTo(0, 0)
-    ScrollTrigger.refresh()
-  }, [pathname])
+    if (!hash) {
+      window.scrollTo(0, 0)
+      ScrollTrigger.refresh()
+      return
+    }
+    // La sección puede tardar unos instantes en aparecer, y las animaciones por scroll restauran la posición anterior
+    // al recalcularse: se alinea al llegar y se repite un par de veces en el primer segundo (salvo que el usuario ya haya movido la página).
+    let tries = 0
+    let userMoved = false
+    const timers: number[] = []
+    const markMoved = () => {
+      userMoved = true
+    }
+    window.addEventListener('wheel', markMoved, { passive: true })
+    window.addEventListener('touchstart', markMoved, { passive: true })
+    window.addEventListener('keydown', markMoved)
+    const align = (el: HTMLElement) => {
+      if (userMoved) return
+      el.scrollIntoView({ behavior: 'auto', block: 'start' })
+    }
+    const poll = window.setInterval(() => {
+      const el = document.getElementById(decodeURIComponent(hash.slice(1)))
+      tries++
+      if (el) {
+        window.clearInterval(poll)
+        ScrollTrigger.clearScrollMemory()
+        ScrollTrigger.refresh()
+        align(el)
+        ;[200, 500, 900].forEach((ms) => timers.push(window.setTimeout(() => align(el), ms)))
+      } else if (tries > 20) {
+        window.clearInterval(poll)
+        window.scrollTo(0, 0)
+      }
+    }, 60)
+    return () => {
+      window.clearInterval(poll)
+      timers.forEach((id) => window.clearTimeout(id))
+      window.removeEventListener('wheel', markMoved)
+      window.removeEventListener('touchstart', markMoved)
+      window.removeEventListener('keydown', markMoved)
+    }
+  }, [pathname, hash])
 
   return (
     <div className="relative bg-black text-white">

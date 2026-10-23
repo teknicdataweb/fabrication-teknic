@@ -1,4 +1,5 @@
-import { useRef, useState, FormEvent } from 'react'
+import { useEffect, useRef, useState, FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Send, Check, Loader2, Paperclip, X } from 'lucide-react'
 import { useLang } from '../lib/i18n'
 import { Field, FormStyles } from './formParts'
@@ -27,13 +28,20 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
   const [files, setFiles] = useState<File[]>([])
   const [fileError, setFileError] = useState<'' | 'count' | 'size'>('')
   const fileInput = useRef<HTMLInputElement>(null)
+  // Si se llega desde una página de servicio (?service=usinage), ese servicio ya viene elegido
+  const [params] = useSearchParams()
+  const requested = params.get('service') ?? ''
+  const initialService = SERVICE_OPTIONS.some((o) => o.value && o.value === requested) ? requested : ''
   const [form, setForm] = useState({
     name: '',
     email: '',
     phone: '',
-    service: '',
+    service: initialService,
     message: '',
   })
+  useEffect(() => {
+    if (initialService) setForm((f) => ({ ...f, service: initialService }))
+  }, [initialService])
 
   const onChange =
     (k: keyof typeof form) =>
@@ -86,7 +94,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
   return (
     <section
       id="soumission"
-      className="relative w-full bg-[#050505] text-white overflow-hidden border-t border-white/5"
+      className="relative w-full scroll-mt-20 bg-[#050505] text-white overflow-hidden border-t border-white/5"
     >
       {/* Grid overlay */}
       <div
