@@ -81,10 +81,12 @@ export const SERVICES: Service[] = [
       fr: "Structures, composants et assemblages métalliques sur mesure, soudés et finis dans notre atelier de 12 500 pi².",
       en: 'Custom metal structures, components and assemblies, welded and finished in our 12,500 sq ft shop.',
     },
-    image: '/service-fabrication.jpg',
-    video: '/service-fabrication.mp4',
-    videoShape: 'landscape',
-    cardVideo: '/service-fabrication-card.mp4',
+    image: '/fabrication-metallique-pont-roulant-engrenage-nicolet.jpg',
+    videoShape: 'square',
+    imageAlt: {
+      fr: "Grande pièce métallique fabriquée et peinte, suspendue au pont roulant avec son engrenage, atelier Fabrication TEK-NIC à Nicolet, Québec",
+      en: 'Large fabricated and painted metal part with its gear hanging from the overhead crane, Fabrication TEK-NIC shop in Nicolet, Quebec',
+    },
     bg: { from: '#3D0811', via: '#9B1126', to: '#16040A' },
     accent: '#FFFFFF',
     specs: [
