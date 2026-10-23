@@ -148,20 +148,18 @@ export default function ServiceDetailPage() {
               </Link>
             )}
             {s.email && (
-              <>
-                <ContactButton
-                  href={`mailto:${s.email}?subject=${encodeURIComponent(t(EMAIL_SUBJECT.fr, EMAIL_SUBJECT.en))}&body=${encodeURIComponent(t(EMAIL_BODY.fr, EMAIL_BODY.en))}`}
-                  icon={Mail}
-                  label={t('Écrire un courriel', 'Send an email')}
-                  onClick={() => copyAndNotify(s.email!, t('Adresse copiée : ', 'Address copied: ') + s.email)}
-                />
-                <ContactButton
-                  href={gmailComposeUrl(s.email, t(EMAIL_SUBJECT.fr, EMAIL_SUBJECT.en), t(EMAIL_BODY.fr, EMAIL_BODY.en))}
-                  icon={Mail}
-                  label={t('Ouvrir Gmail', 'Open Gmail')}
-                  external
-                />
-              </>
+              // Un solo botón de correo, con asunto y mensaje ya escritos:
+              // en celular abre la aplicación de correo; en computadora abre Gmail en el navegador (casi nunca hay un programa de correo configurado)
+              <ContactButton
+                href={
+                  isTouchDevice()
+                    ? `mailto:${s.email}?subject=${encodeURIComponent(t(EMAIL_SUBJECT.fr, EMAIL_SUBJECT.en))}&body=${encodeURIComponent(t(EMAIL_BODY.fr, EMAIL_BODY.en))}`
+                    : gmailComposeUrl(s.email, t(EMAIL_SUBJECT.fr, EMAIL_SUBJECT.en), t(EMAIL_BODY.fr, EMAIL_BODY.en))
+                }
+                icon={Mail}
+                label={t('Écrire un courriel', 'Send an email')}
+                external={!isTouchDevice()}
+              />
             )}
             </div>
 
