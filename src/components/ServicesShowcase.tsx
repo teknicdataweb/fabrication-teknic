@@ -367,7 +367,9 @@ export default function ServicesShowcase() {
                 <div className="relative flex items-center justify-center">
                   <div
                     className={`slide-media ${
-                      s.video && s.videoShape === 'landscape'
+                      !s.video && s.videoShape === 'landscape'
+                        ? 'relative w-full aspect-[16/10] max-h-[78vh] max-w-[820px] mx-auto'
+                        : s.video && s.videoShape === 'landscape'
                         ? 'relative w-full aspect-[4/3] max-h-[78vh] max-w-[760px] mx-auto'
                         : s.video && s.videoShape === 'square'
                         ? 'relative w-full aspect-square max-h-[70vh] max-w-[560px] mx-auto'
@@ -645,7 +647,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
       {/* Media — 9:16 for videos (native vertical), 4:5 for photos */}
       <div
         className={`relative w-full overflow-hidden ${
-          s.video && s.videoShape === 'landscape' ? 'aspect-video' : s.video && s.videoShape === 'square' ? 'aspect-square' : s.video ? 'aspect-[9/16]' : 'aspect-[4/5]'
+          s.videoShape === 'landscape' ? 'aspect-video' : s.video && s.videoShape === 'square' ? 'aspect-square' : s.video ? 'aspect-[9/16]' : 'aspect-[4/5]'
         }`}
         style={{
           background: `linear-gradient(160deg, ${s.bg.from} 0%, ${s.bg.to} 100%)`,

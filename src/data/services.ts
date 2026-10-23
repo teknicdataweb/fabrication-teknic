@@ -100,7 +100,8 @@ export const SERVICES: Service[] = [
       fr: 'Conception 3D (CAO), plans techniques, rétro-ingénierie et prototypes pour vos pièces sur mesure.',
       en: '3D design (CAD), technical drawings, reverse engineering and prototypes for your custom parts.',
     },
-    image: '/service-conception.svg',
+    image: '/service-conception.jpg',
+    videoShape: 'landscape',
     bg: { from: '#1A1B1E', via: '#6B7078', to: '#0D0E10' },
     accent: '#FF5A68',
     specs: [
