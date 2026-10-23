@@ -132,6 +132,18 @@
       <input type="file" name="plan3" />
       <input name="bot-field" />
     </form>
+    <!-- Netlify Forms: soumission de impresión 3D (se puede enviar a otro correo desde Netlify → Forms) -->
+    <form name="soumission-3d" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="service" />
+      <textarea name="message"></textarea>
+      <input type="file" name="plan1" />
+      <input type="file" name="plan2" />
+      <input type="file" name="plan3" />
+      <input name="bot-field" />
+    </form>
     <!-- Netlify Forms: formulario de candidaturas (con CV adjunto) -->
     <form name="candidature" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" hidden>
       <input type="text" name="name" />

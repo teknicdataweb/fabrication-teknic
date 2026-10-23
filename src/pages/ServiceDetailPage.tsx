@@ -127,6 +127,15 @@ export default function ServiceDetailPage() {
 
             <div className="flex flex-wrap items-center gap-4">
             {s.external && s.externalUrl ? (
+              <>
+              <Link
+                to={lp('/soumission-3d')}
+                className="inline-flex items-center gap-3 px-6 py-3 border rounded-full font-sans text-[11px] tracking-[0.3em] uppercase text-white hover:scale-105 transition-transform duration-300"
+                style={{ borderColor: s.accent, backgroundColor: `${s.accent}30` }}
+              >
+                {t('Demander une soumission', 'Request a quote')}
+                <span className="w-6 h-px bg-current" />
+              </Link>
               <a
                 href={s.externalUrl}
                 target="_blank"
@@ -137,6 +146,7 @@ export default function ServiceDetailPage() {
                 {t('Visiter le site', 'Visit the website')}
                 <ExternalLink className="w-3.5 h-3.5" strokeWidth={2} />
               </a>
+              </>
             ) : (
               <Link
                 to={`${lp('/contact')}?service=${s.id}#soumission`}

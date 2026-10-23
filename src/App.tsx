@@ -14,6 +14,7 @@ import EquipementsPage from './pages/EquipementsPage'
 import PortfolioPage from './pages/PortfolioPage'
 import ContactPage from './pages/ContactPage'
 import CareersPage from './pages/CareersPage'
+import Quote3DPage from './pages/Quote3DPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 import { localizePath } from './lib/i18n'
@@ -27,6 +28,7 @@ const PAGES: [string, () => JSX.Element][] = [
   ['/portfolio', PortfolioPage],
   ['/contact', ContactPage],
   ['/carrieres', CareersPage],
+  ['/soumission-3d', Quote3DPage],
 ]
 
 gsap.registerPlugin(ScrollTrigger)

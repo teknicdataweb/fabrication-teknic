@@ -12,7 +12,7 @@ const template = readFileSync(join(dist, 'index.html'), 'utf8')
 const today = new Date().toISOString().slice(0, 10)
 
 // ---- Rutas: francés en la raíz; inglés bajo /en, con dos nombres de ruta traducidos
-const FR_TO_EN = { equipements: 'equipment', carrieres: 'careers' }
+const FR_TO_EN = { equipements: 'equipment', carrieres: 'careers', 'soumission-3d': 'quote-3d' }
 const localize = (frPath, lang) => {
   if (lang === 'fr') return frPath
   const segs = frPath.split('/').filter(Boolean)
@@ -125,6 +125,19 @@ const pages = [
       title: 'Careers & Jobs in Nicolet | Fabrication TEK-NIC',
       description:
         'Join Fabrication TEK-NIC: jobs in CNC machining, fabrication and design in Nicolet, Quebec. Apply today.',
+    },
+  },
+  {
+    path: '/soumission-3d',
+    fr: {
+      title: 'Soumission impression 3D | Fabrication TEK-NIC',
+      description:
+        "Demandez une soumission pour votre projet d'impression 3D industrielle : prototypes, modèles et pièces techniques, avec notre partenaire DG Innovation 3D.",
+    },
+    en: {
+      title: '3D Printing Quote | Fabrication TEK-NIC',
+      description:
+        'Request a quote for your industrial 3D printing project: prototypes, models and technical parts, with our partner DG Innovation 3D.',
     },
   },
   ...services.map((s) => ({

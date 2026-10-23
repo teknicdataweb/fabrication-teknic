@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Send, Check, Loader2, Paperclip, X } from 'lucide-react'
 import { useLang } from '../lib/i18n'
 import { Field, FormStyles } from './formParts'
@@ -17,13 +17,16 @@ const SERVICE_OPTIONS = [
 const MAX_FILES = 3
 const MAX_TOTAL_BYTES = 7 * 1024 * 1024
 const ACCEPT = '.pdf,.dwg,.dxf,.step,.stp,.igs,.iges,.stl,.jpg,.jpeg,.png,.zip,.doc,.docx,.xls,.xlsx'
+const ACCEPT_3D = '.stl,.obj,.3mf,.step,.stp,.pdf,.dxf,.dwg,.jpg,.jpeg,.png,.zip'
 const formatSize = (b: number) => (b >= 1024 * 1024 ? `${(b / 1024 / 1024).toFixed(1)} Mo` : `${Math.max(1, Math.round(b / 1024))} Ko`)
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
-export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
+export default function Soumission({ asH1 = false, variant = 'general' }: { asH1?: boolean; variant?: 'general' | '3d' }) {
   const Title = asH1 ? 'h1' : 'h2'
-  const { t } = useLang()
+  const { t, lp } = useLang()
+  // Variante 3D: formulario aparte, solo para impresión 3D (servicio con el socio DG Innovation 3D)
+  const is3d = variant === '3d'
   const [status, setStatus] = useState<Status>('idle')
   const [files, setFiles] = useState<File[]>([])
   const [fileError, setFileError] = useState<'' | 'count' | 'size'>('')
@@ -31,7 +34,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
   // Si se llega desde una página de servicio (?service=usinage), ese servicio ya viene elegido
   const [params] = useSearchParams()
   const requested = params.get('service') ?? ''
-  const initialService = SERVICE_OPTIONS.some((o) => o.value && o.value === requested) ? requested : ''
+  const initialService = is3d ? 'impression-3d' : SERVICE_OPTIONS.some((o) => o.value && o.value === requested) ? requested : ''
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -76,7 +79,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
     try {
       // Netlify recibe el envío en "/" (multipart, para poder adjuntar planos) y avisa por correo al equipo
       const body = new FormData()
-      body.append('form-name', 'soumission')
+      body.append('form-name', is3d ? 'soumission-3d' : 'soumission')
       Object.entries(form).forEach(([k, v]) => body.append(k, v))
       files.forEach((file, i) => body.append(`plan${i + 1}`, file))
       const res = await fetch('/', { method: 'POST', body })
@@ -115,21 +118,43 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
       <div className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-16 lg:gap-24">
         {/* LEFT — pitch */}
         <div className="flex flex-col justify-center">
+          {is3d && (
+            <Link
+              to={lp('/services/3d')}
+              className="mb-8 self-start font-mono text-[11px] tracking-[0.3em] uppercase text-white/60 hover:text-white transition-colors"
+            >
+              ← {t('Impression 3D', '3D printing')}
+            </Link>
+          )}
           <div className="flex items-center gap-4 mb-6">
             <span className="h-px w-12 bg-teknic-red" />
             <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-teknic-red">
-              06 · {t('Soumission', 'Quote')}
+              {is3d ? t('Soumission · Impression 3D', 'Quote · 3D printing') : <>06 · {t('Soumission', 'Quote')}</>}
             </span>
           </div>
           <Title className="font-display uppercase leading-[0.85] text-5xl md:text-6xl lg:text-7xl mb-8">
-            {t('Un projet', 'A project')} <br />
-            <span className="text-teknic-red">{t('en tête ?', 'in mind?')}</span>
+            {is3d ? (
+              <>
+                {t('Un projet', 'A 3D printing')} <br />
+                <span className="text-teknic-red">{t("d'impression 3D ?", 'project?')}</span>
+              </>
+            ) : (
+              <>
+                {t('Un projet', 'A project')} <br />
+                <span className="text-teknic-red">{t('en tête ?', 'in mind?')}</span>
+              </>
+            )}
           </Title>
           <p className="font-sans font-light text-white/60 text-base md:text-lg leading-relaxed mb-8 max-w-md">
-            {t(
-              'Décrivez-nous votre besoin — pièce unitaire, série ou projet complexe. Notre équipe vous répond avec une soumission détaillée.',
-              'Tell us what you need — a single part, a production run or a complex project. Our team will reply with a detailed quote.'
-            )}
+            {is3d
+              ? t(
+                  'Décrivez-nous votre pièce ou votre idée — prototype, modèle ou pièce technique. Notre partenaire DG Innovation 3D vous répond avec une soumission détaillée.',
+                  'Tell us about your part or idea — a prototype, a model or a technical part. Our partner DG Innovation 3D will reply with a detailed quote.'
+                )
+              : t(
+                  'Décrivez-nous votre besoin — pièce unitaire, série ou projet complexe. Notre équipe vous répond avec une soumission détaillée.',
+                  'Tell us what you need — a single part, a production run or a complex project. Our team will reply with a detailed quote.'
+                )}
           </p>
           <div className="space-y-3 text-sm text-white/50">
             <div className="flex items-start gap-3">
@@ -142,7 +167,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
             </div>
             <div className="flex items-start gap-3">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-teknic-red flex-shrink-0" />
-              <span>{t('Confidentialité garantie sur vos plans', 'Your drawings are kept confidential')}</span>
+              <span>{is3d ? t('Confidentialité garantie sur vos fichiers', 'Your files are kept confidential') : t('Confidentialité garantie sur vos plans', 'Your drawings are kept confidential')}</span>
             </div>
           </div>
         </div>
@@ -200,6 +225,11 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
               />
             </Field>
 
+            {is3d ? (
+              <Field label={t('Type de service', 'Service type')}>
+                <div className="input flex items-center text-white/80">{t('Impression 3D', '3D printing')}</div>
+              </Field>
+            ) : (
             <Field label={t('Type de service', 'Service type')} required>
               <select
                 required
@@ -214,6 +244,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
                 ))}
               </select>
             </Field>
+            )}
           </div>
 
           <Field label={t('Description du projet', 'Project description')} required>
@@ -222,7 +253,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
               rows={5}
               value={form.message}
               onChange={onChange('message')}
-              placeholder={t('Matériau, tolérances, quantité, délai souhaité…', 'Material, tolerances, quantity, desired deadline…')}
+              placeholder={is3d ? t('Matériau, dimensions, quantité, usage, délai souhaité…', 'Material, dimensions, quantity, use, desired deadline…') : t('Matériau, tolérances, quantité, délai souhaité…', 'Material, tolerances, quantity, desired deadline…')}
               className="input resize-none"
             />
           </Field>
@@ -236,7 +267,7 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
               ref={fileInput}
               type="file"
               multiple
-              accept={ACCEPT}
+              accept={is3d ? ACCEPT_3D : ACCEPT}
               onChange={onFiles}
               className="sr-only"
               tabIndex={-1}
@@ -251,10 +282,15 @@ export default function Soumission({ asH1 = false }: { asH1?: boolean }) {
               <span className="text-white/60">{t('Ajouter des fichiers…', 'Add files…')}</span>
             </button>
             <p className="font-sans font-light text-[11px] text-white/50 leading-relaxed mt-2">
-              {t(
-                'PDF, DXF, DWG, STEP, STL, images, Word ou Excel · 3 fichiers maximum, 7 Mo au total.',
-                'PDF, DXF, DWG, STEP, STL, images, Word or Excel · up to 3 files, 7 MB in total.'
-              )}
+              {is3d
+                ? t(
+                    'STL, OBJ, 3MF, STEP, PDF, images · 3 fichiers maximum, 7 Mo au total.',
+                    'STL, OBJ, 3MF, STEP, PDF, images · up to 3 files, 7 MB in total.'
+                  )
+                : t(
+                    'PDF, DXF, DWG, STEP, STL, images, Word ou Excel · 3 fichiers maximum, 7 Mo au total.',
+                    'PDF, DXF, DWG, STEP, STL, images, Word or Excel · up to 3 files, 7 MB in total.'
+                  )}
             </p>
             {files.length > 0 && (
               <ul className="mt-3 space-y-2">
