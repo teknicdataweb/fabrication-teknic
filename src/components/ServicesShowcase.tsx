@@ -92,7 +92,7 @@ export default function ServicesShowcase() {
         }
 
         // Paralaje: la foto/video se desplaza un poco mientras se recorre el servicio
-        if (inner && !reduce) {
+        if (inner && !reduce && !inner.hasAttribute('data-still')) {
           gsap.set(inner, { scale: 1.12 })
           tl.fromTo(inner, { y: 24 }, { y: -24, duration: 1, immediateRender: i === 0 }, i)
         }
@@ -371,7 +371,7 @@ export default function ServicesShowcase() {
                   <div
                     className={`slide-media ${
                       !s.video && s.videoShape === 'landscape'
-                        ? 'relative w-full aspect-[16/10] max-h-[78vh] max-w-[820px] mx-auto'
+                        ? 'relative w-full aspect-video max-h-[78vh] max-w-[820px] mx-auto'
                         : s.video && s.videoShape === 'landscape'
                         ? 'relative w-full aspect-[4/3] max-h-[78vh] max-w-[760px] mx-auto'
                         : s.videoShape === 'square'
@@ -396,6 +396,7 @@ export default function ServicesShowcase() {
                           alt={s.imageAlt?.[lang] ?? s.name[lang]}
                           className="w-full h-full object-cover"
                           loading="eager"
+                          {...(s.showcaseImage ? { 'data-still': '' } : {})}
                         />
                       ) : (
                         <MediaPlaceholder accent={s.accent} label={s.name[lang]} />
@@ -597,7 +598,8 @@ function MobileServiceCard({ s: s0, index }: { s: Service; index: number }) {
   useEffect(() => {
     const el = ref.current
     const img = imgRef.current
-    if (!el || !img) return
+    // La foto de la impresora 3D se muestra completa: sin zoom ni desplazamiento
+    if (!el || !img || s.showcaseImage) return
     let raf = 0
     const update = () => {
       raf = 0
@@ -678,7 +680,7 @@ function MobileServiceCard({ s: s0, index }: { s: Service; index: number }) {
             className="absolute inset-0 w-full h-full object-cover will-change-transform"
             style={{
               objectPosition,
-              transform: 'scale(1.08)',
+              transform: s.showcaseImage ? 'none' : 'scale(1.08)',
               transition: 'transform 0.1s linear',
             }}
           />
