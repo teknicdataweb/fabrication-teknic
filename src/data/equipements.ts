@@ -78,34 +78,9 @@ export const LATHES: Row[] = [
     spec: 'Ø 21" × 65"',
   },
   {
-    type: { fr: 'Tour conventionnel', en: 'Conventional lathe' },
-    model: 'Tarnow',
-    spec: 'Ø 21" × 120"',
-  },
-  {
-    type: { fr: 'Tour conventionnel', en: 'Conventional lathe' },
-    model: 'Prestige',
-    spec: 'Ø 14" × 40"',
-  },
-  {
-    type: { fr: 'Rectifieuse plane', en: 'Surface grinder' },
-    model: '—',
-    spec: '30" × 12"',
-  },
-  {
     type: { fr: 'Rectifieuse plane', en: 'Surface grinder' },
     model: '—',
     spec: '60" × 10"',
-  },
-  {
-    type: { fr: 'Fraiseuse', en: 'Milling' },
-    model: 'TOS',
-    spec: 'X 36" · Y 18" · Z 18"',
-  },
-  {
-    type: { fr: 'Perceuse radiale', en: 'Radial drill' },
-    model: '—',
-    spec: 'Ø 2¼"',
   },
   {
     type: { fr: 'Alésage portatif', en: 'Portable boring' },
