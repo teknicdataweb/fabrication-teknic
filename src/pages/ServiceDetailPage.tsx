@@ -249,17 +249,20 @@ export default function ServiceDetailPage() {
                 {p[lang]}
               </p>
             ))}
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-[11px] tracking-[0.25em] uppercase">
-              <Link to={lp('/equipements')} className="text-white/70 hover:text-teknic-red transition-colors">
-                {t('Voir nos équipements →', 'See our equipment →')}
-              </Link>
-              <Link to={lp('/portfolio')} className="text-white/70 hover:text-teknic-red transition-colors">
-                {t('Voir nos réalisations →', 'See our work →')}
-              </Link>
-              <Link to={lp('/services')} className="text-white/70 hover:text-teknic-red transition-colors">
-                {t('Tous les services →', 'All services →')}
-              </Link>
-            </div>
+            {/* Enlaces de navegación: no van en el servicio de socio externo (impression 3D) */}
+            {!s.external && (
+              <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-[11px] tracking-[0.25em] uppercase">
+                <Link to={lp('/equipements')} className="text-white/70 hover:text-teknic-red transition-colors">
+                  {t('Voir nos équipements →', 'See our equipment →')}
+                </Link>
+                <Link to={lp('/portfolio')} className="text-white/70 hover:text-teknic-red transition-colors">
+                  {t('Voir nos réalisations →', 'See our work →')}
+                </Link>
+                <Link to={lp('/services')} className="text-white/70 hover:text-teknic-red transition-colors">
+                  {t('Tous les services →', 'All services →')}
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>
