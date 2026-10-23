@@ -390,7 +390,7 @@ export default function ServicesShowcase() {
                       ) : s.image ? (
                         <img
                           src={s.image}
-                          alt={s.name[lang]}
+                          alt={s.imageAlt?.[lang] ?? s.name[lang]}
                           className="w-full h-full object-cover"
                           loading="eager"
                         />
@@ -659,7 +659,7 @@ function MobileServiceCard({ s, index }: { s: Service; index: number }) {
           <img
             ref={imgRef}
             src={s.image}
-            alt={s.name[lang]}
+            alt={s.imageAlt?.[lang] ?? s.name[lang]}
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover will-change-transform"
             style={{

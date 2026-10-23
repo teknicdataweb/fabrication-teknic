@@ -34,6 +34,8 @@ export type Service = {
   coverLogo?: { src: string; alt: string }
   // Optional — shape of the video so its frame matches it (no empty bars); default is vertical (9:16)
   videoShape?: 'landscape' | 'square'
+  // Optional — descriptive alt text for the photo (SEO / accessibility); falls back to the service name
+  imageAlt?: { fr: string; en: string }
 }
 
 // Fondos de la marca: negro, rojo, gris y blanco (el blanco va en textos y acentos)
@@ -51,7 +53,11 @@ export const SERVICES: Service[] = [
       fr: "Centres d'usinage CNC horizontaux et verticaux pour pièces jusqu'à 11 000 lb, avec des tolérances microniques.",
       en: 'Horizontal and vertical CNC machining centers for parts up to 11,000 lb, with micron tolerances.',
     },
-    image: '/service-usinage.jpg',
+    image: '/usinage-cnc-cylindre-acier-nicolet.jpg',
+    imageAlt: {
+      fr: "Cylindre d'acier usiné au centre d'usinage CNC, Fabrication TEK-NIC à Nicolet, Québec",
+      en: 'Steel cylinder machined on a CNC machining center, Fabrication TEK-NIC in Nicolet, Quebec',
+    },
     bg: { from: '#0B0B0C', via: '#3A3D42', to: '#040405' },
     accent: '#F0434F',
     specs: [

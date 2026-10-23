@@ -233,7 +233,7 @@ export default function ServiceDetailPage() {
                 className="absolute inset-0 w-full h-full object-cover"
               />
             ) : s.image ? (
-              <img src={s.image} alt={s.name[lang]} className="absolute inset-0 w-full h-full object-cover" />
+              <img src={s.image} alt={s.imageAlt?.[lang] ?? s.name[lang]} className="absolute inset-0 w-full h-full object-cover" />
             ) : null}
           </div>
         </div>

@@ -55,7 +55,7 @@ export default function ServicesPage() {
                   {s.cover ? (
                     <img
                       src={s.cover}
-                      alt={s.name[lang]}
+                      alt={s.imageAlt?.[lang] ?? s.name[lang]}
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover object-[50%_40%] transition-transform duration-700 group-hover:scale-105"
                     />
@@ -95,7 +95,7 @@ export default function ServicesPage() {
                   ) : cover && (
                     <img
                       src={cover}
-                      alt={s.name[lang]}
+                      alt={s.imageAlt?.[lang] ?? s.name[lang]}
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
