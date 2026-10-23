@@ -225,6 +225,15 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
           <div
             className="group relative flex flex-col justify-between border border-white/10 rounded-lg p-6 md:p-8 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
           >
+            {/* Marca de agua: logo de la empresa, muy tenue, que se aviva un poco al pasar el cursor */}
+            <img
+              src="/logo-teknic.png"
+              alt=""
+              aria-hidden="true"
+              width={640}
+              height={227}
+              className="pointer-events-none absolute -right-6 -bottom-8 w-[72%] max-w-[420px] h-auto opacity-[0.07] grayscale group-hover:opacity-[0.13] group-hover:grayscale-0 transition-all duration-700 select-none"
+            />
             <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
             <span className="absolute top-3 right-3 w-3 h-3 border-t border-r border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
             <span className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
@@ -252,32 +261,12 @@ export default function Contact({ asH1 = false }: { asH1?: boolean }) {
 
             <div className="relative z-10 pt-8 mt-8 border-t border-white/5 flex flex-wrap gap-3">
               <a
-                href={emailHref}
-                onClick={() => {
-                  if (!isTouchDevice())
-                    copyAndShow(EMAIL, t('Adresse copiée : ', 'Address copied: ') + EMAIL, t('Notre adresse : ', 'Our address: ') + EMAIL, show)
-                }}
+                href={isTouchDevice() ? emailHref : gmailHref}
+                {...(isTouchDevice() ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
                 className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
               >
                 {t('Écrire un courriel', 'Write an email')}
               </a>
-              <a
-                href={gmailHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
-              >
-                {t('Ouvrir Gmail', 'Open Gmail')}
-              </a>
-              <button
-                type="button"
-                onClick={() =>
-                  copyAndShow(EMAIL, t('Adresse copiée : ', 'Address copied: ') + EMAIL, t('Notre adresse : ', 'Our address: ') + EMAIL, show)
-                }
-                className="inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full font-mono text-[10px] tracking-[0.3em] uppercase text-white hover:bg-teknic-red hover:border-teknic-red transition-all duration-300"
-              >
-                {t("Copier l'adresse", 'Copy address')}
-              </button>
             </div>
           </div>
         </div>
