@@ -56,6 +56,8 @@ export default function ServicesShowcase() {
           // Al soltar el scroll, se acomoda en el centro del servicio más cercano
           snap: {
             snapTo: SERVICES.map((_, i) => (i + 0.5) / total),
+            // Sin inercia: un gesto de scroll avanza al servicio siguiente, no se salta varios
+            inertia: false,
             delay: 0.12,
             duration: { min: 0.35, max: 0.8 },
             ease: 'power2.inOut',
@@ -257,7 +259,7 @@ export default function ServicesShowcase() {
               className={`slide ${i === 0 ? 'slide-first' : ''} absolute inset-0 z-20`}
               style={{ pointerEvents: isActive ? 'auto' : 'none' }}
             >
-              <div className="h-full w-full grid grid-cols-[1.1fr_1.4fr_1fr] gap-6 px-6 md:px-12 pt-24 pb-16">
+              <div className="h-full w-full grid grid-cols-[1.1fr_1.5fr_0.9fr] gap-6 px-6 md:px-12 pt-24 pb-16">
                 {/* LEFT */}
                 <div className="slide-left relative flex flex-col justify-center">
                   {/* Partner badge (only for external services) */}
