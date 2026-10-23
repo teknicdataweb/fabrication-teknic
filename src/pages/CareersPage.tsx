@@ -124,7 +124,8 @@ export default function CareersPage() {
             </article>
           ))}
 
-          {/* Candidature spontanée */}
+          {/* Candidature spontanée: solo tiene sentido junto a ofertas reales; sin ofertas, el formulario va directo */}
+          {JOBS.length > 0 && (
           <article className="relative border border-dashed border-white/20 rounded-lg p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="max-w-2xl">
               <h3 className="font-display uppercase text-2xl md:text-3xl leading-tight mb-2">
@@ -146,9 +147,10 @@ export default function CareersPage() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </article>
+          )}
         </div>
 
-        <div className="mt-16">
+        <div className={JOBS.length > 0 ? 'mt-16' : 'mt-2'}>
           <ApplicationForm poste={poste} />
         </div>
       </div>
