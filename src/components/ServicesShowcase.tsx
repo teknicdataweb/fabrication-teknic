@@ -13,7 +13,6 @@ export default function ServicesShowcase() {
   const { lang, t, lp } = useLang()
   const container = useRef<HTMLDivElement>(null)
   const pinTarget = useRef<HTMLDivElement>(null)
-  const bgRef = useRef<HTMLDivElement>(null)
   const activeRef = useRef(0)
   const [active, setActive] = useState(0)
   const [isDesktop, setIsDesktop] = useState<boolean>(() =>
@@ -29,62 +28,100 @@ export default function ServicesShowcase() {
     return () => mq.removeEventListener('change', onChange)
   }, [])
 
-  // Pin & progress only on desktop
+  // Escritorio: la sección se fija y UNA línea de tiempo ligada al scroll (scrub) anima la salida y la entrada de cada servicio.
+  // La animación sigue directamente la rueda/trackpad (y se puede ir y volver); al soltar, se acomoda suavemente en el servicio más cercano.
   useEffect(() => {
     if (!isDesktop) return
+    const root = container.current
+    const pin = pinTarget.current
+    if (!root || !pin) return
+    const total = SERVICES.length
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const k = reduce ? 0 : 1 // sin desplazamientos si el visitante pidió menos movimiento
+
     const ctx = gsap.context(() => {
-      const total = SERVICES.length
-      const trigger = ScrollTrigger.create({
-        trigger: container.current!,
-        start: 'top top',
-        end: `+=${total * SLIDE_SCROLL}`,
-        pin: pinTarget.current!,
-        pinSpacing: true,
-        anticipatePin: 1,
-        // Al soltar el scroll, se acomoda en el centro del servicio más cercano (sin dejar dos mezclados)
-        snap: {
-          snapTo: (progress: number) => {
-            // En los extremos no se fuerza nada, para poder salir de la sección sin resistencia
-            if (progress < 0.04 || progress > 0.96) return progress
-            return (Math.min(total - 1, Math.floor(progress * total)) + 0.5) / total
+      const slides = Array.from(root.querySelectorAll<HTMLElement>('.slide'))
+      const layers = Array.from(root.querySelectorAll<HTMLElement>('.slide-bg'))
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: root,
+          start: 'top top',
+          end: `+=${total * SLIDE_SCROLL}`,
+          pin,
+          pinSpacing: true,
+          anticipatePin: 1,
+          scrub: 0.8,
+          // Al soltar el scroll, se acomoda en el centro del servicio más cercano
+          snap: {
+            snapTo: SERVICES.map((_, i) => (i + 0.5) / total),
+            delay: 0.12,
+            duration: { min: 0.35, max: 0.8 },
+            ease: 'power2.inOut',
           },
-          delay: 0.15,
-          duration: { min: 0.25, max: 0.6 },
-          ease: 'power2.inOut',
-        },
-        onUpdate: (self) => {
-          const pos = self.progress * total * 0.999
-          const raw = Math.min(total - 1, Math.floor(pos))
-          const current = activeRef.current
-          // Solo cambia de servicio al pasar el límite por un pequeño margen (evita parpadeos en el borde)
-          const margin = 0.06
-          const crossed = raw > current ? pos >= raw + margin : raw < current ? pos <= raw + 1 - margin : false
-          if (crossed) {
-            activeRef.current = raw
-            setActive(raw)
-          }
-          // Posición dentro del servicio activo (0 al entrar, 0.5 centrado, 1 al salir): alimenta el paralaje
-          const within = Math.max(-0.5, Math.min(1.5, pos - activeRef.current))
-          pinTarget.current?.style.setProperty('--slide-p', within.toFixed(3))
+          onUpdate: (self) => {
+            // Servicio "activo" (indicador, videos, accesibilidad), con un pequeño margen para evitar parpadeos en el borde
+            const pos = self.progress * total * 0.999
+            const raw = Math.min(total - 1, Math.floor(pos))
+            const current = activeRef.current
+            const margin = 0.06
+            const crossed = raw > current ? pos >= raw + margin : raw < current ? pos <= raw + 1 - margin : false
+            if (crossed) {
+              activeRef.current = raw
+              setActive(raw)
+            }
+          },
         },
       })
-      return () => {
-        trigger.kill()
-      }
-    }, container)
+      // Duración total = un tramo por servicio
+      tl.to({}, { duration: total }, 0)
+
+      slides.forEach((el, i) => {
+        const items = Array.from(el.querySelectorAll<HTMLElement>('.slide-left > *, .slide-right > *'))
+        const media = el.querySelector<HTMLElement>('.slide-media')
+        const inner = el.querySelector<HTMLElement>('.slide-media-inner > video, .slide-media-inner > img')
+
+        // Estado inicial de los servicios que aún no se ven
+        if (i > 0) {
+          gsap.set(el, { opacity: 0 })
+          gsap.set(items, { opacity: 0, y: 42 * k })
+          if (media) gsap.set(media, { y: 64 * k, scale: 0.96 })
+        }
+
+        // Paralaje: la foto/video se desplaza un poco mientras se recorre el servicio
+        if (inner && !reduce) {
+          gsap.set(inner, { scale: 1.12 })
+          tl.fromTo(inner, { y: 24 }, { y: -24, duration: 1, immediateRender: i === 0 }, i)
+        }
+
+        // Entrada (empieza justo después de que sale el servicio anterior; no se mezclan los textos)
+        if (i > 0) {
+          tl.to(el, { opacity: 1, duration: 0.08 }, i)
+          tl.to(items, { opacity: 1, y: 0, duration: 0.24, ease: 'power2.out', stagger: 0.028 }, i + 0.01)
+          if (media) tl.to(media, { y: 0, scale: 1, duration: 0.3, ease: 'power2.out' }, i)
+        }
+
+        // Salida (hacia arriba, rápida)
+        if (i < total - 1) {
+          const t0 = i + 1 - 0.22
+          tl.to(items, { opacity: 0, y: -32 * k, duration: 0.18, ease: 'power1.in', stagger: 0.012 }, t0)
+          if (media) tl.to(media, { y: -52 * k, scale: 0.97, duration: 0.2, ease: 'power1.in' }, t0)
+          tl.to(el, { opacity: 0, duration: 0.04 }, i + 1 - 0.04)
+        }
+      })
+
+      // Fondo: cada servicio tiene su capa de color; se hace un fundido entre capas al cambiar
+      layers.forEach((layer, i) => {
+        if (i === 0) return
+        gsap.set(layer, { opacity: 0 })
+        tl.fromTo(layers[i - 1], { opacity: 1 }, { opacity: 0, duration: 0.4, immediateRender: false }, i - 0.2)
+        tl.fromTo(layer, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, i - 0.2)
+      })
+    }, root)
+
     return () => ctx.revert()
   }, [isDesktop])
-
-  // Background morph only on desktop
-  useEffect(() => {
-    if (!isDesktop || !bgRef.current) return
-    const s = SERVICES[active]
-    gsap.to(bgRef.current, {
-      background: `radial-gradient(ellipse at 30% 40%, ${s.bg.via} 0%, ${s.bg.from} 45%, ${s.bg.to} 100%)`,
-      duration: 0.9,
-      ease: 'power2.inOut',
-    })
-  }, [active, isDesktop])
 
   // === MOBILE / TABLET: stacked cards, no pin ===
   if (!isDesktop) {
@@ -135,14 +172,17 @@ export default function ServicesShowcase() {
   return (
     <section id="services" ref={container} className="relative w-full">
       <div ref={pinTarget} className="relative h-screen w-full overflow-hidden">
-        {/* Background morph */}
-        <div
-          ref={bgRef}
-          className="absolute inset-0 z-0"
-          style={{
-            background: `radial-gradient(ellipse at 30% 40%, ${SERVICES[0].bg.via} 0%, ${SERVICES[0].bg.from} 45%, ${SERVICES[0].bg.to} 100%)`,
-          }}
-        />
+        {/* Fondos: una capa por servicio (se hace un fundido entre ellas con el scroll) */}
+        {SERVICES.map((sv, i) => (
+          <div
+            key={sv.id}
+            className="slide-bg absolute inset-0 z-0"
+            style={{
+              background: `radial-gradient(ellipse at 30% 40%, ${sv.bg.via} 0%, ${sv.bg.from} 45%, ${sv.bg.to} 100%)`,
+              opacity: i === 0 ? 1 : 0,
+            }}
+          />
+        ))}
 
         {/* Grid overlay */}
         <div
@@ -214,7 +254,7 @@ export default function ServicesShowcase() {
           return (
             <div
               key={s.id}
-              className={`slide absolute inset-0 z-20 ${isActive ? 'slide-active' : i < active ? 'slide-before' : 'slide-after'}`}
+              className={`slide ${i === 0 ? 'slide-first' : ''} absolute inset-0 z-20`}
               style={{ pointerEvents: isActive ? 'auto' : 'none' }}
             >
               <div className="h-full w-full grid grid-cols-[1.1fr_1.4fr_1fr] gap-6 px-6 md:px-12 pt-24 pb-16">
