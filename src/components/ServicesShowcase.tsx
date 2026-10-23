@@ -93,8 +93,8 @@ export default function ServicesShowcase() {
 
         // Paralaje: la foto/video se desplaza un poco mientras se recorre el servicio
         if (inner && !reduce && !inner.hasAttribute('data-still')) {
-          gsap.set(inner, { scale: 1.12 })
-          tl.fromTo(inner, { y: 24 }, { y: -24, duration: 1, immediateRender: i === 0 }, i)
+          gsap.set(inner, { scale: 1.06 })
+          tl.fromTo(inner, { y: 12 }, { y: -12, duration: 1, immediateRender: i === 0 }, i)
         }
 
         // Entrada (empieza justo después de que sale el servicio anterior; no se mezclan los textos)
@@ -371,11 +371,11 @@ export default function ServicesShowcase() {
                   <div
                     className={`slide-media ${
                       !s.video && s.videoShape === 'landscape'
-                        ? 'relative w-full aspect-video max-h-[78vh] max-w-[820px] mx-auto'
+                        ? 'relative w-full aspect-video max-h-[60vh] max-w-[640px] mx-auto'
                         : s.video && s.videoShape === 'landscape'
                         ? 'relative w-full aspect-[4/3] max-h-[78vh] max-w-[760px] mx-auto'
                         : s.videoShape === 'square'
-                        ? 'relative w-full aspect-square max-h-[70vh] max-w-[560px] mx-auto'
+                        ? 'relative w-full aspect-square max-h-[62vh] max-w-[520px] mx-auto'
                         : s.video
                         ? 'relative h-[70vh] lg:h-[85vh] aspect-[9/16] max-w-full mx-auto'
                         : 'relative w-full h-[70vh] lg:h-[85vh] max-w-[520px]'
@@ -396,7 +396,7 @@ export default function ServicesShowcase() {
                           alt={s.imageAlt?.[lang] ?? s.name[lang]}
                           className="w-full h-full object-cover"
                           loading="eager"
-                          {...(s.showcaseImage ? { 'data-still': '' } : {})}
+                          {...(!s.video && s.videoShape === 'landscape' ? { 'data-still': '' } : {})}
                         />
                       ) : (
                         <MediaPlaceholder accent={s.accent} label={s.name[lang]} />
