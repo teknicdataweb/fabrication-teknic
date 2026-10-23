@@ -41,7 +41,7 @@ const CONTACTS = [
     value: '819-944-4737',
     href: 'tel:8199444737',
     first: 'Rémi',
-    tag: { fr: 'Impression 3D · DG Innovation 3D', en: '3D printing · DG Innovation 3D' },
+    tag: { fr: 'Direction · 3D DG Innovation', en: 'Management · 3D DG Innovation' },
     topic: 'print3d' as 'general' | 'print3d',
   },
   {
@@ -50,7 +50,7 @@ const CONTACTS = [
     value: '819-692-4226',
     href: 'tel:8196924226',
     first: 'Victor',
-    tag: { fr: 'Impression 3D · DG Innovation 3D', en: '3D printing · DG Innovation 3D' },
+    tag: { fr: 'Direction · 3D DG Innovation', en: 'Management · 3D DG Innovation' },
     topic: 'print3d' as 'general' | 'print3d',
   },
 ]
