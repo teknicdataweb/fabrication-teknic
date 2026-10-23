@@ -87,8 +87,8 @@ const EMAIL_BODY = {
   ].join('\n'),
 }
 
-/** `compact`: solo los teléfonos (oficina + los cuatro socios), para las páginas de soumission */
-export default function Contact({ asH1 = false, compact = false }: { asH1?: boolean; compact?: boolean }) {
+/** `compact`: solo los teléfonos (oficina + los cuatro socios), para las páginas de soumission; `only3d`: solo Rémi y Victor (DG Innovation 3D) */
+export default function Contact({ asH1 = false, compact = false, only3d = false }: { asH1?: boolean; compact?: boolean; only3d?: boolean }) {
   const Title = asH1 ? 'h1' : 'h2'
   const { lang, t } = useLang()
   const { show, toast } = useToast()
@@ -130,8 +130,17 @@ export default function Contact({ asH1 = false, compact = false }: { asH1?: bool
               </span>
             </div>
             <h2 className="font-display uppercase leading-[0.9] text-3xl md:text-5xl">
-              {t('Joignez-nous ', 'Reach us ')}
-              <span className="text-teknic-red">{t('directement', 'directly')}</span>
+              {only3d ? (
+                <>
+                  {t('Joignez ', 'Reach ')}
+                  <span className="text-teknic-red">DG Innovation 3D</span>
+                </>
+              ) : (
+                <>
+                  {t('Joignez-nous ', 'Reach us ')}
+                  <span className="text-teknic-red">{t('directement', 'directly')}</span>
+                </>
+              )}
             </h2>
           </div>
         )}
@@ -294,7 +303,7 @@ export default function Contact({ asH1 = false, compact = false }: { asH1?: bool
 
         {/* Phones — 3 + 2 cards */}
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6">
-          {CONTACTS.map((c, i) => {
+          {(only3d ? CONTACTS.filter((c) => c.topic === 'print3d') : CONTACTS).map((c, i) => {
             const Icon = c.icon
             const phone = c.href.replace('tel:', '')
             // Mensaje de texto prearmado: lleva el nombre de la persona y, para DG Innovation 3D, el tema de impresión 3D
@@ -311,7 +320,7 @@ export default function Contact({ asH1 = false, compact = false }: { asH1?: bool
             return (
               <div
                 key={c.value}
-                className={`${i < 3 ? 'md:col-span-2' : 'md:col-span-3'} group relative flex flex-col border border-white/10 rounded-lg p-6 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden`}
+                className={`${!only3d && i < 3 ? 'md:col-span-2' : 'md:col-span-3'} group relative flex flex-col border border-white/10 rounded-lg p-6 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden`}
               >
                 <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
                 <span className="absolute top-3 right-3 w-3 h-3 border-t border-r border-white/20 group-hover:border-teknic-red transition-colors duration-500" />

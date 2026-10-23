@@ -26,7 +26,7 @@ export default function Quote3DPage() {
   return (
     <>
       <Soumission asH1 variant="3d" />
-      <Contact compact />
+      <Contact compact only3d />
     </>
   )
 }
