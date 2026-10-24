@@ -39,12 +39,18 @@ export default function Footer() {
           <button type="button" onClick={() => setConsent(null)} className={linkClass}>
             {t('Gérer les témoins', 'Manage cookies')}
           </button>
-          <Link
-            to={lp('/')}
+          <button
+            type="button"
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+              })
+            }
             className={linkClass}
           >
             {t('Retour en haut', 'Back to top')}
-          </Link>
+          </button>
         </nav>
         <div className="flex items-center gap-6">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
