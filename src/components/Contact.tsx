@@ -322,6 +322,15 @@ export default function Contact({ asH1 = false, compact = false, only3d = false 
                 key={c.value}
                 className={`${!only3d && i < 3 ? 'md:col-span-2' : 'md:col-span-3'} group relative flex flex-col border border-white/10 rounded-lg p-6 bg-gradient-to-br from-white/[0.02] to-transparent hover:border-teknic-red/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden`}
               >
+                {/* Marca de agua: mismo logo tenue que la tarjeta de correo, completo dentro de la tarjeta */}
+                <img
+                  src="/logo-teknic.png"
+                  alt=""
+                  aria-hidden="true"
+                  width={640}
+                  height={227}
+                  className="pointer-events-none absolute right-5 top-5 w-[38%] max-w-[190px] h-auto opacity-[0.07] grayscale group-hover:opacity-[0.13] group-hover:grayscale-0 transition-all duration-700 select-none"
+                />
                 <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
                 <span className="absolute top-3 right-3 w-3 h-3 border-t border-r border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
                 <span className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
