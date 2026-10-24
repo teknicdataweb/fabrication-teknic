@@ -259,7 +259,7 @@ export default function Contact({ asH1 = false, compact = false, only3d = false 
               aria-hidden="true"
               width={640}
               height={227}
-              className="pointer-events-none absolute -right-6 -bottom-8 w-[72%] max-w-[420px] h-auto opacity-[0.07] grayscale group-hover:opacity-[0.13] group-hover:grayscale-0 transition-all duration-700 select-none"
+              className="pointer-events-none absolute right-6 bottom-6 w-[55%] max-w-[360px] h-auto opacity-[0.07] grayscale group-hover:opacity-[0.13] group-hover:grayscale-0 transition-all duration-700 select-none"
             />
             <span className="absolute top-3 left-3 w-3 h-3 border-t border-l border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
             <span className="absolute top-3 right-3 w-3 h-3 border-t border-r border-white/20 group-hover:border-teknic-red transition-colors duration-500" />
